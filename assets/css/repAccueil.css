@@ -1,0 +1,192 @@
+/*#btnSain{
+	background: linear-gradient(to bottom, #FFFFFF, rgb(0,141,202)) !important;
+	 width: 30%;
+	 font-weight: bolder;
+}
+#btnAvariesRep{
+	background: linear-gradient(to bottom, #FFFFFF, rgb(65,180,174)) !important;
+	width: 30%;
+}
+#btnAvariesDeb{
+	background:  #1B2B65 !important;
+	width: 30%;
+}*/
+.operation{
+	 font-weight: bold;
+	 width: 100%;
+	 background: rgb(0,141,202);
+	 color: white !important;
+}
+@media (max-width: 1200px){
+	.operation{
+		font-size: 20px;
+	}
+		
+
+
+	}
+.titreAVR{
+	font-weight: bold;
+	 width: 100%;
+	 background: rgb(65,180,174);
+	 text-align: center;
+	 font-size: 18px;
+	 border: solid;
+	border-top-right-radius: 45%;
+	border-bottom-right-radius: 45%;
+	 color: white !important;
+}
+
+#titreAVDEB{
+	font-weight: bold;
+	 width: 100%;
+	 background: #1B2B65;
+	 text-align: center;
+	 font-size: 18px;
+	 border: solid;
+	border-top-right-radius: 45%;
+	border-bottom-right-radius: 45%;
+	 color: white !important;
+}
+.titreSAIN{
+	font-weight: bold;
+	 width: 100%;
+	 background: blue;
+	 text-align: center;
+	 font-size: 18px;
+	 border: solid;
+	border-top-right-radius: 45%;
+	border-bottom-right-radius: 45%;
+	 color: white !important;
+}
+.titre{
+	/* background: orange;*/
+	text-align: center;
+	 font-size: 18px;
+	 border: solid;
+	border-top-right-radius: 45%;
+	border-bottom-right-radius: 45%;
+	 
+}
+.tr_attente_sain{
+	background: linear-gradient(to bottom, #FFFFFF, blue);
+	text-align: center;
+	 color: white; font-weight: bold;
+	  vertical-align: middle;
+	  font-size: 14px;
+	   color:white !important;
+}
+.tr_data_attente_sain{
+	
+	text-align: center;
+	  vertical-align: middle;
+	  font-size: 14px;
+
+}
+
+.tr_attente_avaries{
+	background:  orange;
+	text-align: center;
+	 color: white; font-weight: bold;
+	  vertical-align: middle;
+	  font-size: 14px;
+}
+#tr_attente_avdeb{
+	background:  #1B2B65;
+	text-align: center;
+	 color: white; font-weight: bold;
+	  vertical-align: middle;
+	  font-size: 14px;
+}
+.tr_data_attente_avaries{
+	text-align: center;
+	  vertical-align: middle;
+	  font-size: 14px !important;
+}
+#tr_data_attente_avdeb{
+	text-align: center;
+	  vertical-align: middle;
+	  font-size: 14px !important;
+}
+.hem2{
+	background: rgb(0,44,62);
+	 font-size: 18px;
+	 color:white !important;
+}
+.simarIcone{
+	float: left;
+	width: 200px;
+	height: 25px;
+}
+
+.tr_data_sain{
+	text-align: center;
+	  vertical-align: middle;
+	  font-size: 14px !important;
+}
+
+@media (max-width: 1200px){
+	#btnSain{
+		
+		width: 60% !important;
+	    
+		
+	
+
+	}
+		#btnAvariesDeb{
+		
+		width: 60% !important;
+		
+	}
+		#btnAvariesRep{
+		
+		width: 60% !important;
+	}
+	.operation{
+		font-size: 18px;
+	}
+	.titre{
+	font-size: 14px;
+}
+.tr_attente_sain{
+
+	  font-size: 10px;
+}
+
+.tr_data_attente_sain{
+	
+
+	  font-size: 10px;
+}
+.tr_attente_avaries{
+
+
+	  font-size: 10px;
+}
+.tr_data_attente_avaries{
+
+	  font-size: 10px;
+}
+.hem2{
+	font-size: 14px !important;
+}
+.titreAVR{
+	font-size: 14px;
+}
+.titreSAIN{
+	font-size: 14px;
+}
+@media (max-width: 1200px){
+	.tr_attente_sain{
+
+	  font-size: 20px;
+}
+
+.tr_data_attente_sain{
+	
+
+	  font-size: 20px;
+}
+
+}

@@ -1,0 +1,86 @@
+body{
+    font-family:Times New Roman;
+    font-weight: bold;
+    background: white;
+    
+  }
+
+    .enteteTable{
+     background: linear-gradient(to bottom, blue, #1B2B65); background: linear-gradient(to left, blue, #1B2B65); background: linear-gradient(to top, blue, #1B2B65); color: white; text-align: center; font-weight: bold;
+     vertical-align: middle; 
+      border: 5px;
+      border-color: black;
+
+    }
+         #table{
+          border: 5px; 
+     }
+    #colLibeles{
+      background: rgba(83,104,253,0.9); color: white;
+      vertical-align: middle;
+      text-align: center;
+
+    } 
+    #colManifeste{
+      background: rgb(72,94,179); color:white;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #colDeb24H{
+      background-color: rgb(124, 158, 191); color:white;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #colDebTOTAL{
+      background-color: rgb(34, 155, 176); color:white;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #colROB{
+      background-color: rgb(28, 118, 51); color:white;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #sousTOTAL{
+       background-color:rgb(94,44,101);  color:white;
+       font-weight: bold;
+       text-align: center;
+       vertical-align: middle;
+
+    }
+    #TOTAL{
+      background: black;
+      color: red;
+      font-weight: bold;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #colFlasque{
+      background-color: rgb(193, 150, 0); color:white;
+      vertical-align: middle;
+       text-align: center; 
+    }
+
+    #colMouille{
+      background-color: rgb(158, 106, 35); color:white;
+      vertical-align: middle;
+       text-align: center; 
+    }
+    #colCumulGen{
+    background-color: rgb(200, 106, 90); color:white;
+      vertical-align: middle;
+      text-align: center;  
+    }
+    #mybutton{
+      background: blue;
+       color:white;
+       font-size: 18px;
+    }
+     #global{
+      background: black;
+       color:white;
+       font-size: 14px;
+       border-radius: 50px;
+    }
+
+    

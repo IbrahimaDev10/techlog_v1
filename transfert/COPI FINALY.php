@@ -1,0 +1,1 @@
+<option  value=<?php echo $row2['id_dis'].'-'.$row2['id_produit'].'-'.$row2['poids_kg'].'-'.$row2['id_navire']; ?> > <?php echo $row2['produit'].' '.$row2['qualite'].' '.$row2['poids_kg'].' KGS';  ?> </option>

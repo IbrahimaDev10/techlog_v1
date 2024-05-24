@@ -1,0 +1,69 @@
+#entete_navire{
+	background: black;
+	color: white;
+	font-size: 14px;
+	text-align: center;
+	vertical-align: middle;
+	border-color: yellow;
+}
+.cellule_navire{
+
+	font-size: 14px;
+	text-align: center;
+	vertical-align: middle;
+	border-color: yellow;
+
+}
+#entete_variete{
+	 background: rgb(0,141,202);
+	 	color: white;
+	font-size: 14px;
+	text-align: center;
+	vertical-align: middle;
+	border-color: orange;
+}
+.cellule_variete{
+
+	font-size: 14px;
+	text-align: center;
+	vertical-align: middle;
+	border-color: orange;
+	border-top-color: orange;
+
+}
+#entete_client{
+	 background: rgb(62,145,132);
+	 	color: white;
+	font-size: 14px;
+	text-align: center;
+	vertical-align: middle;
+	border-color: black;
+}
+#entete_transporteur{
+	background:  linear-gradient(to top, blue, #1B2B65);
+	color: white;
+	font-size: 14px;
+	text-align: center;
+	vertical-align: middle;
+	border-color: black;
+}
+
+.titreNavire{
+	font-weight: bold;
+	 width: 100%;
+	 background: black !important;
+	 text-align: center;
+	 font-size: 18px;
+	 border: solid;
+	border-top-right-radius: 45%;
+	border-bottom-right-radius: 45%;
+	 color: white !important;
+	 border-color: yellow !important;
+}
+.titrecamion{
+	background: black;
+	color:white;
+	text-align: center;
+	font-size: 18px;
+	vertical-align: middle;
+}

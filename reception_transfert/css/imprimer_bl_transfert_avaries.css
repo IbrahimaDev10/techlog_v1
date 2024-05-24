@@ -1,0 +1,25 @@
+
+.segment{
+    font-size:14px !important;
+    color:rgb(0,162,232) !important;
+     margin-top:15px !important;
+  }
+  .titre_info{
+    color: rgb(210,163,0);
+
+  }
+   @media print{
+ .segment{
+    font-size:14px !important;
+    color:rgb(0,162,232) !important;
+    margin-top:15px !important;
+  }
+  .titre_info{
+    color: rgb(210,163,0);
+  }
+    
+  #no-print{
+    display: none;
+  }
+}
+ 

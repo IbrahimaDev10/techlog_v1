@@ -1,0 +1,1645 @@
+MODIF
+TABLE(
+
+formulaire
+bl n_manifest destination_douaniere  
+
+)
+
+<div class="modal fade" id="modifier" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="z-index: 1;">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <center>
+        <h2 class="modal-title fs-5 text-white text-center" id="exampleModalLabel " style="text-align:center; ">Ajouter enregistrement</h2></center>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body" >
+               <center>
+            <img class="logo" src="assets/images/mylogo.ico" style="border-radius: 50px;">
+
+        </center>
+        <form method="POST" >
+
+   <div class="mb-3">
+    <?php while($rown=$res4n->fetch()){ ?>
+   
+    <input type="text" class="form-control"     name="id_register" id="id_register_manif" id="exampleFormControlInput1" value=<?php  
+        echo $a;
+    ?> > 
+  </div>
+  <div class="mb-3">    
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="navire"  name="navire"  id="navire"  value=<?php  
+        echo $rown['id_navire'];
+    ?> > 
+    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="type"  name="type" hidden="true"  id="type"  value=<?php  
+        echo $rown['type'];
+    ?> > 
+
+</div>
+
+   <div class="mb-3">
+     
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="produit" name="produit"  id="produit" hidden="true" value=<?php  
+        echo $rown['id_produit'];
+    ?> >
+</div>
+
+   <div class="mb-3">
+     
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="id_dis" name="id_di"  id="produit" hidden="true" value=<?php   
+        echo $rown['id_dis'];
+    ?> >
+</div>
+
+
+   <div class="mb-3">
+      
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="produit" name="poids"  id="poids" hidden="true" value=<?php  
+        echo $rown['poids_kg'];
+    ?> >
+</div>
+
+   <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">date</label>
+  <input type="date"  class="form-control"  name="date" id="dates" id="exampleFormControlInput1" value=<?php echo $aff['dates'] ?> >
+</div>
+  <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">heure</label>
+  <input type="time" class="form-control"   name="heure" id="heure" value=<?php  
+        echo $aff['heure'];
+    ?> >
+
+</div>
+
+   <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">declaration</label>
+    <select name="declaration"  style="height: 30px;">
+    <option <?php  echo $aff['id_trans'];?> > <?php  echo $aff['numero_declaration'];?></option>
+    <?php while($dec=$resdesModif->fetch()){ ?> 
+    <option value=<?php  echo $dec['id_trans']; ?> ><?php  echo $dec['numero_declaration']; ?></option>  
+   <?php } ?>
+    </select>
+</div>
+
+
+
+   <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">cale</label>
+  <select style="width: 50%; margin-bottom: 20px; height: 30px;" name="cale" >
+    <option value=<?php   echo $aff['cale'];?>><?php  
+        echo $aff['cale'];
+    ?></option>
+
+    <?php if($rown['type']=="SACHERIE"){ while($res=$rescaleModif->fetch()){ 
+            $rescale2= $bdd->prepare("SELECT cales   FROM declaration_chargement
+               
+
+                   WHERE id_navire=? and id_produit=? and conditionnement=? 
+                  ");
+        $rescale2->bindParam(1,$res['id_navire']);
+        $rescale2->bindParam(2,$res['id_produit']);
+        $rescale2->bindParam(3,$res['poids_kg']);
+        $rescale2->execute(); } 
+    while($rownn=$rescale2->fetch()){ ?>
+      <option value=<?php echo $rownn['cales']; ?>><?php echo $rownn['cales']; ?></option>
+    <?php } }?>
+     <?php if($rown['type']=="VRAQUIER"){ while($res=$rescale->fetch()){ 
+            $rescale2= $bdd->prepare("SELECT cales   FROM declaration_chargement
+               
+
+                   WHERE id_navire=? and id_produit=? 
+                  ");
+        $rescale2->bindParam(1,$res['id_navire']);
+        $rescale2->bindParam(2,$res['id_produit']);
+       
+        $rescale2->execute(); } 
+    while($rownn=$rescale2->fetch()){ ?>
+      <option value=<?php echo $rownn['cales']; ?>><?php echo $rownn['cales']; ?></option>
+    <?php } }?>
+  </select>
+
+</div>
+<div style="background: blue">
+   <div class="mb-3">
+  <center>
+    <h3 style="background: white; color: blue;">TRANSPORT</h3>
+    <label for="exampleFormControlInput1" class="form-label">camions</label>
+   <select id="cam3" style="width: 50%; margin-bottom: 20px; margin-right: 5px;" name="camions" onchange="camion3()">
+    <?php $findcam=$bdd->prepare("select * from chauffeur where id_chauffeur=?");
+    $findcam->bindParam(1,$aff['camions']);
+    $findcam->execute();
+
+    while($cams=$findcam->fetch()) {
+     ?>
+
+    <option value=<?php echo $cams['id_chauffeur'] ?>><?php echo $cams['num_camions'] ?></option>
+  <?php } ?>
+    <?php while($cam=$camionsModif->fetch()) {?>
+    <option value=<?php echo $cam['id_chauffeur'] ?>><?php echo $cam['num_camions']; ?></option>
+    <?php } ?>
+  </select>
+ 
+
+<br>
+  <label for="exampleFormControlInput1" class="form-label">chauffeur</label>
+   <select  id="chauf3" name="chauffeur" style="width: 50%; margin-bottom: 20px; margin-right: 5px;"  onchange="chauffe3()">
+    <?php $findcams=$bdd->prepare("select * from chauffeur where id_chauffeur=?");
+    $findcams->bindParam(1,$aff['chauffeur']);
+    $findcams->execute();
+
+    while($chaufs=$findcams->fetch()) {
+     ?>
+   <option value=<?php echo $chaufs['id_chauffeur'].",".$chaufs['id_transporteur']; ?>><?php echo $chaufs['nom_chauffeur'] ?></option>
+ <?php } ?>
+ </select>
+  </center>
+ <div id="info_chauffeur3" style="color: white;">
+  
+
+</div>
+ </div>
+
+</div>
+
+<div class="mb-3">
+
+    <input type="text" name="numero_bl" placeholder="numero bl" id="numero_bl"  id="exampleFormControlInput1" style=" margin-bottom: 20px;margin-top: 20px;" value=<?php  echo $aff['bl'];?>>
+   
+
+
+
+</div>
+   <div class="mb-3">
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" name="client"   hidden="true"  value=<?php  
+        echo $rown['id_client'];
+    ?> >
+     <input type="text" class="form-control"  placeholder="" name="destination" hidden="true" value=<?php  
+        echo $rown['id_mangasin'];
+    ?> >
+
+</div>
+
+<?php if($rown['des_douane']=="LIVRAISON"){ ?>
+
+
+ <div class="mb-3">
+ 
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="destinataire" name="destinataire" value=<?php  echo $aff['destinataire'];?> >
+</div>
+<?php 
+}
+ if($rown['des_douane']=="TRANSFERT"){   ?>
+  <div class="mb-3">
+ 
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="destinataire" name="destinataire" value="AUCUN" hidden="true" >
+</div>
+
+
+<?php  
+
+} ?>
+
+  
+<?php if($rown['type']=="SACHERIE" and $rown['poids_kg']!=0){ ?>
+  <div class="mb-3">
+      <label for="exampleFormControlInput1"  class="form-label">nombre sac</label>
+  <input type="text"  class="form-control"  name="sac" id="sac" id="exampleFormControlInput1" value=<?php  echo $aff['sac'];?>>
+  </div>
+  <div class="mb-3" hidden="true">
+      <label for="exampleFormControlInput1" id="exampleFormControlInput1" class="form-label">poids</label>
+  <input type="text" class="form-control"  placeholder="poids" name="poids_s"  value="0" hidden="true" value=<?php  echo $aff['poids'];?>>
+</div> 
+
+<?php } ?>
+
+<?php  if($rown['type']=="VRAQUIER" and $rown['poids_kg']==0){ ?>
+<div class="mb-3" hidden="true" >
+      <label for="exampleFormControlInput1" class="form-label">nombre_sac</label>
+  <input type="text" class="form-control"  placeholder="0" value="0" name="sac" id="sac" hidden="true" value=<?php  echo $aff['sac'];?>>
+</div>
+<div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">poids</label>
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="poids" name="poids_s" value=<?php  echo $aff['poids'];?> >
+
+</div>
+
+<?php } ?>
+<?php  if($rown['type']=="VRAQUIER" and $rown['poids_kg']!=0){ ?>
+<div class="mb-3" >
+      <label for="exampleFormControlInput1" class="form-label">nombre_sac</label>
+  <input type="text" class="form-control"   name="sac" value=<?php  echo $aff['sac'];?> >
+</div>
+<div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">poids</label>
+  <input type="text" class="form-control"  placeholder="poids" name="poids_s" value=<?php  echo $aff['poids'];?>>
+
+</div>
+
+<?php } ?>
+
+ <?php } ?>
+
+
+
+   
+      
+
+
+  
+   <div class="mb-3">
+
+
+        
+
+         <center>
+        <button type="submit" class="btn btn-primary " style="text-align: center;" name="modifier_register" >enregistrer</button></center>
+
+      </div> 
+      </form>   
+      <div class="modal-footer">
+ 
+        
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<div class="th" >
+  <span class="th3" > DESTINATION DOUANIERE:</span>
+ <span class="th4" ><?php  
+        echo $row3['des_douane'];
+    ?></span></div>  <br><br> 
+   <div class="th" >     
+ <span class="th3" > NAVIRE:</span>        
+    <span class="th4"><?php echo $row3['navire'];?></span>
+  </div><br><br>
+  <div class="th">
+    <span class="th3" > PRODUIT:</span><span class="th4"> <?php  echo $row3['produit'];?> <span class="thmedium" > <?php  echo $row3['qualite'];?></span> <?php if($row3['poids_kg']!=0){ echo $row3['poids_kg'];?>KGS <?php } ?></span> 
+  </div><br><br>
+ <div class="th">
+    <span class="th3 " > CLIENT:</span>        
+        <span class="th4" ><?php  
+        echo $row3['client'];
+    ?></span>
+    </div> <br><br>
+    <div class="th">
+   <span class="th3 " > DESTINATION:</span>        
+        <span class="th4" ><?php  
+        echo $row3['mangasin'];
+    ?></span>
+  </div><br><br>
+  <div class="th">
+      <span class="th3 " > POIDS:</span>        
+        <span class="th4" ><?php  
+        echo number_format($row3['poids_t'], 3,',',' ');
+    ?></span>
+
+  </div>
+  </div>
+   <?php } ?>
+<br>
+
+<div class="table-responsive" border=1>
+
+
+
+
+//nav3.css
+
+
+*{
+  padding: 0;
+  margin: 0;
+}
+
+nav{
+  position: fixed;
+  background-color: rgb(0, 0, 0);
+  height: 150px;
+  width: 100%;
+  z-index: 1;
+}
+ .logo{
+  width: 150px;
+  height: 130px;
+  
+  line-height: 150px;
+  padding: 0 10px;
+  
+  
+}
+span.titreNav{
+  font-size: 20px;
+line-height: 150px; 
+font-weight: bold;
+
+font-family: montserrat;
+display: none;
+
+}
+span.lettreNav{
+  font-size: 20px;
+line-height: 150px; 
+font-weight: bold;
+
+font-family: montserrat;
+color: rgb(50, 159, 218);
+
+}
+nav a{
+  color: white;
+  font-size: 18px;
+  font-family: montserrat;
+  border: 1px solid transparent;
+  padding: 7px 10px;
+  border-radius: 3px;
+  text-decoration: none;
+  
+}
+nav ul{
+  float: right;
+  margin-right: 40px;
+  color: white;
+  list-style: none;
+}
+nav li{
+  
+  line-height: 150px;
+  margin: 0 8px;
+  display: inline-block;
+
+}
+
+a.active,a:hover{
+  border: 1px solid white;
+  transition: .5s;
+  text-decoration: none;
+}
+
+label #icon{
+  
+    display: none;
+    
+  }
+  .iconbtn{
+    display: none;
+  }
+
+
+@media (max-width: 992px){
+.iconbtn{
+    display: inline-block;
+    margin-right: 10px;
+margin-left:  600px;
+  
+  }
+
+  label #icon{
+    color: white;
+  width: 50px;
+  height: 70px;
+  line-height: 150px;
+  float: right;
+  margin-right: 10px;
+
+  cursor: pointer;
+    display: inline-block;
+    
+  }
+  
+  nav ul{
+    position: fixed;
+    width: 70%;
+    height: 90vh;
+
+    
+    background: rgb(50, 159, 218);
+    top: 150px;
+    left: -100%;
+    text-align: center;
+    transition: all .9s;
+    z-index: 1;
+  }
+  nav li{
+    z-index: 1;
+    
+    display: block;
+    margin: 50px 0;
+    line-height: 30px;
+
+  }
+  nav a{
+    font-size: 50px;
+  }
+  a.active,a:hover{
+  border: none;
+  color: yellow;
+  text-decoration: none;
+  transition: .5s;
+}
+
+nav ul.show{
+  left: 0;
+  z-index: 1;
+}
+.logo{
+  display: none;
+}
+
+span.titreNav{
+  font-size: 50px;
+line-height: 150px; 
+font-weight: bold;
+font-family: montserrat;
+display: inline-block;
+
+}
+span.lettreNav{
+  font-size: 50px;
+line-height: 150px; 
+font-weight: bold;
+font-family: montserrat;
+color: rgb(50, 159, 218);;
+
+}
+
+  
+}
+
+
+
+/*nav ul{
+    position: fixed;
+    width: 50%;
+    height: 100vh;
+    
+    background: rgb(50, 159, 218);
+    top: 150px;
+    left: -100%;
+    text-align: center;
+    transition: all .9s;
+    z-index: 1;
+  }
+
+
+
+  //header3
+
+  <div > <img class="logo" src="images/mylogo.ico"></div>
+<nav style="background: #1B2B65; border: solid; border-color: white; border-width: 4px; z-index: 1;">
+  <img class="logo" src="images/mylogo.ico">
+  <span class="titreNav text-white"  ><span  class="lettreNav" style="font-weight:bold; color: white;">SIMAR</span></span>
+  <ul>
+    <li><a class="active" href="index.php" style="font-weight:bold">ACCUEIL</a></li>
+    <li><a href="reception.php" style="font-weight:bold">RECEPTIONS</a></li>
+    <li><a href="services.php" style="font-weight:bold">LIVRAISONS </a></li> 
+    <li><a href="services.php" style="font-weight:bold">PAIEMENT </a></li>
+    <li><a href="log.php" style="font-weight:bold">EMPLOYES </a></li>
+    <?php 
+if (isset($_SESSION['id'])) {
+
+     ?>
+    <li><a href="logout.php">Deconnexion </a></li>
+    <?php 
+}
+     ?>
+
+   
+  </ul>
+  <label id="icon">
+  <img class="iconbtn" src="images/menu.png">
+  </label>
+</nav>
+
+
+//INDEX
+
+<?php 
+require('database.php');
+;
+require('connexion.php');
+//require('ajoutNavire.php');
+/*
+require('ajoutProduitReception.php');
+?>
+
+<?php
+if (isset($_POST['ajoutNavire'])) {
+    if(!empty($_POST['navire']) and !empty($_POST['produit']) and !empty($_POST['poids'])){  
+      $navire=$_POST['navire'];
+      $produit=$_POST['produit'];
+      $poids=$_POST['poids'];
+$a=0;
+$b='null';
+$date=date('y-m-d');
+
+
+
+
+
+   
+try{
+   
+$insertNavire = $bdd->prepare("INSERT INTO navire(nom_navire,id_user) VALUES(?,?)");
+$insertNavire->bindParam(1,$navire);
+$insertNavire->bindParam(2,$_SESSION['id']);
+$insertNavire->execute();
+
+
+$selectNavire= $bdd->prepare("select * from navire where id=(select max(id) from navire)");
+$selectNavire->execute();
+$fetch=$selectNavire->fetch();
+
+
+if($fetch){
+   $insertProduit= $bdd->prepare("INSERT INTO produit(nom_produit,poids_net,id_navire,id_user) VALUES(?,?,?,?)");
+   $insertProduit->bindParam(1,$produit);
+    $insertProduit->bindParam(2,$poids);
+$insertProduit->bindParam(3,$fetch['id']);
+$insertProduit->bindParam(4,$fetch['id_user']);
+
+
+$insertProduit->execute();
+
+}
+
+$selectProd= $bdd->prepare("select * from produit where id=(select max(id) from produit)");
+$selectProd->execute();
+$fetch2=$selectProd->fetch();
+if($fetch2){
+   
+   $insertRecep= $bdd->prepare("INSERT INTO reception(dates,chauffeur,bl,nbre_sac,poids,cumul_jour,poids_jour,cumul_general,poids_general,id_navire,id_produit,id_user) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+   $insertRecep->bindParam(1,$date);
+    $insertRecep->bindParam(2,$b);
+$insertRecep->bindParam(3,$b);
+$insertRecep->bindParam(4,$a);
+$insertRecep->bindParam(5,$a);
+$insertRecep->bindParam(6,$a);
+$insertRecep->bindParam(7,$a);
+$insertRecep->bindParam(8,$a);
+$insertRecep->bindParam(9,$a);
+
+
+
+$insertRecep->bindParam(10,$fetch2['id_navire']);
+$insertRecep->bindParam(11,$fetch2['id']);
+$insertRecep->bindParam(12,$fetch2['id_user']);
+
+
+$insertRecep->execute();
+echo "insertion reussi";
+
+   
+}
+ 
+}
+
+
+catch (Exception $e) {
+   
+}
+}
+else{
+echo "veuillez remplir les champs";
+}
+}*/
+
+?>                               
+ 
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+<!DOCTYPE html>
+
+  
+
+<html>
+<head>
+
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+ <link rel="stylesheet" type="text/css" href="index.css"> 
+ <link rel="stylesheet" type="text/css" href="index2.css"> 
+ <link rel="stylesheet" type="text/css" href="connexion.css"> 
+  <link rel="stylesheet" type="text/css" href="nav3.css"> 
+  <link rel="stylesheet" type="text/css" href="formulaire.css">   
+   
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+
+
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+
+
+
+<link rel="shortcut icon" type="image/png" href="mylogo.ico"/>
+ <meta charset="utf-8">
+  
+ 
+
+
+ 
+  <title></title>
+</head>
+<body>
+
+        <style type="text/css">
+    body{
+        padding: 0;
+        margin: 0;
+    }
+    </style>
+
+   <?php  
+
+include('header3.php');
+   ?> 
+   <br><br><br><br><br>
+      
+
+
+      <br>
+  <div class="container-fluid "  >
+   <div class="row">
+<div class="col-sm-12 col-md-12 col-lg-12">
+   
+   <?php 
+if (empty($_SESSION['id'])) {
+  // code...
+
+    ?>
+
+ <div class="texte_centre" style="background-color:#000000;  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/AjoutNavires.jpeg'); background-position: center; width: 100% ; height: 600px; background-size: cover; color:#ffffff; padding: 1em; text-align: center; z-index: -1;">
+<p id="titree" href="" class="" style="position:absolute; top:25% ; left: 10%; font-size: 80px; color:white;  font-family: montserrat; font-weight: bold; margin-right: 100px; z-index: 0;"  >INNOVATION MANUTENTIONNAIRE</p>
+
+   
+    <a href="" class="btn rounded-pill py-md-3 px-md-5 mx-2" style="position:absolute; top:90% ; left: 35%; font-size: 60px; color:white; background-color: rgba(0, 0, 0, 0.6); font-family: montserrat; font-weight: bold; border: solid; border-width: 3px; border-color: white;" data-bs-toggle="modal" data-bs-target="#connexion" >Se connecter</a></div>
+
+
+    
+    
+   <?php 
+ }
+
+    ?> 
+
+    <div class="col-sm-12 col-md-12 col-lg-12"> 
+    <div class="texte_centrer" >
+        <center>
+    
+    
+</center>
+    
+     </div>             
+
+</div> 
+</div> 
+
+  </div>   
+ 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <center>
+        <h3 class="modal-title fs-10 text-white text-center" id="exampleModalLabel " style="text-align:center; ">Inscrivez vous</h3></center>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="background-color: rgba(50, 159, 218, 0.6);">
+               <center>
+                        <img class="logoo" src="images/mantech.jpeg" style="border-radius: 50px; height: 200px; width: 150px;">
+
+        </center>
+        <form method="POST">
+        <div class="mb-3">
+    
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="prenom" name="prenom" style="height: 60px; font-size: 30px;" >
+  </div>
+  <div class="mb-3">
+    
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="nom" name="nom" style="height: 60px; font-size: 30px;">
+  </div>
+   <div class="mb-3">
+  
+  <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Email" name="email" style="height: 60px; font-size: 30px;">
+   </div>
+   <div class="mb-3">
+      
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="telephone" name="telephone" style="height: 60px; font-size: 30px;">
+</div>
+   <div class="mb-3">
+ <select name="mangasin" style="height: 60px; font-size: 30px;">
+  <option selected>choisir mangasin</option>
+  <option value="1">Hann soleil</option>
+  <option value="2">Pikine</option>
+  <option value="3">Icotaf</option>
+  <option value="4">H10</option>
+ </select>
+</div>
+        <div class="mb-3">
+    
+  <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="mot de passe" name="password" style="height: 60px; font-size: 30px;">
+  </div>
+          <div class="mb-3">
+    
+  <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="retaper mot de passe" name="retapepassword" style="height: 60px; font-size: 30px;">
+  </div>
+         <center>
+        <button type="submit" class="btn btn-primary "  name="valider" style="text-align: center; font-size: 30px; height: 60px;">Valider</button></center>
+</form> 
+      </div>   
+      <div class="modal-footer">
+ 
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="connexion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+            <div class="modal-header bg-primary">
+        <center>
+        <h3 class="modal-title fs-10 text-white text-center" id="exampleModalLabel " style="text-align:center; ">Connectez vous</h3></center>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="background-color: rgba(50, 159, 218, 0.6);">
+               <center>
+            <img class="logoo" src="images/mylogo.ico" style="border-radius: 50px; height: 200px; width: 150px;">
+
+        </center>
+        <form method="POST">
+
+   <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label" style="color: white; font-size: 40px; font-weight: bold;">telephone</label>
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="777777777" name="telephone1" style="height: 60px; font-size: 30px;">
+</div>
+
+        <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label" style="color: white; font-size: 40px; font-weight: bold;">mot de passe</label>
+  <input type="password" class="form-control" id="exampleFormControlInput1" placeholder="mot de passe" name="password1" style="height: 60px; font-size: 30px;">
+  </div>
+
+         <center>
+        <button type="submit" class="btn btn-primary " style="text-align: center; font-size: 30px; height: 60px;" name="connecter">connecter</button></center>
+</form> 
+      </div>   
+      <div class="modal-footer">
+ 
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="navire" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <center>
+        <h3 class="modal-title fs-10 text-white text-center" id="exampleModalLabel " style="text-align:center; ">Connectez vous</h3></center>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="background-color: rgba(50, 159, 218, 0.6);">
+               <center>
+            <img class="logoo" src="images/mantech.jpeg" style="border-radius: 50px; height: 200px; width: 150px;">
+
+        </center>
+        <form method="POST">
+
+   <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">navire</label>
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="navire" name="navire">
+</div>
+
+   <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">produit</label>
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="produit" name="produit">
+</div>
+
+        <div class="mb-3">
+ <select name="poids">
+  <option selected>poids net en kg</option>
+  <option value="25">25</option>
+  <option value="50">50</option>
+
+ </select>
+  </div>
+
+         <center>
+        <button type="submit" class="btn btn-primary " style="text-align: center; font-size: 30px; height: 60px;" name="ajoutNavire">Ajouter</button></center>
+</form> 
+      </div>   
+      <div class="modal-footer">
+ 
+        
+      </div>
+    </div>
+  </div>
+</div>
+                                                                                                                     
+ 
+ <div class="modal fade" id="produitReception" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <center>
+        <h1 class="modal-title fs-5 text-white text-center" id="exampleModalLabel " style="text-align:center; ">Ajout navire</h1></center>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+
+        <div class="mb-3">
+ <select name="navireR"style="height: 60px; font-size: 30px;">
+  <option selected>selectionner navire</option>
+  <?php 
+//while($row=$selectNav->fetch()){
+   ?>
+  <option value=<?php //echo $row['id']; ?>><?php //echo $row['nom_navire']; ?></option>
+  <?php //} ?>
+
+ </select>
+  </div>
+
+   <div class="mb-3">
+      <
+  <input type="text" class="form-control" style="height: 60px; font-size: 30px;" id="exampleFormControlInput1" placeholder="produit" name="produitReception">
+</div>
+
+        <div class="mb-3">
+ <select name="poidsR" style="height: 60px; font-size: 30px;">
+  <option selected>poids net en kg</option>
+  <option value="25">25</option>
+  <option value="50">50</option>
+
+ </select>
+  </div>
+
+
+         <center>
+        <button type="submit" class="btn btn-primary " style="text-align: center; font-size: 30px; height: 60px;" name="ajoutProduitRecep">Ajouter</button></center>
+</form> 
+      </div>   
+      <div class="modal-footer">
+ 
+        
+      </div>
+    </div>
+  </div>
+</div>  
+<br>
+<div class="container-fluid" style="background-color:rgba(0,128,192,0.2);">
+   <div class="row">
+    <div class="col col-sm-12 col-md-12 col-lg-12" >
+
+    <center>
+        <h1 style="color:white; font-size: 50px; font-weight:bold; font-family: montserrat; margin-bottom: 50px;">Choisir une option</h1>
+        </center>
+        </div>
+<br>
+
+
+<!------partie lien---!-->
+<div class="col col-sm-12 col-md-12 col-lg-6" >
+   
+    <center> 
+
+
+     <a  class="btn rounded-pill py-md-3 px-md-5 mx-2" style=" font-size: 30px; color:white; background-color:rgb(0, 0, 47); font-family: montserrat; font-weight: bold; border: solid; border-width: 3px; border-color: white; margin-bottom: 50px; " <?php if (!empty($_SESSION['aut']) and $_SESSION['profil']=='superviseur') {?> href="super/debarquement.php"
+     <?php } ?> >Debarquement</a>
+        </center>
+
+       </div>
+       
+<br>
+
+<div class="col col-sm-12 col-md-12 col-lg-6" >
+   
+    <center>   
+     <a href="" class="btn rounded-pill py-md-3 px-md-5 mx-2" style=" font-size: 30px; color:white; background-color: darkblue; font-family: montserrat; font-weight: bold; border: solid; border-width: 3px; border-color: white; margin-bottom: 50px;" data-bs-toggle="modal" data-bs-target="#navire" >Transfert</a>
+        </center>
+
+       </div>
+              <br>
+
+      <div class="col col-sm-12 col-md-12 col-lg-6" >
+   
+    <center>   
+     <a href="" class="btn rounded-pill py-md-3 px-md-5 mx-2" style=" font-size: 30px; color:white; background-color: rgb(0, 0, 47); font-family: montserrat; font-weight: bold; border: solid; border-width: 3px; border-color: white; margin-bottom: 50px; " data-bs-toggle="modal" data-bs-target="#navire" >Reception</a>
+        </center>
+
+       </div>
+       <br>
+      <div class="col col-sm-12 col-md-12 col-lg-6" >
+   
+    <center>   
+     <a href="" class="btn rounded-pill py-md-3 px-md-5 mx-2" style=" font-size: 30px; color:white; background-color: darkblue; font-family: montserrat; font-weight: bold; border: solid; border-width: 3px; border-color: white; margin-bottom: 50px;" data-bs-toggle="modal" data-bs-target="#navire" >Livraison</a>
+        </center>
+
+       </div>
+       <br>
+
+       <div class="col col-sm-12 col-md-12 col-lg-6" >
+   
+    <center>   
+     <a href="" class="btn rounded-pill py-md-3 px-md-5 mx-2" style=" font-size: 30px; color:white; background-color: darkblue; font-family: montserrat; font-weight: bold; border: solid; border-width: 3px; border-color: white; margin-bottom: 50px;" data-bs-toggle="modal" data-bs-target="#navire" >Archive</a>
+        </center>
+
+       </div>
+       <br>
+
+       <div class="col col-sm-12 col-md-12 col-lg-6" >
+   
+    <center>   
+     <a href="" class="btn rounded-pill py-md-3 px-md-5 mx-2" style=" font-size: 30px; color:white; background-color: darkblue; font-family: montserrat; font-weight: bold; border: solid; border-width: 3px; border-color: white; margin-bottom: 50px;" data-bs-toggle="modal" data-bs-target="#navire" >Parametres</a>
+        </center>
+
+       </div>
+  </div>
+</div>  
+
+<br>
+ <div class="container-fluid py-5">
+        <div class="row px-xl-5">
+            <div class="col">
+                <div class="owl-carousel vendor-carousel">
+                    <div class="bg-light p-4">
+                        <img src="img/simar.jpg" alt="">
+                    </div>
+                    <div class="bg-light p-4">
+                        <img src="img/sgs.jpg" alt="">
+                    </div>
+                    <div class="bg-light p-4">
+                        <img src="img/vendor-3.jpg" alt="">
+                    </div>
+                    <div class="bg-light p-4">
+                        <img src="img/vendor-4.jpg" alt="">
+                    </div>
+                    <div class="bg-light p-4">
+                        <img src="img/vendor-5.jpg" alt="">
+                    </div>
+                    <div class="bg-light p-4">
+                        <img src="img/vendor-6.jpg" alt="">
+                    </div>
+                    <div class="bg-light p-4">
+                        <img src="img/vendor-7.jpg" alt="">
+                    </div>
+                    <div class="bg-light p-4">
+                        <img src="img/vendor-8.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>                  
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#icon').click(function(){
+      $('ul').toggleClass('show');
+    });                
+  });
+</script> 
+
+
+
+        
+  </body>
+  </html>                                                                                                                           
+
+
+
+
+
+
+
+
+
+
+  <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">declaration</label>
+    <select name="declaration"  style="height: 30px;">
+    <option <?php  echo $rown['id_declaration'];?> > <?php  echo $aff['numero_declaration'];?></option>
+    <?php $resdesModif= $bdd->prepare("SELECT trans.*, dis.*   FROM dispatching as dis 
+                inner join transit as trans on dis.id_dis=trans.id_bl
+
+                   WHERE dis.id_dis=? 
+                   ");
+        $resdesModif->bindParam(1,$rown['id_declaration']);
+        $resdesModif->execute();
+
+         while($dec=$resdesModif->fetch()){ ?> 
+    <option value=<?php  echo $dec['id_trans']; ?> ><?php  echo $dec['numero_declaration']; ?></option>  
+   <?php } ?>
+    </select>
+</div>
+
+
+
+   <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">cale</label>
+  <select style="width: 50%; margin-bottom: 20px; height: 30px;" name="cale" >
+    <option value=<?php   echo $rown['cale'];?>><?php  
+        echo $rown['cale'];
+    ?></option>
+
+    <?php
+             $rescaleModif= $bdd->prepare("SELECT  *   FROM dispatching 
+               
+
+                   WHERE id_dis=? 
+                   ");
+        $rescaleModif->bindParam(1,$rown['id_declaration']);
+        $rescaleModif->execute();
+
+     if($rown['type']=="SACHERIE"){ while($res=$rescaleModif->fetch()){ 
+            $rescale2= $bdd->prepare("SELECT cales   FROM declaration_chargement
+               
+
+                   WHERE id_navire=? and id_produit=? and conditionnement=? 
+                  ");
+        $rescale2->bindParam(1,$res['id_navire']);
+        $rescale2->bindParam(2,$res['id_produit']);
+        $rescale2->bindParam(3,$res['poids_kg']);
+        $rescale2->execute(); } 
+    while($rownn=$rescale2->fetch()){ ?>
+      <option value=<?php echo $rownn['cales']; ?>><?php echo $rownn['cales']; ?></option>
+    <?php } }?>
+     <?php
+           
+          $rescale= $bdd->prepare("SELECT  *   FROM dispatching 
+               
+
+                   WHERE id_dis=? 
+                   ");
+        $rescale->bindParam(1,$rown['id_declaration']);
+        $rescale->execute();
+
+      if($rown['type']=="VRAQUIER"){ while($res=$rescale->fetch()){ 
+            $rescale2= $bdd->prepare("SELECT cales   FROM declaration_chargement
+               
+
+                   WHERE id_navire=? and id_produit=? 
+                  ");
+        $rescale2->bindParam(1,$res['id_navire']);
+        $rescale2->bindParam(2,$res['id_produit']);
+       
+        $rescale2->execute(); } 
+    while($rownn=$rescale2->fetch()){ ?>
+      <option value=<?php echo $rownn['cales']; ?>><?php echo $rownn['cales']; ?></option>
+    <?php } }?>
+  </select>
+
+</div>
+<div style="background: blue">
+   <div class="mb-3">
+  <center>
+    <h3 style="background: white; color: blue;">TRANSPORT</h3>
+    <label for="exampleFormControlInput1" class="form-label">camions</label>
+   <select id="cam3" style="width: 50%; margin-bottom: 20px; margin-right: 5px;" name="camions" onchange="camion3()">
+    <?php $findcam=$bdd->prepare("select * from chauffeur where id_chauffeur=?");
+    $findcam->bindParam(1,$rown['camions']);
+    $findcam->execute();
+
+    while($cams=$findcam->fetch()) {
+     ?>
+
+    <option value=<?php echo $cams['id_chauffeur'] ?>><?php echo $cams['num_camions'] ?></option>
+  <?php } ?>
+    <?php while($cam=$camionsModif->fetch()) {?>
+    <option value=<?php echo $cam['id_chauffeur'] ?>><?php echo $cam['num_camions']; ?></option>
+    <?php } ?>
+  </select>
+ 
+
+<br>
+  <label for="exampleFormControlInput1" class="form-label">chauffeur</label>
+   <select  id="chauf3" name="chauffeur" style="width: 50%; margin-bottom: 20px; margin-right: 5px;"  onchange="chauffe3()">
+    <?php $findcams=$bdd->prepare("select * from chauffeur where id_chauffeur=?");
+    $findcams->bindParam(1,$aff['chauffeur']);
+    $findcams->execute();
+
+    while($chaufs=$findcams->fetch()) {
+     ?>
+   <option value=<?php echo $chaufs['id_chauffeur'].",".$chaufs['id_transporteur']; ?>><?php echo $chaufs['nom_chauffeur'] ?></option>
+ <?php } ?>
+ </select>
+  </center>
+ <div id="info_chauffeur3" style="color: white;">
+  
+
+</div>
+ </div>
+
+</div>
+
+<div class="mb-3">
+
+    <input type="text" name="numero_bl" placeholder="numero bl" id="numero_bl"  id="exampleFormControlInput1" style=" margin-bottom: 20px;margin-top: 20px;" value=<?php  echo $rown['bl'];?>>
+   
+
+
+
+</div>
+   <div class="mb-3">
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" name="client"   hidden="true"  value=<?php  
+        echo $rown['id_client'];
+    ?> >
+     <input type="text" class="form-control"  placeholder="" name="destination" hidden="true" value=<?php  
+        echo $rown['id_destinationS'];
+    ?> >
+
+</div>
+
+<?php if($rown['des_douane']=="LIVRAISON"){ ?>
+
+
+ <div class="mb-3">
+ 
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="destinataire" name="destinataire" value=<?php  echo $aff['destinataire'];?> >
+</div>
+<?php 
+}
+ if($rown['des_douane']=="TRANSFERT"){   ?>
+  <div class="mb-3">
+ 
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="destinataire" name="destinataire" value="AUCUN" hidden="true" >
+</div>
+
+
+<?php  
+
+} ?>
+
+  
+<?php if($rown['type']=="SACHERIE" and $rown['poids_kg']!=0){ ?>
+  <div class="mb-3">
+      <label for="exampleFormControlInput1"  class="form-label">nombre sac</label>
+  <input type="text"  class="form-control"  name="sac" id="sac" id="exampleFormControlInput1" value=<?php  echo $aff['sac'];?>>
+  </div>
+  <div class="mb-3" hidden="true">
+      <label for="exampleFormControlInput1" id="exampleFormControlInput1" class="form-label">poids</label>
+  <input type="text" class="form-control"  placeholder="poids" name="poids_s"  value="0" hidden="true" value=<?php  echo $aff['poids'];?>>
+</div> 
+
+<?php } ?>
+
+<?php  if($rown['type']=="VRAQUIER" and $rown['poids_kg']==0){ ?>
+<div class="mb-3" hidden="true" >
+      <label for="exampleFormControlInput1" class="form-label">nombre_sac</label>
+  <input type="text" class="form-control"  placeholder="0" value="0" name="sac" id="sac" hidden="true" value=<?php  echo $aff['sac'];?>>
+</div>
+<div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">poids</label>
+  <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="poids" name="poids_s" value=<?php  echo $aff['poids'];?> >
+
+</div>
+
+<?php } ?>
+<?php  if($rown['type']=="VRAQUIER" and $rown['poids_kg']!=0){ ?>
+<div class="mb-3" >
+      <label for="exampleFormControlInput1" class="form-label">nombre_sac</label>
+  <input type="text" class="form-control"   name="sac" value=<?php  echo $aff['sac'];?> >
+</div>
+<div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">poids</label>
+  <input type="text" class="form-control"  placeholder="poids" name="poids_s" value=<?php  echo $aff['poids'];?>>
+
+</div>
+
+<?php } ?>
+
+
+<?php 
+require('database.php');
+;
+require('connexion.php');
+//require('ajoutNavire.php');
+/*
+require('ajoutProduitReception.php');
+?>
+
+<?php
+if (isset($_POST['ajoutNavire'])) {
+    if(!empty($_POST['navire']) and !empty($_POST['produit']) and !empty($_POST['poids'])){  
+      $navire=$_POST['navire'];
+      $produit=$_POST['produit'];
+      $poids=$_POST['poids'];
+$a=0;
+$b='null';
+$date=date('y-m-d');
+
+
+
+
+
+   
+try{
+   
+$insertNavire = $bdd->prepare("INSERT INTO navire(nom_navire,id_user) VALUES(?,?)");
+$insertNavire->bindParam(1,$navire);
+$insertNavire->bindParam(2,$_SESSION['id']);
+$insertNavire->execute();
+
+
+$selectNavire= $bdd->prepare("select * from navire where id=(select max(id) from navire)");
+$selectNavire->execute();
+$fetch=$selectNavire->fetch();
+
+
+if($fetch){
+   $insertProduit= $bdd->prepare("INSERT INTO produit(nom_produit,poids_net,id_navire,id_user) VALUES(?,?,?,?)");
+   $insertProduit->bindParam(1,$produit);
+    $insertProduit->bindParam(2,$poids);
+$insertProduit->bindParam(3,$fetch['id']);
+$insertProduit->bindParam(4,$fetch['id_user']);
+
+
+$insertProduit->execute();
+
+}
+
+$selectProd= $bdd->prepare("select * from produit where id=(select max(id) from produit)");
+$selectProd->execute();
+$fetch2=$selectProd->fetch();
+if($fetch2){
+   
+   $insertRecep= $bdd->prepare("INSERT INTO reception(dates,chauffeur,bl,nbre_sac,poids,cumul_jour,poids_jour,cumul_general,poids_general,id_navire,id_produit,id_user) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+   $insertRecep->bindParam(1,$date);
+    $insertRecep->bindParam(2,$b);
+$insertRecep->bindParam(3,$b);
+$insertRecep->bindParam(4,$a);
+$insertRecep->bindParam(5,$a);
+$insertRecep->bindParam(6,$a);
+$insertRecep->bindParam(7,$a);
+$insertRecep->bindParam(8,$a);
+$insertRecep->bindParam(9,$a);
+
+
+
+$insertRecep->bindParam(10,$fetch2['id_navire']);
+$insertRecep->bindParam(11,$fetch2['id']);
+$insertRecep->bindParam(12,$fetch2['id_user']);
+
+
+$insertRecep->execute();
+echo "insertion reussi";
+
+   
+}
+ 
+}
+
+
+catch (Exception $e) {
+   
+}
+}
+else{
+echo "veuillez remplir les champs";
+}
+}*/
+if($_SESSION['profil']!="superviseur" OR empty($_SESSION['profil'])){
+  header('location:index.php');
+}
+?>                               
+ 
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+<!DOCTYPE html>
+
+  
+
+<html>
+<head>
+
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+ <link rel="stylesheet" type="text/css" href="index.css"> 
+ <link rel="stylesheet" type="text/css" href="index2.css"> 
+ <link rel="stylesheet" type="text/css" href="connexion.css"> 
+  <link rel="stylesheet" type="text/css" href="nav3.css"> 
+  <link rel="stylesheet" type="text/css" href="formulaire.css">   
+   
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+
+
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+
+
+
+<link rel="shortcut icon" type="image/png" href="mylogo.ico"/>
+ <meta charset="utf-8">
+  
+ 
+
+
+ 
+  <title></title>
+</head>
+<body>
+
+        <style type="text/css">
+    body{
+        padding: 0;
+        margin: 0;
+    }
+    *{
+      font-family: Times New Roman
+    }
+    .card{
+      border:solid;
+     border-color: rgb(0,141,202);
+     border-width: 5px;
+     border-radius: 50%;
+     margin-bottom: 20px;
+     width: 50%;
+     /*height: 220px;*/
+    /*  border-bottom-left-radius: 40%;
+  border-bottom-right-radius: 40%;*/
+    }
+        .card-title{
+      border:solid;
+      background: linear-gradient(to top, blue, #1B2B65); 
+     border-color: rgb(0,141,202);
+     border-width: 5px;
+
+   border-top-left-radius: 100%;  
+  border-top-right-radius: 100%;
+    border-bottom-left-radius: 100%;  
+  border-bottom-right-radius: 100%;
+    }
+    .image{
+      width: 200px;
+      height: 100px;
+    }
+    </style>
+
+   <?php  
+
+include('header3.php');
+   ?> 
+   <br><br><br><br><br>
+      
+
+
+      
+  <div class="container-fluid "  >
+   <div class="row">
+
+
+      
+<br>
+
+<center>
+<div style=" " class="col col-sm-12 col-md-12 col-lg-6" >
+   <center>
+    <div class="card" style="width: 500px;" >
+      <div class="card-header" >
+        <center>
+         <h5 class="card-title text-white" style="font-weight: bold;" >GESTION DES DONNEES</h5>
+         </center>
+         </div>
+
+  <div class="card-body" >
+   
+    <center>
+    <a  class="" href="super/debarquement.php">
+      <img src="images/logonavire.avif" style="width: 300px; height: 150px; ">
+    </a>
+    </center>
+  </div>
+</div>
+
+<br>
+</div>
+</center>
+
+
+
+<div style=" " class="col col-sm-12 col-md-12 col-lg-6" >
+   <center>
+    <div class="card" style="margin-left: 200px;">
+      <div class="card-header" >
+        <center>
+         <h5 class="card-title text-white" style="font-weight: bold;" >DEBARQUEMENT</h5>
+         </center>
+         </div>
+
+  <div class="card-body" >
+   
+    <center>
+    <a  class="" href="super/debarquement.php">
+      <img class="image" src="images/logonavire.avif" >
+    </a>
+    </center>
+  </div>
+</div>
+
+<br>
+</div>
+
+
+<div class="col col-sm-12 col-md-12 col-lg-6" >
+   
+    <div class="card" >
+      <div class="card-header" >
+        <center>
+         <h5 class="card-title text-white" style="font-weight: bold;" >LIVRAISON</h5>
+         </center>
+         </div>
+  <div class="card-body" >
+   
+    <center>
+    <a  class="">
+     <img class="image" src="images/logolivraison.avif" > 
+    </a>
+    </center>
+  </div>
+</div>
+<br>
+</div>
+ 
+
+<div class="col col-sm-12 col-md-12 col-lg-6" >
+   
+    <div class="card" style="margin-left: 200px;">
+      <div class="card-header" >
+        <center>
+         <h5 class="card-title text-white" style="font-weight: bold;" >RECEPTION</h5>
+         </center>
+         </div>
+  <div class="card-body" >
+   
+    <center>
+    <a  class="">
+      <img class="image" src="images/logoreception.jpg" > 
+    </a>
+    </center>
+  </div>
+</div>
+</div>
+
+</center>
+
+<div class="col col-sm-12 col-md-12 col-lg-6" >
+   
+    <div class="card"  >
+      <div class="card-header">
+        <center>
+         <h5 class="card-title text-white" style="font-weight: bold;" >GESTION DE STOCK</h5>
+         </center>
+         </div>
+  <div class="card-body" >
+   
+    <center>
+    <a  class="">
+      <img class="image" src="images/logoparametre2.png" > 
+    </a>
+    </center>
+  </div>
+</div>
+</div>
+
+<center>
+<div class="col col-sm-12 col-md-12 col-lg-6" >
+   
+    <div class="card" style="width: 50%;" >
+      <div class="card-header">
+        <center>
+         <h5 class="card-title text-white" style="font-weight: bold;" >PARAMETRES</h5>
+         </center>
+         </div>
+  <div class="card-body" >
+   
+    <center>
+    <a  class="">
+      <img class="image" src="images/logoparametre2.png" > 
+    </a>
+    </center>
+  </div>
+</div>
+</div>
+</center>
+              <br>
+
+     
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#icon').click(function(){
+      $('ul').toggleClass('show');
+    });                
+  });
+</script> 
+
+
+
+        
+  </body>
+  </html>                                                                                                <i class="fa fa-trash  " ></i>                           
+
+
+  <div style="background: blue">
+   <div class="mb-3">
+  <center>
+    <h3 style="background: white; color: blue;">TRANSPORT</h3>
+    <label for="searchInput">CAMIONS:</label> <br> 
+<input type="text" id="myInput" onkeyup="filterOptions()" placeholder="SAISIR LE N° DE CAMION" style="width: 100%;">
+   <select id="came" style="width: 100%; margin-bottom: 20px; margin-right: 5px;" name="camions" >
+    <option selected> SELECTIONNER LE N° DE CAMIONS</option>
+    <?php while($cam=$camions->fetch()) {?>
+    <option value=<?php echo $cam['id_camions'].'-'.$cam['id_trans'] ?>><?php echo $cam['num_camions']; ?></option>
+    <?php } ?>
+  </select>
+ 
+
+
+  <label for="searchInput">CHAUFFEURS:</label> <br> 
+<input type="text" id="myInput2" onkeyup="filterChauffeurs()" placeholder="NOM DU CHAUFFEUR" style="width: 100%;">
+   <select  id="chauf" name="chauffeur" style="width: 100%; margin-bottom: 20px; margin-right: 5px;" onchange="chauffe()">
+  <?php $chauffeur=$bdd->query('select id_chauffeur, nom_chauffeur from chauffeur'); ?>
+   <option selected>chauffeur</option>
+   <?php while($chauf=$chauffeur->fetch()){ ?>
+     <option value="<?php echo $chauf['id_chauffeur'] ?>"><?php echo $chauf['nom_chauffeur']; ?></option>      
+  <?php  } ?> 
+
+ </select>
+  </center>
+ <div id="info_chauffeur" style="color: white; " >
+  
+  <label id="perm">permis</label>
+    <input  id="permis" name="permis"   disabled="true"  > <br> 
+   
+ <label style="color: white;">telephone</label>
+ <input id="tel" name="tel"  disabled="true" > <br> 
+   
+ <label style="color: white;">transporteur</label>
+ <input id="trans" name="transport"  disabled="true" > <br>
+
+</div>
+ </div>
+
+</div>
+
+
+
+
+<script type="text/javascript">
+function filterChauffeurs() {
+  var input = document.getElementById("myInput2");
+  var select = document.getElementById("chauf");
+  var filter = input.value.toLowerCase();
+
+
+  
+
+  // Parcourir toutes les options du select à partir de l'index 1 (excluant l'option "Sélectionnez un camion")
+  for (var i = 1; i < select.options.length; i++) {
+    
+    var option = select.options[i];
+
+
+    var text = option.textContent.toLowerCase();
+
+    // Vérifier si le texte de l'option contient le filtre saisi
+    if (text.indexOf(filter) > -1) {
+      option.style.display = ""; // Afficher l'option
+     
+    } else {
+      option.style.display = "none"; // Masquer l'option
+    }
+  }
+
+
+  // Sélectionner automatiquement la première option correspondante
+  select.selectedIndex = 0; // Réinitialiser la sélection
+
+  for (var i = 1; i < select.options.length; i++) {
+    var option = select.options[i];
+    if (option.style.display !== "none") {
+      select.selectedIndex = i; // Sélectionner l'option correspondante
+      break;
+    }
+  }
+
+}
+
+
+
+</script>

@@ -1,0 +1,10 @@
+@media print{
+	.hide-on-print , .footer{
+		display: none;
+	}
+	.reg{
+    
+    bottom: 0;
+
+  }
+}

@@ -1,0 +1,114 @@
+.btnGestionDeStock {
+    margin-right: 30px;
+    font-weight: bold;
+}
+
+.btnGestionDeStockEntrepot {
+    font-weight: bold;
+}
+
+.btnGestionDeStock a {
+    text-align: center;
+}
+
+#divEntrepotStock, #divNavireStock, #divClientStock, 
+#divBanqueStock, #divRelacheStock, #divTransitStock {
+    display: none;
+    margin-top: 20px;
+}
+
+#entrepotTrouve, #navireTrouve, #clientTrouve, 
+#banqueTrouve, #relacheTrouve, #transitTrouve {
+    background-color:#081A51;
+    color: white;
+}
+
+#entrepotTrouve a, #navireTrouve a, #clientTrouve a, 
+#banqueTrouve a,  #relacheTrouve a, #transitTrouve a {
+    color: white;
+}
+
+#choixEntrepot, #choixNavire, #choixClient,
+#choixBanque, #choixRelache, #choixTransit {
+    font-weight: bold;
+    color: #081A51;
+    margin-left: 30px;
+}
+
+#entrepotSelection, #navireSelection, #banqueSelection {
+    margin-left: 45%;
+    margin-top: 12px;
+}
+
+#clientSelection, #relacheSelection, #transitSelection {
+    margin-left: 50%;
+    margin-top: 12px;
+}
+
+.formStock {
+   margin-left: 20%;
+}
+
+.titreStock {
+    text-align: center;
+    text-decoration: underline;
+    color: white;
+    font-weight: bold;
+    background-color:#081A51;
+}
+
+.titreStockGlobal {
+    font-weight: bold;
+    text-align: center;
+    text-decoration: underline;
+}
+
+#liGestionStock {
+    display: none;
+}
+
+.trGestionStock {
+    background-color: rgb(0,141,202);
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.rowGestionStock {
+    font-weight: bold;
+    vertical-align : middle;
+    text-align:center;
+}
+.tr_data_gestion_stock{
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px !important;
+}
+.tr_data_gestion_stock td, .trGestionStock td {
+    border-width: 2px;
+    border-color: black;
+    font-weight: bold;
+}
+
+.trGestionStockTotal {
+    background-color: #081A51;
+}
+
+.trGestionStockTotalx {
+    background-color: orange;
+}
+
+.trGestionStockTotalx td {
+    color: black !important;
+    text-align: center !important;
+    font-weight: bold !important;
+    vertical-align: middle !important;
+}
+
+.trGestionStockTotal td {
+    color: white !important;
+    text-align: center !important;
+    font-weight: bold !important;
+    vertical-align: middle !important;
+}

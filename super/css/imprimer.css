@@ -1,0 +1,60 @@
+#data{
+background: red;
+}
+#table_bl{
+  float: left;
+width: 100% !important;
+     page-break-before: always; 
+  
+}
+@media print{
+
+
+.no-print, #no-print{
+  display:none;
+
+}
+
+
+ .entete_by_prod:not(:first-of-type) {
+    display: none;
+  }
+  
+  #soustotal{
+     background: blue;
+     color: white;
+     vertical-align: middle;
+     font-size: 14px; 
+     text-align: center;
+  }
+}   
+
+  .colcel{
+
+    vertical-align: middle;
+    text-align: center;
+  }
+  
+  #total{
+    background-color:#1B2B65;  color:white ; border: none; font-size: 16px; font-weight: bold; vertical-align: middle;
+    text-align: center;
+  }
+  .hdeclaration{
+  background-color: background: linear-gradient(to bottom, blue, #1B2B65);
+   background: linear-gradient(to left, blue, #1B2B65);
+    background: linear-gradient(to top, blue, #1B2B65);
+  border: solid;
+  
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  font-weight: bold;
+}
+
+.content-start{
+  width: 100% !important;
+}
+.head_tr{
+  background: black;
+   color: white;
+  text-align: center;
+}

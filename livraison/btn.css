@@ -1,0 +1,43 @@
+#btnSain{
+	font-size: 18px !important!;
+	color: white !important!;
+	background: red !important!;
+	text-align: center !important!;
+	width: 100%;
+}
+#btnAvariesRep{
+   width: 100%;	
+}
+#RecapStockDep{
+	background: blue;
+	color: white;
+	text-align: center;
+	vertical-align: middle;
+}
+#EnteteRecapStockDep{
+	background: black;
+	color: white;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 12px;
+}
+.entete_relache{
+	background: rgb(65,180,190);
+	 color: black;
+	 border-color:rgb(27,106,126); 
+	   font-size: 12px; 
+	   vertical-align: middle;
+	   border: none;
+	   border-right: none;
+}
+#entete_table_relache{
+		background: rgb(65,180,190);
+	color: white;
+	font-size: 12px;
+	text-align: center;
+	 vertical-align: middle;
+}
+.selectform{
+	width: 40%;
+	height: 25px;
+}

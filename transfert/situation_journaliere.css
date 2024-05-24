@@ -1,0 +1,226 @@
+ body{
+    font-family:Times New Roman;
+    font-weight: bold;
+  }
+      .hidden {
+    display: none;
+}
+
+    .enteteTable{
+     background: linear-gradient(to bottom, blue, #1B2B65); background: linear-gradient(to left, blue, #1B2B65); background: linear-gradient(to top, blue, #1B2B65); color: white; text-align: center; font-weight: bold;
+     vertical-align: middle; 
+      border: 5px;
+      border-color: black;
+
+    }
+         #table{
+          border: 5px; 
+     }
+    .colLibeles{
+      background: rgba(47,192,255,0.9);
+       color: white;
+      vertical-align: middle;
+      text-align: center;
+
+    } 
+        .colManifeste{
+      background: rgba(0,148,210,0.9);
+       color: white;
+      vertical-align: middle;
+      text-align: center;
+
+    }
+    #colManifeste{
+      background: rgb(72,94,179); color:white;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #colDeb24H{
+      background-color: rgb(124, 158, 191); color:white;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #colDebTOTAL{
+      background-color: rgb(34, 155, 176); color:white;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #colROB{
+      background-color: rgb(28, 118, 51); color:white;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #sousTOTAL{
+       background-color:rgb(94,44,101);  color:white;
+       font-weight: bold;
+       text-align: center;
+       vertical-align: middle;
+
+    }
+    #TOTAL{
+      background: black;
+      color: red;
+      font-weight: bold;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #colFlasque{
+      background-color: rgb(193, 150, 0); color:white;
+      vertical-align: middle;
+       text-align: center; 
+    }
+
+    #colMouille{
+      background-color: rgb(158, 106, 35); color:white;
+      vertical-align: middle;
+       text-align: center; 
+    }
+    #colCumulGen{
+    background-color: rgb(200, 106, 90); color:white;
+      vertical-align: middle;
+      text-align: center;  
+    }
+@media print {
+  .no_print {
+    display: none;
+
+  }
+       #deb_by_client {
+    page-break-before: always;
+  }
+  #deb_by_destination {
+    page-break-before: always;
+  }
+
+  #deb_by_cale {
+    page-break-before: always;
+    width: 100%; 
+
+  }
+  #deb_by_produit {
+    page-break-before: always;
+  }
+  #deb_by_avaries_cale {
+    page-break-before: always;
+  }
+  .LesOperations{
+    display: none;
+  }
+    
+
+
+   body{
+    font-family:Times New Roman;
+    font-weight: bold;
+  }
+      .hidden {
+    display: none;
+}
+
+    .enteteTable{
+     background: linear-gradient(to bottom, blue, #1B2B65); background: linear-gradient(to left, blue, #1B2B65); background: linear-gradient(to top, blue, #1B2B65); color: white; text-align: center; font-weight: bold;
+     vertical-align: middle; 
+      border: 5px;
+      border-color: black;
+
+    }
+         #table{
+          border: 5px; 
+     }
+    #colLibeles{
+      background: rgba(83,104,253,0.9); color: white;
+      vertical-align: middle;
+      text-align: center;
+
+    } 
+    #colManifeste{
+      background: rgb(72,94,179); color:white;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #colDeb24H{
+      background-color: rgb(124, 158, 191); color:white;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #colDebTOTAL{
+      background-color: rgb(34, 155, 176); color:white;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #colROB{
+      background-color: rgb(28, 118, 51); color:white;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #sousTOTAL{
+       background-color:rgb(94,44,101);  color:white;
+       font-weight: bold;
+       text-align: center;
+       vertical-align: middle;
+
+    }
+    #TOTAL{
+      background: black;
+      color: red;
+      font-weight: bold;
+      vertical-align: middle;
+       text-align: center;
+    }
+    #colFlasque{
+      background-color: rgb(193, 150, 0); color:white;
+      vertical-align: middle;
+       text-align: center; 
+    }
+
+    #colMouille{
+      background-color: rgb(158, 106, 35); color:white;
+      vertical-align: middle;
+       text-align: center; 
+    }
+    #colCumulGen{
+    background-color: rgb(200, 106, 90); color:white;
+      vertical-align: middle;
+      text-align: center;  
+    }
+    #all_imprime{
+      display: none;
+    }
+  .colDeb24H{
+      background: rgba(4,180,255,0.9) !important;
+       color: white;
+      vertical-align: middle;
+      text-align: center;
+
+    } 
+     .colDebTOTAL{
+      background: rgba(70,200,255,0.9) !important;
+       color: white;
+      vertical-align: middle;
+      text-align: center;
+
+    } 
+         .colROB{
+      background: rgba(138,220,255,0.9) !important;
+       color: white;
+      vertical-align: middle;
+      text-align: center;
+
+    }
+           .sousTOTAL{
+      background: black !important;
+       color: white;
+      vertical-align: middle;
+      text-align: center;
+
+    } 
+
+            .TOTAL{
+      background: rgba(0,22,32,0.9) !important;
+       color: white !important;
+      vertical-align: middle;
+      text-align: center;
+
+    } 
+    
+}

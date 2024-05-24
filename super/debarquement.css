@@ -1,0 +1,54 @@
+.LesOperations{
+  background:rgb(127,127,127);
+  border: solid;
+  border-radius: 40px;
+ color:white;
+}
+ .TitreOperation{
+ 	color:white !important;
+ 	font-size: 18px !important;
+ }
+
+.LesOperationsDEB{
+  
+  border: solid;
+  width: 40%;
+ color:white;
+}
+#btn_pre_debarquement{
+	font-size: 16px !important;
+	
+	color: white;
+	margin-top: 5px;
+	margin-bottom: 5px;
+
+
+}
+#btn_debarquement{
+	font-size: 16px important!;
+	background:white;
+	color: black;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border-radius: 40px;
+
+}
+#btn_voir_deb{
+	font-size: 16px important!;
+	background-color: background: linear-gradient(to bottom, blue, #1B2B65);
+	 background: linear-gradient(to left, blue, #1B2B65);
+	  background: linear-gradient(to top, blue, #1B2B65);
+	color: white;
+	margin-top: 5px;
+
+	border-radius: 40px;
+
+}
+#dropdownMenuButton{
+		font-size: 16px important!;
+	background:rgb(53,53,53);
+	color: white;
+
+	border-radius: 40px;
+
+}

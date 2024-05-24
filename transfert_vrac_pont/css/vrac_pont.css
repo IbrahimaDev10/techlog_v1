@@ -1,0 +1,345 @@
+.lienforme{
+color:white; font-size: 20px; border: solid; background-color: black; margin-bottom: 50px;
+
+}
+
+ *{
+  font-family: Times New Roman;
+ } 
+
+   .fabtn{
+  border: none;
+  
+  color:rgb(0,141,202);
+
+ }
+  .fabtn1{
+  border: none;
+  
+  color:rgb(0,141,202);
+
+ }
+ .btn1{
+ background: linear-gradient(-45deg, #004362, #0183d0) !important;
+ }
+  .modal-header{
+      
+     /* background-image: url("images/simar2.jpg");
+      background-repeat: no-repeat;
+      background-size: 100%;
+      background: #1B2B65;*/
+      background: linear-gradient(-45deg, #004362, #0183d0) !important;
+      
+      border-bottom-left-radius: 35%;
+      border-bottom-right-radius: 35%;
+      border: solid;
+      border-color: rgb(145,145,255);
+      border-width: 8px;
+    }
+    
+  .modal-header{
+      
+     /* background-image: url("images/simar2.jpg");
+      background-repeat: no-repeat;
+      background-size: 100%;
+      background: #1B2B65;*/
+      background: linear-gradient(-45deg, #004362, #0183d0) !important;
+      
+      border-bottom-left-radius: 35%;
+      border-bottom-right-radius: 35%;
+      border: solid;
+      border-color: rgb(145,145,255);
+      border-width: 8px;
+    }
+    .modal-fullscreen{
+    width: 60% !important;
+    max-height: 1200px;
+    display: flex !important;
+    justify-content: center !important;
+     align-items: center;
+    margin-left: auto;
+     margin-right: auto;
+    }
+   
+    
+ .logoo{
+      border-radius: 50px;
+       height: 100px;
+        width: 200px;
+        margin-left: 40%;
+        z-index: 2;
+        text-align: center;
+
+    }
+
+    .logo_register{
+      border-radius: 50px;
+       height: 60px;
+        width: 160px;
+        float: right;
+        z-index: 2;
+        
+    }
+
+    #perreur{
+        color:red;
+        font-weight: bold;
+    }
+    .err{
+        width: 500px;
+       /* height: 300px; */
+        background: white;
+        vertical-align: middle;
+    }
+    #close_erreur{
+        font-size: 30px;
+    }
+
+    #perreur2{
+        color:red;
+        font-weight: bold;
+    }
+    .err2{
+        width: 500px;
+        height: 300px;
+        background: white;
+        vertical-align: middle;
+    }
+    #close_erreur2{
+        font-size: 30px;
+    }
+   
+.mytd{
+      font-size:14px;
+    }
+
+    .hem{
+
+      color:white !important;
+      background: rgb(0,44,62) !important;
+      font-size: 30px !important;
+      }
+      @media (max-width: 800px) {
+  .hem {
+    font-size: 14px !important;
+  }
+
+  .inputtransportform{
+    width: 40% !important
+    height: 25px;
+
+    border-top: none;
+    
+}
+@media(max-width: 1200px) {
+.inputtransporteurs1{
+    font-size:12px;
+     width:40% !important;
+}
+.inputtransporteurs2{
+    font-size:12px;
+     width:40% !important;
+     margin-left: 5px;
+}
+}
+@media(max-width: 1000px) {
+.inputtransporteurs1{
+    font-size:10px;
+     width:35% !important;
+}
+.inputtransporteurs2{
+    font-size:10px;
+     width:35% !important;
+     margin-left: 5px;
+}
+
+@media(max-width: 800px) {
+.inputtransporteurs1{
+    font-size:10px;
+     width:30% !important;
+}
+.inputtransporteurs2{
+    font-size:10px;
+     width:30% !important;
+     margin-left: 5px;
+}
+}
+
+.table-responsive thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #fff; /* Assurez-vous que l'en-tête est toujours visible */
+}
+</style>
+<style type="text/css">
+  #entete_table_sain{
+background: linear-gradient(-45deg, #004362, #0183d0) !important;
+ text-align: center;
+  color: white;
+   font-weight: bold; 
+   font-size: 12px;
+
+}
+#data_table_sain{
+
+ text-align: center;
+ vertical-align: middle;
+   
+   font-size: 12px;
+
+}
+#entete_table_transfert_avaries{
+background: #1B2B65 ;
+ text-align: center;
+  color: white;
+   font-weight: bold; 
+   font-size: 12px;
+
+}
+#data_table_transfert_avaries{
+
+ text-align: center;
+ vertical-align: middle;
+   
+   font-size: 12px;
+
+}
+.titreSAIN{
+  font-weight: bold;
+   width: 100%;
+   background: blue;
+   text-align: center;
+   font-size: 18px;
+   border: solid;
+  border-top-right-radius: 45%;
+  border-bottom-right-radius: 45%;
+   color: white !important;
+}
+.titreTRANSAV{
+  font-weight: bold;
+   width: 100%;
+   background: blue !important;
+   text-align: center;
+   font-size: 18px;
+   border: solid;
+  border-top-right-radius: 45%;
+  border-bottom-right-radius: 45%;
+   color: white !important;
+}
+#btnSain{
+ background: linear-gradient(-45deg, #004362, #0183d0) !important;
+   width: 30%;
+   font-weight: bolder;
+}
+ #btnAvariesRep{
+ background: linear-gradient(-45deg, #004362, #0183d0) !important;
+  
+}
+
+#btnAvariesDeb{
+ background: linear-gradient(-45deg, #004362, #0183d0) !important;
+  
+}
+
+    .ligne{
+      font-size: 14px;
+    }
+    @media (max-width: 900px) {
+  .ligne {
+    font-size: 16px !important;
+  }
+}
+  @media (max-width: 900px) {
+  .colaffiche {
+    font-size: 29px !important;
+  }
+  .ligne{
+      font-size: 20px;
+    }
+} 
+
+
+ .colLibeles{
+      background: rgba(138,220,255,0.9) !important;
+       color: white;
+      vertical-align: middle;
+      text-align: center;
+      white-space: nowrap;
+
+    } 
+     .colManifeste{
+      background: rgba(0,148,210,0.9) !important;
+       color: white;
+      vertical-align: middle;
+      text-align: center;
+      white-space: nowrap;
+
+    } 
+    .colDeb24H{
+      background: rgba(4,180,255,0.9) !important;
+       color: white;
+      vertical-align: middle;
+      text-align: center;
+      white-space: nowrap;
+
+    } 
+     .colDebTOTAL{
+      background: rgba(70,200,255,0.9) !important;
+       color: white;
+      vertical-align: middle;
+      text-align: center;
+      white-space: nowrap;
+
+    } 
+         .colROB{
+      background: rgba(138,220,255,0.9) !important;
+       color: white;
+      vertical-align: middle;
+      text-align: center;
+      white-space: nowrap;
+
+    } 
+
+        .sousTOTAL{
+      background: black !important;
+       color: white;
+      vertical-align: middle;
+      text-align: center;
+      white-space: nowrap;
+
+    } 
+
+            .TOTAL{
+      background: rgba(0,22,32,0.9) !important;
+       color: white !important;
+      vertical-align: middle;
+      text-align: center;
+      white-space: nowrap;
+
+    } 
+    .detail_gauche{
+      color:black;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .detail_droite{
+      color:blue;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+#tableau_sain {
+  position: relative;
+  height: 800px; /* Ajustez la hauteur en fonction de votre besoin */
+  overflow-y: auto;
+}
+
+.headers {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: yellow !important;
+
+}
+
