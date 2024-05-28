@@ -1,10 +1,8 @@
 $(document).ready(function(){
-    $(document).on('click','a[data-role=update_bl_pont]',function(){
+    $(document).on('click','a[data-role=update_poids_pont]',function(){
   //$('#type').css('display', 'block');
  //$('#pont_deb').css('display','none');
 
-         $('#btn_ajouter_pont').css('display','none');
-        $('#btn_modifier_pont').css('display','block');
          var id = $(this).data('id');
         var dates = $('#'+id+'date_pb').text();
          var net_marchand = $('#'+id+'net_marchand_pb').text();
@@ -26,12 +24,28 @@ $(document).ready(function(){
         var destination = $('#'+id+'destination').text();
         var client = $('#'+id+'client').text(); */
       //  var sac = $('#'+id+'sac').text();
-        var bl = $('#'+id+'bl_pb').text();
+      
       //  var date1 = $('#'+id+'dates').text();
-        $('#id_pont').val(id);
-        $('#bl_pont').val(bl);
-        $('#ticket_pont').val(ticket);
-        $('#poids_pont').val(poids_brut);
+      var id=  $('#id_pont').val();
+      var bl=  $('#bl_pont').val();
+      var ticket= $('#ticket_pont').val();
+      var poids_brut=  $('#poids_pont').val();
+      var tare_vehicule=  $('#tare_vehicule').val();
+      var dates=  $('#date_pont').val();
+      var net_marchand=$('#net_marchand').val();
+      var id_pont=$('#id_pont').val();
+      var sac=$('#nbre_sac_pont').val();
+      var tare_sac=$('#val_tare_sac').val();
+
+
+
+      var produits=$('#produit_pont').val();
+      var poids_sac=$('#poids_sac_pont').val();
+      var destination=$('#destination_pont').val();
+      var navire=$('#navire_pont').val();
+      var client=$('#client_pont').val();
+
+
 
 
         //$('#date_pont').val(date1);
@@ -40,14 +54,15 @@ $(document).ready(function(){
 
           $.ajax({
        /* url:'recuperer_statut_avaries', */
-        url:'ajax/element_form_pont_update.php',
+        url:'ajax/crud/update_pont.php',
         method:'post',
         data:{navire:navire,produits:produits,poids_sac:poids_sac,destination:destination,client:client,
-          sac:sac,id:id,bl:bl,dates:dates,ticket:ticket,poids_brut:poids_brut,net_marchand:net_marchand,tare_vehicule:tare_vehicule,
-          id_tare_sac:id_tare_sac,tare_sac:tare_sac
+          id:id,bl:bl,dates:dates,ticket:ticket,poids_brut:poids_brut,net_marchand:net_marchand,tare_vehicule:tare_vehicule,
+          sac:sac,tare_sac:tare_sac
+         
          },
         success: function(response){
-            $('#element_pont').html(response);
+            $('#Table_pont').html(response);
             $('#form_poids_pont').modal('toggle');
      
        

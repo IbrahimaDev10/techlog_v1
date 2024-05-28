@@ -22,7 +22,7 @@ function tare_sac($bdd,$produit,$poids_sac,$navire,$destination,$client){
  
  function  afficher_transfert_deb_vrac($bdd,$produit,$poids_sac,$navire,$destination,$statut,$client){
   
-     $affiche = $bdd->prepare("SELECT p.produit,p.qualite,nav.navire,nav.type,cli.client,mang.mangasin,trp.*,ch.*,d.num_declaration,d.id_declaration, manif.*,manif.id_declaration as la_declaration, dis.*, sum(manif.sac),sum(manif.poids),sum(manif.poids_brut), sum(manif.poids_brut),sum(manif.tare_vehicule), cam.*,nc.num_connaissement,nc.id_connaissement,nc.id_client,nc.id_navire,dch.cales,dch.id_dec,rem.*,det.*,bd.*   FROM transfert_debarquement as manif 
+     $affiche = $bdd->prepare("SELECT p.produit,p.qualite,nav.navire,nav.type,cli.client,mang.mangasin,trp.*,ch.*,d.num_declaration,d.id_declaration, manif.*,manif.id_declaration as la_declaration, dis.*, sum(manif.sac),sum(manif.poids),sum(manif.poids_brut), sum(manif.poids_brut),sum(manif.tare_vehicule), cam.*,nc.num_connaissement,nc.id_connaissement,nc.id_client,nc.id_navire,dch.cales,dch.id_dec,rem.*,det.*,bd.*,pb.ticket_ponts,pb.poids_net, sum(pb.poids_net)  FROM transfert_debarquement as manif 
              inner join declaration as d  on manif.id_declaration=d.id_declaration
                 inner join dispats as dis on dis.id_dis=d.id_bl
                 inner join numero_connaissements as nc on nc.id_connaissement=dis.id_con_dis
@@ -43,9 +43,10 @@ function tare_sac($bdd,$produit,$poids_sac,$navire,$destination,$client){
                 left join remorque as rem on rem.id_remorque=manif.remorque_id
                 left join detail_chargement as det on det.register_manif_id=manif.id_register_manif
                 left join bon_debarquement as bd on bd.id_bon=manif.id_bon_deb
+                left join pont_bascule as pb on pb.id_transfert=manif.id_register_manif
                 
 
-                   WHERE dis.id_produits=? and  dis.poids_kgs=? and nc.id_navire=? and dis.id_mangasin=?  and manif.bl!='ref' and manif.statut=? and nc.id_client=?   group by manif.dates, manif.id_register_manif  with rollup ");
+                   WHERE dis.id_produits=? and  dis.poids_kgs=? and nc.id_navire=? and dis.id_mangasin=?  and manif.bl!='ref' and manif.statut=? and nc.id_client=?   group by manif.dates, manif.id_register_manif   with rollup  ");
         
         
         
@@ -627,8 +628,9 @@ $rotation=$bdd->prepare("SELECT count(bl) from transfert_debarquement where id_p
    <?php if ($aff['poids_sac']!=0) { ?>
     <td class="mytd" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); color: white;"><?php echo number_format($aff['sum(manif.sac)'], 0,',',' ') ?></td>
   <?php } ?>
-    <td class="mytd" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); color: white;"><?php echo number_format($aff['sum(manif.poids)'], 3,',',' '); ?></td>
-     <td class="mytd" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); color: white;"><?php //echo number_format($som_net_marchand, 3,',',' '); ?></td>
+  <td class="mytd" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); color: white;"><?php echo number_format($aff['sum(pb.poids_net)'], 3,',',' '); ?></td>
+    <td class="mytd" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); color: white;"></td>
+     
     <td class="mytd" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); color: white;"></td>
     <?php if($aff['destinataire']!='AUCUN' and $aff['destinataire']!=1){ ?>
       
@@ -690,8 +692,9 @@ $rotation=$bdd->prepare("SELECT count(bl) from transfert_debarquement where id_p
   <?php } ?>
  
    <span style="display: none;" id="<?php echo $aff['id_register_manif'].'poids_rm' ?>" ><?php echo $aff['poids'] ?> </span>
-    <td  ><?php echo $aff['ticket_pont']; ?></td>
-     <td  ><?php echo number_format($net_marchand, 3,',',' '); ?></td>
+     <td  ><?php echo number_format($aff['poids_net'], 3,',',' '); ?></td>
+    <td  ><?php echo $aff['ticket_ponts']; ?></td>
+    
      <span style="display: none;" id="<?php echo $aff['id_register_manif'].'poids_brut_rm' ?>" ><?php echo $aff['poids_brut'] ?></span>
      <span style="display: none;" id="<?php echo $aff['id_register_manif'].'ticket_pont_rm' ?>" ><?php echo $aff['ticket_pont']; ?></span>
      <span style="display: none;" id="<?php echo $aff['id_register_manif'].'tare_vehicule_rm' ?>" ><?php echo $aff['tare_vehicule']; ?></span>

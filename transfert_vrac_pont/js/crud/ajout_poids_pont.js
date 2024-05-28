@@ -11,7 +11,7 @@ $(document).ready(function(){
         var dates= $('#date_pont').val();  
         var sac= $('#nbre_sac_pont').val();  
         var tare_sac= $('#val_tare_sac').val();
-if(ticket!='' && poids_brut!='' && tare_vehicule!='' && id_tare!='' && dates!=''){
+if((ticket!='' && poids_brut!='' && tare_vehicule!='' && id_tare!='' && dates!='' && sac!=0) || (ticket!='' && sac==0)   ){
      $.ajax({
        /* url:'recuperer_statut_avaries', */
         url:'ajax/crud/ajout_poids_pont.php',

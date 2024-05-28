@@ -567,7 +567,7 @@ color:white; font-size: 20px; border: solid; background-color: black; margin-bot
 	</select> <br><br>
 	<div id='sp' style="display: none;"><input name='poids_sc' type="text" id="poids_scon" ></div>
 
-	<div id="poids_sac_vrac" style="display: none;">
+	
 
 <?php $choix_qualite=$bdd->query('SELECT * from produit_deb ');
 	   ?>
@@ -579,6 +579,8 @@ color:white; font-size: 20px; border: solid; background-color: black; margin-bot
 		
 
 	</select><br><br>	
+
+	   <div id="poids_sac_vrac" style="display: none;">
                            	<select name="poids_sac_vrac" id='poids_sac_en_vrac'>
                            		<option value="0">CHOISIR LE POIDS (KG)</option>
                            		<option value="25">25 KG</option>

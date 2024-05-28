@@ -413,7 +413,7 @@ color:white; font-size: 20px; border: solid; background-color: black; margin-bot
 
                             <?php   if($navs['type']=='VRAQUIER'){
                            $p=$bdd->prepare("SELECT c.*, dc.conditionnement from declaration_chargement as dc
-                             inner join categories as c on c.id_categories=dc.categories_id where dc.id_navire=? group by dc.id_produit");
+                             inner join categories as c on c.id_categories=dc.categories_id where dc.id_navire=? group by c.nom_categories");
                             $p->bindParam(1,$idm);
                             $p->execute();
                             while ($a2=$p->fetch()) {

@@ -38,7 +38,13 @@
 
 
          
-            if( (type=='SACHERIE' && des_douane=='TRANSFERT' && statut=='sain' && cale!='' && sac!='' && dates!='' && heure!='' && bl!='' && declaration!='' && val_input2!='' && val_input2c!='') || (type=='SACHERIE' && des_douane=='TRANSFERT' &&  statut=='mouille' && cale!='' && sac!='' && dates!='' && heure!='' && bl!='' && declaration!='' && val_input2!='' && val_input2c!='') || (type=='SACHERIE' && des_douane=='TRANSFERT' &&  statut=='flasque' && cale!='' && sac!='' && poids!='' && dates!='' && heure!='' && bl!='' && declaration!='' && val_input2!='' && val_input2c!='') || (type=='VRAQUIER' && poids_sac!=0 && cale!='' && sac!='' && dates!='' && heure!='' && bl!='' && declaration!='' && val_input2!='' && val_input2c!='') ){
+if( (type=='SACHERIE' && des_douane=='TRANSFERT' && statut=='sain' && cale!='' && sac!='' && dates!='' && heure!='' && bl!='' && declaration!='' 
+    && val_input2!='' && val_input2c!='')
+|| (type=='SACHERIE' && des_douane=='TRANSFERT' &&  statut=='mouille' && cale!='' && sac!='' 
+    && dates!='' && heure!='' && bl!='' && declaration!='' && val_input2!='' && val_input2c!='') 
+|| (type=='SACHERIE' && des_douane=='TRANSFERT' &&  statut=='flasque' && cale!='' && sac!='' && poids!='' && dates!='' && heure!='' && bl!='' && declaration!='' && val_input2!='' && val_input2c!='') 
+|| (type=='VRAQUIER' && poids_sac!=0 && cale!='' && sac!='' && dates!='' && heure!='' && bl!='' && declaration!='' && val_input2!='' && val_input2c!='')
+|| (type=='VRAQUIER' && poids_sac==0 && cale!=''  && dates!='' && heure!='' && bl!='' && declaration!='' && val_input2!='' && val_input2c!='') ){
                 
         $('#enregistrement').modal('toggle');
 

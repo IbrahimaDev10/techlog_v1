@@ -17,6 +17,25 @@
 
       $soustraction=$soustraction_row['nombre_de_lignes'];
 
+      $proprietaire_navire=$bdd->prepare("SELECT proprietaire from navire_deb where id=?");
+      $proprietaire_navire->bindParam(1,$navire);
+      $proprietaire_navire->execute();
+
+      $filtre_rob=$proprietaire_navire->fetch();
+
+      $proprietaire=$filtre_rob['proprietaire'];
+
+      function filtrage_rob($proprietaire){
+        if($proprietaire=='PARTIELLE'){ 
+          return "style='display:none;'";
+
+        }
+        else{ 
+          return "style='display:block;'";
+
+        }
+      }
+
        ?>
        <style type="text/css">
        	.cellule{
@@ -46,22 +65,22 @@
 
       <td id="colLibeles" scope="col"  rowspan="2"  >CALES</td>
       <td id="colLibeles" scope="col"  rowspan="2"  >PRODUIT</td>
-      <td id="colManifeste"  >MANIFESTE</td> 
+      <td id="colManifeste" <?php echo filtrage_rob($proprietaire); ?> >MANIFESTE</td> 
       <td scope="col"  id="colDeb24H" colspan="2" >DEB 24H</td>
       <td scope="col"  id="colDebTOTAL"  colspan="2"> TOTAL DEB</td>
-      <td scope="col"  id="colDebTOTAL"  > ROB</td>
+      <td scope="col"  id="colDebTOTAL" <?php echo filtrage_rob($proprietaire); ?>  > ROB</td>
    <!--   <td scope="col"  id="colROB">ROB</td> !-->
   </tr>
     <tr class="EnteteTableSituation"  >
       
      
-      <td id="colManifeste">POIDS</td> 
+      <td id="colManifeste" <?php echo filtrage_rob($proprietaire); ?>>POIDS</td> 
         <td scope="col" id="colDeb24H" >SACS</td>
       <td scope="col" id="colDeb24H" >POIDS</td>
               <td scope="col" id="colDeb24H" >SACS</td>
       <td scope="col" id="colDeb24H" >POIDS</td>
               
-      <td scope="col" id="colDeb24H" >POIDS</td>
+      <td scope="col" id="colDeb24H" <?php echo filtrage_rob($proprietaire); ?> >POIDS</td>
         
      
     <!--  <td scope="col" id="colROB" >POIDS</td> !-->
@@ -96,8 +115,13 @@
 
             $deb_ROB=$calcul_rob->fetch(); 
             $deb_ROB_24h=$calcul_rob_24h->fetch(); 
+            $deb_cale_GEN24H = deb_cale_GEN24H($bdd,$navire,$date_deb);
+            $deb_cale_GENT=deb_cale_GENT($bdd,$navire,$date_deb);
 
-            if(!empty($deb_ROB_24h['sum(pb.poids_net)'])){
+            $deb_G24H=$deb_cale_GEN24H->fetch();
+            $deb_GT=$deb_cale_GENT->fetch();
+
+      if(!empty($deb_ROB_24h['sum(pb.poids_net)'])){
 
        $net_marchand_ST24h=$deb_ROB_24h['sum(pb.poids_net)'];
      }
@@ -133,6 +157,44 @@
        $sac_STT=0;
      }
      $net_marchand_ROB=$manif['sum(poids)']-$deb_ROB['sum(pb.poids_net)'];
+
+
+
+    if(!empty($deb_G24H['sum(td.sac)'])){
+
+       $sac_G24h=$deb_G24H['sum(td.sac)'];
+     }
+     if(empty($deb_G24H['sum(td.sac)'])){
+
+       $sac_G24h=0;
+     }
+          if(!empty($deb_G24H['sum(pb.poids_net)'])){
+
+       $poids_net_G24h=$deb_G24H['sum(pb.poids_net)'];
+     }
+     if(empty($deb_G24H['sum(pb.poids_net)'])){
+
+       $poids_net_G24h=0;
+     }
+
+
+    if(!empty($deb_GT['sum(td.sac)'])){
+
+       $sac_GT=$deb_GT['sum(td.sac)'];
+     }
+     if(empty($deb_GT['sum(td.sac)'])){
+
+       $sac_GT=0;
+     }
+          if(!empty($deb_GT['sum(pb.poids_net)'])){
+
+       $poids_net_GT=$deb_GT['sum(pb.poids_net)'];
+     }
+     if(empty($deb_GT['sum(pb.poids_net)'])){
+
+       $poids_net_GT=0;
+     }
+
 
           ?>
          	<?php if(!empty($row['cales']) and !empty($row['produit']) and !empty($row['poids_sac']) ){ 
@@ -170,7 +232,7 @@
                       # code...
                     }
                   } ?>
-         	<td rowspan="<?php echo /*$row_manifest-$soustraction+1;*/ $rows_deb['nombre_de_lignes']+1; ?>"><?php echo number_format($manif['sum(poids)'], 3,',',' '); ?> </td>
+         	<td <?php echo filtrage_rob($proprietaire); ?> rowspan="<?php echo /*$row_manifest-$soustraction+1;*/ $rows_deb['nombre_de_lignes']+1; ?>"><?php echo number_format($manif['sum(poids)'], 3,',',' '); ?> </td>
          <?php } ?>
          
          <?php
@@ -261,7 +323,7 @@
                       # code...
                     }
                   } ?>
-         	<td rowspan="<?php /*echo $row_rob-$soustraction+1*/ echo $rows_deb['nombre_de_lignes']+1; ?>"><?php echo number_format($net_marchand_ROB, 3,',',' '); ?> </td>
+         	<td <?php echo filtrage_rob($proprietaire); ?> rowspan="<?php /*echo $row_rob-$soustraction+1*/ echo $rows_deb['nombre_de_lignes']+1; ?>"><?php echo number_format($net_marchand_ROB, 3,',',' '); ?> </td>
          <?php } ?>
          	</tr> 
  <?php } 
@@ -279,6 +341,19 @@
          	</tr> 
  <?php } ?>
 
+ <?php if(empty($row['cales']) and empty($row['produit']) and empty($row['poids_sac']) ){ 
+     $manifeste_TOTAL=manifeste_TOTAL($bdd,$navire);
+     $manif_T=$manifeste_TOTAL->fetch();  ?>
+  <tr style="background: black; color: white; text-align: center;">  
+  <td colspan="2"> TOTAL </td>
+  <td <?php echo filtrage_rob($proprietaire); ?>> <?php echo number_format($manif_T['sum(poids)'], 3,',',' '); ?> </td>
+  <td > <?php echo number_format($sac_G24h, 0,',',' '); ?> </td>
+  <td > <?php echo number_format($poids_net_G24h, 3,',',' '); ?> </td>
+    <td > <?php echo number_format($sac_GT, 0,',',' '); ?> </td>
+  <td > <?php echo number_format($poids_net_GT, 3,',',' '); ?> </td>
+  <td <?php echo filtrage_rob($proprietaire); ?>> <?php echo number_format($manif_T['sum(poids)'], 3,',',' '); ?> </td>
+  </tr>
+<?php } ?>
  
 
          <?php  } //end foreach ?>
@@ -303,8 +378,9 @@
       
 
       <td id="colLibeles" scope="col"  rowspan="2"  >PRODUIT</td>
-      <td id="colLibeles" scope="col"  rowspan="2"  >CALES</td>
       <td id="colManifeste"  >MANIFESTE</td> 
+      <td id="colLibeles" scope="col"  rowspan="2"  >CALES</td>
+      
       <td scope="col"  id="colDeb24H" colspan="2" >DEB 24H</td>
       <td scope="col"  id="colDebTOTAL"  colspan="2"> TOTAL DEB</td>
       <td scope="col"  id="colDebTOTAL"  > ROB</td>
@@ -330,3 +406,43 @@
          </tr>
          </thead> 
          <tbody>
+<?php  
+        $rowspan_produit=0;
+        $poids_produit='NULL';
+        $row_produit='NULL';
+
+ $produit=produit($bdd,$navire); 
+        
+         $produits=$produit->fetchAll(PDO::FETCH_ASSOC);
+         foreach($produits as $prod){  
+
+          $rowspan_deb_prod=rowspan_deb_prod($bdd,$navire);
+          $row_dp=$rowspan_deb_prod->fetch(); 
+
+          if(!empty($prod['cales']) and !empty($prod['produit']) and !empty($prod['poids_sac']) ){ ?>
+           <tr class="cellule">
+           <?php  
+               if($row_produit!=$prod['id_produit'] or $poids_produit!=$prod['poids_sac']){
+                    $rowspan_produit=0;
+                    $row_produit=$prod['id_produit'];
+                    $poids_produit=$prod['poids_sac'];
+                   
+                    foreach ($produits as $r ) {
+                      if($r['id_produit']===$row_produit and !empty($r['produit']) and $r['poids_sac']===$poids_produit and !empty($r['poids_sac'])){
+                        $rowspan_produit++;
+                      # code...
+                    }
+                  } ?> 
+      
+            <td rowspan="<?php  echo $rowspan_produit-$row_dp['nombre_de_lignes']; ?>" > <?php echo $prod['produit'] ?> </td>
+          <?php   } ?>
+            <td > <?php  echo $prod['cales']; ?> </td>
+
+          <?php   } ?>
+
+        <?php   } ?>
+
+
+         </tbody>
+       </table>
+     </div>

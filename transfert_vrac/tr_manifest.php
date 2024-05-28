@@ -4487,7 +4487,7 @@ function VisibleGlobal2() {
      } */
 
         $.ajax({
-        url:'nouveau_transport/ajout_camion.php',
+        url:'ajax/nouveau_transport/ajout_camion.php',
         method:'post',
         data:{camion:camion,transporteur:transporteur},
         success: function(response){

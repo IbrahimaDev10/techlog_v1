@@ -1,8 +1,8 @@
 <?php
 require('../database.php');
 //require('tr_action.php');
-header("Cache-Control: no-cache, must-revalidate");
-header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); 
+//header("Cache-Control: no-cache, must-revalidate");
+//header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); 
 require('controller/produit_du_navire.php');
 require('controller/date_situation.php');
  if($_SESSION['profil']!="superviseur" and $_SESSION['profil']!="Admin" and $_SESSION['profil']!="Pointeur" and $_SESSION['profil']!="Mangasinier" and empty($_SESSION['aut']) and $_SESSION['profil']!="pont" ){
@@ -449,13 +449,17 @@ $navire_initiale=$nav_ex[0];
 <div class="col-col-md-12 col-col-lg-12" id='liste_camion'>
      <div class="table table-responsive " id='table_liste_camion' style="display: none;">
       <center>
-     <table class="table table-hover table-bordered  table-responsive table-striped" style="width: 70%;">
+     <table class="table table-hover table-bordered  table-responsive table-striped" >
        <thead >
         <tr style="background: blue; color: white; vertical-align: middle; text-align: center;">
+          <th>DATE</th>
+          <th>HEURE</th>
           <th>NAVIRE</th>
          <th>PRODUIT</th>
          <th>BL</th>
          <th>CAMION</th>
+         <th>CHAUFFEUR</th>
+         <th>TEL</th>
          <th>SACS</th>
          <th>POIDS</th>
          <th>ACTIONS</th>
@@ -549,7 +553,9 @@ $navire_initiale=$nav_ex[0];
         
 
          <center>
-        <a class="btn btn-primary " style="text-align: center;" name="valider_Avaries3" data-role="ajouter_poids_pont" >enregistrer</a></center>
+        <a id='btn_ajouter_pont' class="btn btn-primary" style="text-align: center;" name="valider_Avaries3" data-role="ajouter_poids_pont" >enregistrer</a>
+    <a id='btn_modifier_pont' class="btn btn-primary " style="text-align: center;" name="valider_Avaries3" data-role="update_poids_pont" >enregistrer</a>
+      </center>
         </div>
     
 
@@ -767,8 +773,12 @@ $navire_initiale=$nav_ex[0];
 <script src="js/crud/modifier_bl.js"></script>
 <script src="js/crud/afficher_situation.js"></script>
 <script src="js/crud/ajout_poids_pont.js"></script>
+<script src="js/crud/update_bl_pont.js"></script>
+<script src="js/crud/update_pont.js"></script>
+<script src="js/crud/delete_bl_pont.js"></script>
+
 <script src="js/choix_navire_situation.js"></script>
- 
+
   <script type="text/javascript">
       function descendre_dernier_enregistrement(){
          var elements = document.querySelectorAll('#dernierEnregistrement');
@@ -818,6 +828,11 @@ function fixerEnTeteTableau() {
   $('#main2').css('display','block');
    $('#tableau_situation').css('display','none');
     $('#espace_situation').css('display','none');
+
+  $('#btn_situation').css('background','black');
+  $('#btn_situation').css('color','white');
+  $('#liste').css('background','black');
+  $('#liste').css('color','white');
  }
 
   function situations(){
@@ -828,6 +843,11 @@ function fixerEnTeteTableau() {
   $('#liste_camion').css('display','none');
   $('#btn_situation').css('background','yellow');
   $('#btn_situation').css('color','blue');
+
+  $('#btn_camion_peses').css('background','black');
+  $('#btn_camion_peses').css('color','white');
+  $('#liste').css('background','black');
+  $('#liste').css('color','white');
  
  }
 
@@ -5423,8 +5443,9 @@ function calcul_poids_pont(){
   var nbre_sac=$('#nbre_sac_pont').val();
 
   var net_pont=poids_pont-tare_vehicule;
-  var net_marchand=net_pont-nbre_sac*val_tare_sac/1000;
-
+  var net_marchand=net_pont/1000-nbre_sac*val_tare_sac/1000;
+ // net_marchand=net_marchand.replace(',','.');
+   
 
   $('#net_pont').val(net_pont);
   $('#net_marchand').val(net_marchand);

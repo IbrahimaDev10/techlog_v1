@@ -12,9 +12,12 @@ $dates=$_POST['dates'];
 $sac=$_POST['sac'];
 $tare_sac=$_POST['tare_sac'];
   $net_pont_bascule=$poids_brut-$tare_vehicule;
-        
+if($sac==0){
+	$id_tare=0;
+	$tare_sac=0;
+}        
     
-     $net_marchand=$net_pont_bascule-$sac*$tare_sac/1000;
+     $net_marchand=$net_pont_bascule/1000-$sac*$tare_sac/1000;
      
 
 $insert=$bdd->prepare("INSERT INTO pont_bascule(ticket_ponts,poids_bruts,tare_vehicules,id_transfert,id_tare_sac,poids_net,date_pont) values(?,?,?,?,?,?,?) ");

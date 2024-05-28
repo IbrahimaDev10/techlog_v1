@@ -10,7 +10,7 @@ $user='u494288814_root';
 $mot_passe='MyDbForSim-2320';*/
 
 $server='localhost';
-$name='test_vrac5';
+$name='test_navire_mallika_naree';
 $user='root';
 $mot_passe='';
 

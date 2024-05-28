@@ -22,8 +22,11 @@ $net_marchand=$_POST['net_marchand'];
 $id_tare_sac=$_POST['id_tare_sac'];
 $tare_sac=$_POST['tare_sac'];
 
+$net_pont=$sac-$tare_vehicule;
+
 
 ?>
+
 
 
 <div id='element_pont'>
@@ -54,7 +57,7 @@ $tare_sac=$_POST['tare_sac'];
      
 
         <label>NET PONT BASCULE</label>
-    <input type="text" class="form-control"   name="sacm"  id="net_pont"  
+    <input type="text" class="form-control"   name="sacm"  id="net_pont" value="<?php echo $net_pont; ?>" 
      disabled="true" style="background: black; color: white;"> <br>
 
 
@@ -67,7 +70,7 @@ $tare_sac=$_POST['tare_sac'];
     style="" > <br> 
 
          <label>NET MARCHAND</label>
-    <input type="number" class="form-control"   name="sacm"  id="net_marchand"  value="<?php echo $net_marchand ?>"
+    <input type="text" class="form-control"   name="sacm"  id="net_marchand"  value="<?php echo $net_marchand; ?>"
      disabled="true" style="background: black; color: white;"> <br>
 </div>
   <div style="display: none;">

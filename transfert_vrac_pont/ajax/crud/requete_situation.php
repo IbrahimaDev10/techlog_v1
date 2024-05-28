@@ -111,6 +111,38 @@ function manifeste($bdd,$navire,$cale_manif){
   return $manifeste;
 }
 
+function manifeste_TOTAL($bdd,$navire){
+  $manifeste_TOTAL=$bdd->prepare('SELECT sum(poids) from declaration_chargement where id_navire=?' );
+  $manifeste_TOTAL->bindParam(1,$navire);
+  
+  $manifeste_TOTAL->execute();
+  return $manifeste_TOTAL;
+}
+
+
+   function deb_cale_GEN24H($bdd,$navire,$date_deb){
+               $deb_cale_GEN24H=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=? and  pb.date_pont=?  ");
+               $deb_cale_GEN24H->bindParam(1,$navire);
+               $deb_cale_GEN24H->bindParam(2,$date_deb);
+              
+               $deb_cale_GEN24H->execute();
+               return $deb_cale_GEN24H;
+          }
+
+          function deb_cale_GENT($bdd,$navire,$date_deb){
+               $eb_cale_GENT=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=? and  pb.date_pont<=?  ");
+               $eb_cale_GENT->bindParam(1,$navire);
+               $eb_cale_GENT->bindParam(2,$date_deb);
+              
+               $eb_cale_GENT->execute();
+               return $eb_cale_GENT;
+          }
+            
+
 
 
       function produit($bdd,$navire){

@@ -196,6 +196,26 @@ $titre->bindParam(2,$poids_sac);
  
       }
 
+      function titre_entete_pv_vrac($bdd,$produit,$poids_sac,$navire,$destination){
+        $titre=$bdd->prepare("SELECT dis.id_dis, nc.*, p.*,mg.mangasin, nav.navire,nav.type,nav.etb,cli.client,d.id_declaration from reception_navire as rta
+         inner join declaration as d on d.id_declaration=rta.id_declaration
+         inner join dispats as dis on dis.id_dis=d.id_bl
+  inner join numero_connaissements as nc on nc.id_connaissement=dis.id_con_dis
+  inner join client as cli on cli.id=nc.id_client
+  inner join navire_deb as nav on nav.id=nc.id_navire
+  inner join produit_deb as p on p.id=dis.id_produits
+  inner join mangasin as mg on mg.id=rta.id_destination
+   WHERE dis.id_produits=? and dis.poids_kgs=? and nc.id_navire=? and rta.id_destination=? group by dis.id_dis ");
+$titre->bindParam(1,$produit);
+$titre->bindParam(2,$poids_sac);
+ $titre->bindParam(3,$navire);
+ $titre->bindParam(4,$destination);
+ $titre->execute();
+
+  return $titre;
+ 
+      }      
+
 
 
 function afficher_camions_en_attentes_sain($bdd){

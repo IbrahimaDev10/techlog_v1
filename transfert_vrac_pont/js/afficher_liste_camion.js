@@ -18,6 +18,13 @@ $(document).ready(function(){
   $('#tableau_situation').css('display','none');
   $('#main2').css('display','none');
   
+    $('#btn_situation').css('background','black');
+  $('#btn_situation').css('color','white');
+
+  $('#btn_camion_peses').css('background','black');
+  $('#btn_camion_peses').css('color','white');
+  $('#liste').css('background','yellow');
+  $('#liste').css('color','blue');
 
 
 

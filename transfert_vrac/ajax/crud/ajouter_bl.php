@@ -50,6 +50,7 @@ try{
   $calPoids=$sac*$poids_sac/1000; 
  
   } 
+
   if ( ($poids_sac!=0) and ($statut=='flasque' or $statut=='balayure'  and $type=='SACHERIE' ) ) {
      # code...
  
@@ -58,6 +59,7 @@ try{
   } 
   if ($poids_sac==0) {
      # code...
+    $sac=0;
   $calPoids=$_POST['poids']; 
   
   }

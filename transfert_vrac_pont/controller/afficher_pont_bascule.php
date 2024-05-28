@@ -2,10 +2,10 @@
 
 function  afficher_pont_bascule($bdd,$produit,$poids_sac,$navire,$destination,$statut,$client){
   
-     $affiche = $bdd->prepare("SELECT p.produit,p.qualite,nav.navire,nav.type,cli.client,mang.mangasin,trp.*,ch.*, manif.*,sum(manif.sac),sum(manif.poids), sum(pb.poids_bruts),sum(pb.tare_vehicules),ts.*, cam.*,pb.*   FROM pont_bascule as pb 
+     $affiche = $bdd->prepare("SELECT p.produit,p.qualite,nav.navire,nav.type,cli.client,mang.mangasin,trp.*,ch.*, manif.*,sum(manif.sac),sum(manif.poids), sum(pb.poids_bruts),sum(pb.tare_vehicules), sum(pb.poids_net),ts.*, cam.*,pb.*   FROM pont_bascule as pb 
              
                 inner join transfert_debarquement as manif on manif.id_register_manif=pb.id_transfert
-                inner join tare_sac as ts on ts.id_tare=pb.id_tare_sac
+                left join tare_sac as ts on ts.id_tare=pb.id_tare_sac
                 inner join  produit_deb as p on manif.id_produit=p.id 
 
                 inner join navire_deb as nav on manif.id_navire=nav.id 
@@ -49,15 +49,33 @@ function  affichage_pont_bascule($bdd,$produit,$poids_sac,$navire,$destination,$
 
         ?>
         <tr style=" text-align: center; vertical-align: middle;">
-        <td><?php echo $aff['date_pont'] ?></td>
-        <td><?php echo $aff['bl'] ?></td>
+             <td style="display: none;" id="<?php echo $aff['id_pont'].'poids_bruts_pb' ?>"  ><?php echo $aff['poids_bruts']; ?></td>
+            <td style="display: none;" id="<?php echo $aff['id_pont'].'tare_vehicule_pb' ?>"  ><?php echo $aff['tare_vehicules']; ?></td> 
+            
+            <td style="display: none;" id="<?php echo $aff['id_pont'].'id_tare_sac_pb' ?>"  ><?php echo $aff['id_tare_sac']; ?></td>
+            <td style="display: none;" id="<?php echo $aff['id_pont'].'tare_sac_pb' ?>"  ><?php echo $aff['poids_tare_sac']; ?></td>
+             <td style="display: none;" id="<?php echo $aff['id_pont'].'id_navire_pb' ?>"  ><?php echo $aff['id_navire']; ?></td>
+              <td style="display: none;" id="<?php echo $aff['id_pont'].'id_produit_pb' ?>"  ><?php echo $aff['id_produit']; ?></td>
+               <td style="display: none;" id="<?php echo $aff['id_pont'].'poids_sac_pb' ?>"  ><?php echo $aff['poids_sac']; ?></td>
+                <td style="display: none;" id="<?php echo $aff['id_pont'].'id_destination_pb' ?>"  ><?php echo $aff['id_destination']; ?></td>
+                 <td style="display: none;" id="<?php echo $aff['id_pont'].'id_client_pb' ?>"  ><?php echo $aff['id_client']; ?></td>
+                 <td style="display: none;" id="<?php echo $aff['id_pont'].'poids_brut_pb' ?>"  ><?php echo $aff['poids_bruts']; ?></td>
+                 <td style="display: none;" id="<?php echo $aff['id_pont'].'id_transfert_pb' ?>"  ><?php echo $aff['id_transfert']; ?></td>
+            
+        <td id="<?php echo $aff['id_pont'].'date_pb' ?>"  ><?php echo $aff['date_pont']; ?></td>
+        <td id="<?php echo $aff['id_pont'].'bl_pb' ?>"><?php echo $aff['bl'] ?></td>
         <td><?php echo $aff['num_camions'] ?></td>
         <td><?php echo $aff['nom_chauffeur'] ?></td>
         <td><?php echo $aff['num_telephone'] ?></td>
-        <td><?php echo $aff['ticket_ponts'] ?></td>
-        <td><?php echo $aff['sum(manif.sac)'] ?></td>
+        <td id="<?php echo $aff['id_pont'].'ticket_pb' ?>"><?php echo $aff['ticket_ponts'] ?></td>
+        <td id="<?php echo $aff['id_pont'].'sac_pb' ?>"  ><?php echo $aff['sum(manif.sac)'] ?></td>
         
-        <td><?php echo $net_marchand; ?></td>
+        <td id="<?php echo $aff['id_pont'].'net_marchand_pb' ?>"><?php echo number_format($aff['poids_net'], 3,',',' '); ?></td>
+        <td>
+        <div style="display: flex; justify-content: center;">
+        <a class="" data-role='update_bl_pont' data-id='<?php echo $aff['id_pont']; ?>'><i class="fa fa-edit"> </i></a> 
+        <a class="" onclick="delete_bl_pont(<?php echo $aff['id_pont'];  ?>)" data-id='<?php echo $aff['id_pont']; ?>'><i class="fa fa-trash"> </i></a>  </div>    
+        </td>
         </tr>
     <?php } 
 
@@ -68,7 +86,7 @@ function  affichage_pont_bascule($bdd,$produit,$poids_sac,$navire,$destination,$
         <tr style="background: blue; color:white !important;  text-align: center; vertical-align: middle;">
         <td colspan="6">TOTAL<?php echo $aff['date_pont']; ?></td>
         <td><?php echo $aff['sum(manif.sac)'] ?></td>
-        <td><?php echo $som_net_marchand ?></td>
+        <td><?php echo number_format($aff['sum(pb.poids_net)'], 3,',',' '); ?></td>
         <td></td>
         
         </tr> <?php  }
@@ -80,7 +98,7 @@ function  affichage_pont_bascule($bdd,$produit,$poids_sac,$navire,$destination,$
         <tr style="background: black;  color:white !important; text-align: center; vertical-align: middle;">
        <td colspan="6">TOTAL<?php echo $aff['date_pont'] ?></td>
         <td><?php echo $aff['sum(manif.sac)'] ?></td>
-        <td><?php echo $som_net_marchand ?></td>
+        <td><?php echo number_format($aff['sum(pb.poids_net)'], 3,',',' '); ?></td>
         <td></td>
         </tr> <?php  }
 

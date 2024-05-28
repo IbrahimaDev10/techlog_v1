@@ -71,9 +71,9 @@
     <?php if(!$resfil){ ?>
        <td  scope="col"  >NBRE SACS</td>
      <?php } ?>
-    
+    <td   scope="col"  >NET MARCHAND </td>
       <td   scope="col"  >TICKET PONT</td>
-      <td   scope="col"  >NET MARCHAND </td>
+      
       <?php 
       while($filtre=$filtreColonne->fetch()){
         if( $filtre["des_douane"]=="LIVRAISON"){

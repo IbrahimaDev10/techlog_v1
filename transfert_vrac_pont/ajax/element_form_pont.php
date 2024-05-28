@@ -12,11 +12,11 @@ $id=$_POST['id'];
 
 $bl=$_POST['bl'];
 
-echo $navire.' ';
-echo $produit.' ';
-echo $poids_sac.' ';
-echo $destination.' ';
-echo $client.' ';
+$date1=$_POST['date1'];
+
+
+
+
 ?>
 
 
@@ -28,27 +28,27 @@ echo $client.' ';
         <input type="text" class="form-control"   name="sacm"  id="bl_pont" value="<?php echo $bl ?>"   
     disabled="true" > <br>
     <label>DATE PONT</label>
-        <input type="date" class="form-control"   name="sacm"  id="date_pont"   > <br> 
+        <input type="date" class="form-control"   name="sacm"  id="date_pont" value='<?php echo $date1; ?>'  > <br> 
        <label>NBRE DE SAC</label>
         <input type="number" class="form-control"   name="sacm"  id="nbre_sac_pont"   value="<?php  echo $sac; ?>" 
      disabled="true"> <br> 
 
     <label>TICKET PONT</label>
-    <input type="number" class="form-control"   name="sacf"  id="ticket_pont"  value="0"
+    <input type="number" class="form-control"   name="sacf"  id="ticket_pont"  
      >
      <br> 
      <label>POIDS BRUT VEHICULE</label>
-    <input type="number" class="form-control"   name="sacm"  id="poids_pont"  value="0"
+    <input type="number" class="form-control"   name="sacm"  id="poids_pont"  
      oninput='calcul_poids_pont()'> <br> </div>
 <div style="">
           <label>TARE VEHICULE</label>
-    <input type="number" class="form-control"   name="sacm"  id="tare_vehicule"  value="0"
+    <input type="number" class="form-control"   name="sacm"  id="tare_vehicule"  
      oninput='calcul_poids_pont()' > <br> 
 
      
 
         <label>NET PONT BASCULE</label>
-    <input type="text" class="form-control"   name="sacm"  id="net_pont"  value="0"
+    <input type="text" class="form-control"   name="sacm"  id="net_pont"  
      disabled="true" style="background: black; color: white;"> <br>
 
 
@@ -64,8 +64,8 @@ echo $client.' ';
 
           <label>TARE SAC</label>
     <input type="number" class="form-control"   name="sacm"  id="val_tare_sac" disabled="true"  value="<?php  echo $sel_tare['poids_tare_sac']; ?>"
-    style="background: black; color: white;" >
-    <input type="number" class="form-control"   name="sacm"  id="val_id_tare_sac" disabled="true"  value="<?php  echo $sel_tare['id_tare']; ?>"
+    style="background: black; color: white; " >
+    <input style="display: none;" type="number" class="form-control"   name="sacm"  id="val_id_tare_sac" disabled="true"  value="<?php  echo $sel_tare['id_tare']; ?>"
     style="" > <br> 
 
          <label>NET MARCHAND</label>

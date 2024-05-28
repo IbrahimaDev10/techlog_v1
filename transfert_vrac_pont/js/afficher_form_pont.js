@@ -10,8 +10,15 @@ $(document).ready(function(){
         var client = $('#'+id+'client').text();
         var sac = $('#'+id+'sac').text();
         var bl = $('#'+id+'blp').text();
+        var date1 = $('#'+id+'dates').text();
+        var net_pont=$('#net_pont').val();
+         var net_marchand=$('#net_marchand').val();
         $('#id_pont').val(id);
         $('#bl_pont').val(bl);
+        $('#date_pont').val(date1);
+
+        $('#btn_ajouter_pont').css('display','block');
+        $('#btn_modifier_pont').css('display','none');
 
        
 
@@ -19,7 +26,8 @@ $(document).ready(function(){
        /* url:'recuperer_statut_avaries', */
         url:'ajax/element_form_pont.php',
         method:'post',
-        data:{navire:navire,produits:produits,poids_sac:poids_sac,destination:destination,client:client,sac:sac,id:id,bl:bl},
+        data:{navire:navire,produits:produits,poids_sac:poids_sac,destination:destination,client:client,sac:sac,id:id,bl:bl,date1:date1,
+            net_pont:net_pont,net_marchand:net_marchand},
         success: function(response){
             $('#element_pont').html(response);
             $('#form_poids_pont').modal('toggle');

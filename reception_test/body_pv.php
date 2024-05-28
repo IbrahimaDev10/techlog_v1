@@ -29,6 +29,8 @@
 
   </div>
 </div>
+<?php $type_navires=type_de_navires($bdd,$navire);
+$tn=$type_navires->fetch(); ?>
  <div class="container-fluid">
   <div class="row">
   <div class=" col-md-12 col-lg-12" > <h6 style="font-weight: bolder; color: blue; margin-bottom: 2px;">Societé des Industries Maritimes</h6>
@@ -38,9 +40,19 @@
  <div class=" col-md-3 col-lg-3">
     </div>
     <div class="col-md-9 col-lg-9" >
-      <?php $date_reception=Date_Reception($bdd,$produit,$poids_sac,$navire,$destination); ?>
+      <?php
+        if($tn['type']=='SACHERIE'){
+       $date_reception=Date_Reception($bdd,$produit,$poids_sac,$navire,$destination);
+       $date_reception_fin=Date_Reception_fin($bdd,$produit,$poids_sac,$navire,$destination);
+       } 
+       if($tn['type']=='VRAQUIER'){
+       $date_reception=Date_Reception_vrac($bdd,$produit,$poids_sac,$navire,$destination);
+       $date_reception_fin=Date_Reception_fin_vrac($bdd,$produit,$poids_sac,$navire,$destination);
+       }
+
+        ?>
    
-  <h6 style="float: right;">Dakar le <?php $date_reception_fin=Date_Reception_fin($bdd,$produit,$poids_sac,$navire,$destination); ?>
+  <h6 style="float: right;">Dakar le <?php  ?>
    
    <?php if($date_receptions_fin=$date_reception_fin->fetch()){?> <span style="color:black;"><?php  $datePV2 = date_create_from_format('Y-m-d', $date_receptions_fin['dates']);
                 $date_convertiPV2 = $datePV2->format('d-m-Y');
@@ -64,7 +76,12 @@
   <table class='table ' id='table' style="border: none; width: 80%;" >
 
 <?php
+  if($tn['type']=='SACHERIE'){
    $titre=titre_entete_pv($bdd,$produit,$poids_sac,$navire,$destination);
+  }
+    if($tn['type']=='VRAQUIER'){
+   $titre=titre_entete_pv_vrac($bdd,$produit,$poids_sac,$navire,$destination);
+  }
  if($t=$titre->fetch()){ 
      
      $etb = date_create_from_format('Y-m-d', $t['etb']);
@@ -113,14 +130,21 @@
   <div style="width: 80%; display: flex; justify-content: center; ">
 
   
-  <span style="  margin-bottom: 5px; color: black; font-weight: bold; font-size: 14px;">DATE DEBUT:  <?php $date_reception=Date_Reception($bdd,$produit,$poids_sac,$navire,$destination); ?>
+  <span style="  margin-bottom: 5px; color: black; font-weight: bold; font-size: 14px;">DATE DEBUT:  <?php if($tn['type']=='SACHERIE'){
+       $date_reception=Date_Reception($bdd,$produit,$poids_sac,$navire,$destination);
+       $date_reception_fin=Date_Reception_fin($bdd,$produit,$poids_sac,$navire,$destination);
+       } 
+       if($tn['type']=='VRAQUIER'){
+       $date_reception=Date_Reception_vrac($bdd,$produit,$poids_sac,$navire,$destination);
+       $date_reception_fin=Date_Reception_fin_vrac($bdd,$produit,$poids_sac,$navire,$destination);
+       } ?>
    
    <?php if($date_receptions=$date_reception->fetch()){?> <span style="color:blue;"><?php  $datePV = date_create_from_format('Y-m-d', $date_receptions['dates']);
                 $date_convertiPV = $datePV->format('d-m-Y');
                  echo $date_convertiPV; } ?></span>  </span>
 
 
-                   <span style=" margin-bottom: 5px;  color: black; margin-left: 20px; font-weight: bold; font-size: 14px;">DATE FIN:  <?php $date_reception_fin=Date_Reception_fin($bdd,$produit,$poids_sac,$navire,$destination); ?>
+                   <span style=" margin-bottom: 5px;  color: black; margin-left: 20px; font-weight: bold; font-size: 14px;">DATE FIN:  
    
    <?php if($date_receptions_fin=$date_reception_fin->fetch()){?> <span style="color:blue;"><?php  $datePV2 = date_create_from_format('Y-m-d', $date_receptions_fin['dates']);
                 $date_convertiPV2 = $datePV2->format('d-m-Y');
@@ -167,7 +191,7 @@
  /* $SomAvr_DEPART_Recap=avaries_reception($bdd,$produit,$poids_sac,$navire,$destination);
   $SomRa_DEPART_Recap=reception_avaries_reception($bdd,$produit,$poids_sac,$navire,$destination);
   $SomRa_DEPART_Recap->execute(); */
- 
+ if($tn['type']='SACHERIE'){
   $Total_reception=Total_Reception($bdd,$produit,$poids_sac,$navire,$destination);
 
     $total_avaries_reception=Total_Avaries_de_reception($bdd,$produit,$poids_sac,$navire,$destination);
@@ -179,6 +203,21 @@
       $total_reception_balayure_deb= Total_Reception_balayure_deb($bdd,$produit,$poids_sac,$navire,$destination);
 
       $recond_transfert=Total_Recond_transfert($bdd,$produit,$poids_sac,$navire,$destination);
+    }
+
+     if($tn['type']='VRAQUIER'){
+  $Total_reception=Total_Reception_vrac($bdd,$produit,$poids_sac,$navire,$destination);
+
+    $total_avaries_reception=Total_Avaries_de_reception_vrac($bdd,$produit,$poids_sac,$navire,$destination);
+
+    $total_reception_flasque_deb= Total_Reception_flasque_deb_vrac($bdd,$produit,$poids_sac,$navire,$destination);
+
+     $total_reception_mouille_deb= Total_Reception_mouille_deb_vrac($bdd,$produit,$poids_sac,$navire,$destination);
+
+      $total_reception_balayure_deb= Total_Reception_balayure_deb_vrac($bdd,$produit,$poids_sac,$navire,$destination);
+
+      $recond_transfert=Total_Recond_transfert_vrac($bdd,$produit,$poids_sac,$navire,$destination);
+    }
 
 
 
