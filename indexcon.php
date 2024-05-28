@@ -200,6 +200,7 @@ include('header3.php');
 <p style="color: black !important;"><?php echo password_hash('SENICO020@2024', PASSWORD_DEFAULT); ?></p>
 <p style="color: black !important;"><?php echo password_hash('PONTBASCULE@2024', PASSWORD_DEFAULT); ?></p>
 <p style="color: black !important;"><?php echo password_hash('SOTIBA@2024', PASSWORD_DEFAULT); ?></p>
+<p style="color: black !important;"><?php echo password_hash('ICOTAF2024', PASSWORD_DEFAULT); ?></p>
 
       
   <div class="container-fluid"  >

@@ -59,6 +59,7 @@ function  affichage_pont_bascule($bdd,$produit,$poids_sac,$navire,$destination,$
                <td style="display: none;" id="<?php echo $aff['id_pont'].'poids_sac_pb' ?>"  ><?php echo $aff['poids_sac']; ?></td>
                 <td style="display: none;" id="<?php echo $aff['id_pont'].'id_destination_pb' ?>"  ><?php echo $aff['id_destination']; ?></td>
                  <td style="display: none;" id="<?php echo $aff['id_pont'].'id_client_pb' ?>"  ><?php echo $aff['id_client']; ?></td>
+
                  <td style="display: none;" id="<?php echo $aff['id_pont'].'poids_brut_pb' ?>"  ><?php echo $aff['poids_bruts']; ?></td>
                  <td style="display: none;" id="<?php echo $aff['id_pont'].'id_transfert_pb' ?>"  ><?php echo $aff['id_transfert']; ?></td>
             
@@ -69,6 +70,7 @@ function  affichage_pont_bascule($bdd,$produit,$poids_sac,$navire,$destination,$
         <td><?php echo $aff['num_telephone'] ?></td>
         <td id="<?php echo $aff['id_pont'].'ticket_pb' ?>"><?php echo $aff['ticket_ponts'] ?></td>
         <td id="<?php echo $aff['id_pont'].'sac_pb' ?>"  ><?php echo $aff['sum(manif.sac)'] ?></td>
+        <td ><?php echo number_format($aff['poids_bruts'], 3,',',' '); ?></td>
         
         <td id="<?php echo $aff['id_pont'].'net_marchand_pb' ?>"><?php echo number_format($aff['poids_net'], 3,',',' '); ?></td>
         <td>

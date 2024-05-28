@@ -206,7 +206,7 @@
                  inner join dispats as dis on dis.id_dis=d.id_bl
               inner join numero_connaissements as nc on nc.id_connaissement=dis.id_con_dis
               inner join mangasin as mg on mg.id=avt.destination_id
-                 WHERE dia.id_produits=? and dis.poids_kgs=? and nc.id_navire=? and avt.destination_id=?  ");
+                 WHERE dis.id_produits=? and dis.poids_kgs=? and nc.id_navire=? and avt.destination_id=?  ");
 
         $total_avaries_reception->bindParam(1,$produit);
         $total_avaries_reception->bindParam(2,$poids_sac);
