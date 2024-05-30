@@ -44,6 +44,9 @@ function  affichage_pont_bascule($bdd,$produit,$poids_sac,$navire,$destination,$
     
      $net_marchand=$net_pont_bascule-$aff['sac']*$aff['poids_tare_sac']/1000;
      $som_net_marchand=$som_net_pont_bascule-$aff['sum(manif.sac)']*$aff['poids_tare_sac']/1000;
+
+     $net_ponts=($aff['poids_bruts']-$aff['tare_vehicules'])/1000;
+     $som_net_ponts=($aff['sum(pb.poids_bruts)']-$aff['sum(pb.tare_vehicules)'])/1000;
         if(!empty($aff['date_pont']) and !empty($aff['id_pont'])){
 
 
@@ -70,9 +73,9 @@ function  affichage_pont_bascule($bdd,$produit,$poids_sac,$navire,$destination,$
         <td><?php echo $aff['num_telephone'] ?></td>
         <td id="<?php echo $aff['id_pont'].'ticket_pb' ?>"><?php echo $aff['ticket_ponts'] ?></td>
         <td id="<?php echo $aff['id_pont'].'sac_pb' ?>"  ><?php echo $aff['sum(manif.sac)'] ?></td>
-        <td ><?php echo number_format($aff['poids_bruts'], 3,',',' '); ?></td>
+        <td ><?php echo number_format($net_ponts, 3,',',' '); ?></td>
         
-        <td id="<?php echo $aff['id_pont'].'net_marchand_pb' ?>"><?php echo number_format($aff['poids_net'], 3,',',' '); ?></td>
+        <td id="<?php echo $aff['id_pont'].'net_marchand_pb' ?>"><?php echo number_format($aff['sum(pb.poids_net)'], 3,',',' '); ?></td>
         <td>
         <div style="display: flex; justify-content: center;">
         <a class="" data-role='update_bl_pont' data-id='<?php echo $aff['id_pont']; ?>'><i class="fa fa-edit"> </i></a> 
@@ -88,6 +91,7 @@ function  affichage_pont_bascule($bdd,$produit,$poids_sac,$navire,$destination,$
         <tr style="background: blue; color:white !important;  text-align: center; vertical-align: middle;">
         <td colspan="6">TOTAL<?php echo $aff['date_pont']; ?></td>
         <td><?php echo $aff['sum(manif.sac)'] ?></td>
+        <td><?php echo number_format($som_net_ponts, 3,',',' '); ?></td>
         <td><?php echo number_format($aff['sum(pb.poids_net)'], 3,',',' '); ?></td>
         <td></td>
         
@@ -100,6 +104,7 @@ function  affichage_pont_bascule($bdd,$produit,$poids_sac,$navire,$destination,$
         <tr style="background: black;  color:white !important; text-align: center; vertical-align: middle;">
        <td colspan="6">TOTAL<?php echo $aff['date_pont'] ?></td>
         <td><?php echo $aff['sum(manif.sac)'] ?></td>
+        <td><?php echo number_format($som_net_ponts, 3,',',' '); ?></td>
         <td><?php echo number_format($aff['sum(pb.poids_net)'], 3,',',' '); ?></td>
         <td></td>
         </tr> <?php  }

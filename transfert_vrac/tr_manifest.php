@@ -232,9 +232,9 @@ color:white; font-size: 20px; border: solid; background-color: black; margin-bot
       border-color: rgb(145,145,255);
       border-width: 8px;
     }
-    .modal-fullscreen{
-    width: 60% !important;
-    max-height: 1200px;
+    .modal-register{
+    max-width: 80% !important;
+    
     display: flex !important;
     justify-content: center !important;
      align-items: center;
@@ -346,11 +346,18 @@ color:white; font-size: 20px; border: solid; background-color: black; margin-bot
 }
 }
 
+
 .table-responsive thead {
     position: sticky;
     top: 0;
     z-index: 1;
     background-color: #fff; /* Assurez-vous que l'en-tête est toujours visible */
+}
+
+@media(max-width: 1400px) {
+.cache_colonne{
+    display: none;
+}
 }
 </style>
 <style type="text/css">
@@ -1136,22 +1143,24 @@ background: #1B2B65 ;
 
  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script src="js/afficher_tableau_bl.js"></script>
-<script src="js/afficher_formulaire_bl.js"></script>
-<script src="js/afficher_liste_camion.js"></script>
-<script src="js/afficher_form_pont.js"></script>
-<script src="js/afficher_form_pont.js"></script>
-<script src="js/afficher_tableau_bl_pont.js"></script>
+<script src="js/afficher_tableau_bl.js?=<?php echo time(); ?>"></script>
+<script src="js/afficher_formulaire_bl.js?=<?php echo time(); ?>"></script>
+<script src="js/afficher_liste_camion.js?=<?php echo time(); ?>"></script>
+<script src="js/afficher_form_pont.js?=<?php echo time(); ?>"></script>
+<script src="js/afficher_form_pont.js?=<?php echo time(); ?>"></script>
+<script src="js/afficher_tableau_bl_pont.js?=<?php echo time(); ?>"></script>
 
-<script src="js/transport/recherche_camion.js"></script>
-<script src="js/transport/recherche_remorque.js"></script>
-<script src="js/transport/recherche_chauffeur.js"></script>
+<script src="js/transport/recherche_camion.js?=<?php echo time(); ?>"></script>
+<script src="js/transport/recherche_remorque.js?=<?php echo time(); ?>"></script>
+<script src="js/transport/recherche_chauffeur.js?=<?php echo time(); ?>"></script>
 
-<script src="js/crud/ajouter_bl.js"></script>
-<script src="js/crud/delete_bl.js"></script>
-<script src="js/crud/modifier_bl.js"></script>
-<script src="js/crud/afficher_situation.js"></script>
-<script src="js/crud/ajout_poids_pont.js"></script>
+<script src="js/crud/ajouter_bl.js?=<?php echo time(); ?>"></script>
+<script src="js/crud/delete_bl.js?=<?php echo time(); ?>"></script>
+<script src="js/crud/modifier_bl.js?=<?php echo time(); ?>"></script>
+<script src="js/crud/afficher_situation.js?=<?php echo time(); ?>"></script>
+<script src="js/crud/ajout_poids_pont.js?=<?php echo time(); ?>"></script>
+
+<script src="js/crud/empty_update.js?=<?php echo time(); ?>"></script>
  
   <script type="text/javascript">
       function descendre_dernier_enregistrement(){

@@ -60,6 +60,38 @@ function tare_sac($bdd,$produit,$poids_sac,$navire,$destination,$client){
         return $affiche;
       }
 
+      function  afficher_total_deb_vrac($bdd,$produit,$poids_sac,$navire,$destination,$statut,$client){
+  
+     $affiche_som = $bdd->prepare("SELECT p.produit,p.qualite,nav.navire,nav.type,cli.client,mang.mangasin,d.num_declaration,d.id_declaration, manif.*,manif.id_declaration as la_declaration, dis.*, sum(manif.sac),sum(manif.poids),sum(manif.poids_brut), sum(manif.poids_brut),sum(manif.tare_vehicule), nc.num_connaissement,nc.id_connaissement,nc.id_client,nc.id_navire,pb.ticket_ponts,pb.poids_net, sum(pb.poids_net)  FROM transfert_debarquement as manif 
+             inner join declaration as d  on manif.id_declaration=d.id_declaration
+                inner join dispats as dis on dis.id_dis=d.id_bl
+                inner join numero_connaissements as nc on nc.id_connaissement=dis.id_con_dis
+                
+                inner join  produit_deb as p on dis.id_produits=p.id 
+
+                inner join navire_deb as nav on nc.id_navire=nav.id 
+                
+                inner join client as cli on nc.id_client=cli.id
+                inner join mangasin as mang on dis.id_mangasin=mang.id
+                
+
+                left join pont_bascule as pb on pb.id_transfert=manif.id_register_manif
+                
+
+                   WHERE dis.id_produits=? and  dis.poids_kgs=? and nc.id_navire=? and dis.id_mangasin=?  and manif.bl!='ref' and manif.statut=? and nc.id_client=?     ");
+        
+        
+        
+       $affiche_som->bindParam(1,$produit);
+        $affiche_som->bindParam(2,$poids_sac);
+        $affiche_som->bindParam(3,$navire);
+        $affiche_som->bindParam(4,$destination);
+        $affiche_som->bindParam(5,$statut);
+        $affiche_som->bindParam(6,$client);
+        $affiche_som->execute();
+        return $affiche_som;
+      }
+
 
  function  afficher_transfert_deb_vrac_date($bdd,$produit,$poids_sac,$navire,$destination,$statut,$client,$date_filtre){
   
@@ -619,7 +651,8 @@ $rotation=$bdd->prepare("SELECT count(bl) from transfert_debarquement where id_p
       <?php if(empty($aff['id_register_manif']) and !empty($aff['dates'])) {?>
          <tr class="ligne"   style="text-align: center; font-weight: bold; vertical-align: middle; " >
 
-      <td class="mytd" colspan="9" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); font-weight: bold; color:white;" >TOTAL  <?php echo $date[2].'-'.$date[1].'-'.$date[0] ?></td>
+      <td class="mytd" colspan="6" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); font-weight: bold; color:white;" >TOTAL  <?php echo $date[2].'-'.$date[1].'-'.$date[0] ?></td>
+        <td class="cache_colonne" colspan="3" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); font-weight: bold; color:white;" ></td>
    
   <?php if($aff['des_douane']=='LIVRAISON'){ ?>
        <td class="mytd" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); color: white;"></td>
@@ -629,14 +662,15 @@ $rotation=$bdd->prepare("SELECT count(bl) from transfert_debarquement where id_p
     <td class="mytd" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); color: white;"><?php echo number_format($aff['sum(manif.sac)'], 0,',',' ') ?></td>
   <?php } ?>
   <td class="mytd" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); color: white;"><?php echo number_format($aff['sum(pb.poids_net)'], 3,',',' '); ?></td>
-    <td class="mytd" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); color: white;"></td>
+   
      
-    <td class="mytd" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); color: white;"></td>
+    
     <?php if($aff['destinataire']!='AUCUN' and $aff['destinataire']!=1){ ?>
       
     <td class="mytd" class="colaffnull" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226));"></td>
 <?php } ?>
-<td  class="colaffnull" colspan="4" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); font-weight: bold; color:white;" ></td>
+<td  class="colaffnull" colspan="2" style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); font-weight: bold; color:white;" ></td>
+<td  class="cache_colonne"  style="background: linear-gradient(to bottom, #FFFFFF, rgb(82,82,226)); font-weight: bold; color:white;" ></td>
 </tr>
 <?php } ?>
 
@@ -652,7 +686,7 @@ $rotation=$bdd->prepare("SELECT count(bl) from transfert_debarquement where id_p
      <tr class="ligne" <?php //echo $aff['id_register_manif'].'colonnebl' ?>  id='dernierEnregistrement' style="text-align: center;  vertical-align: middle; "  >
     <td class="rot"   border="none"><?php echo  $rot['count(bl)'] ?></td>
     <td class="largeur_date" id="<?php echo $aff['id_register_manif'].'date_rm' ?>"   ><?php echo  $date[2].'-'.$date[1].'-'.$date[0]; ?> </td>
-    <td id="<?php echo $aff['id_register_manif'].'heure_rm' ?>"  ><?php echo $heure[0].':'.$heure[1] ?></td>
+    <td id="<?php echo $aff['id_register_manif'].'heure_rm' ?>" class="cache_colonne"  ><?php echo $heure[0].':'.$heure[1] ?></td>
      <span style="display: none;" id="<?php echo $aff['id_register_manif'].'id_cale_rm' ?>"><?php echo $aff['id_dec'] ?></span>
     <td id="<?php echo $aff['id_register_manif'].'cale_rm' ?>"   ><?php echo $aff['cales'] ?> </td>
     <td id="<?php echo $aff['id_register_manif'].'bl_rm' ?>"   data-champ="bl"  ><?php echo $aff['bl'] ?></td>
@@ -660,13 +694,13 @@ $rotation=$bdd->prepare("SELECT count(bl) from transfert_debarquement where id_p
     <td   ><?php echo $aff['num_bon'] ?></td>
 <?php } ?>
     <td id="<?php echo $aff['id_register_manif'].'camion_rm' ?>"  ><?php echo $aff['num_camions'] ?></td>
-    <td ><?php echo $aff['nom_chauffeur'] ?></td>
-    <span style="display: none;" id="<?php echo $aff['id_register_manif'].'id_chauffeur_rm' ?>"><?php echo $aff['chauffeur'] ?></span>
+    <span style="display: none;" id="<?php echo $aff['id_register_manif'].'id_chauffeur_rm' ?>" class="cache_colonne"><?php echo $aff['chauffeur'] ?></span>
+    <td class="cache_colonne"><?php echo $aff['nom_chauffeur'] ?></td>
     <span style="display: none;" id="<?php echo $aff['id_register_manif'].'id_camion_rm' ?>"><?php echo $aff['camions'] ?></span>
     <span style="display: none;" id="<?php echo $aff['id_register_manif'].'chauffeur_rm' ?>"><?php echo $aff['nom_chauffeur'].' permis: '.$aff['n_permis']. ' Tel: '.$aff['num_telephone'] ?></span>
 
     <center>
-    <td id="<?php echo $aff['id_register_manif'].'tel_rm' ?>" >
+    <td id="<?php echo $aff['id_register_manif'].'tel_rm' ?>" class="cache_colonne">
       <?php  echo $aff['num_telephone']; ?></td>
       <span style="display: none;" id="<?php echo $aff['id_register_manif'].'transporteur_rm' ?>" ><?php echo $aff['num_telephone']; ?></span>
     </center>
@@ -705,12 +739,12 @@ $rotation=$bdd->prepare("SELECT count(bl) from transfert_debarquement where id_p
     <td  ><?php echo $aff['destinataire'] ?></td>
 <?php }
  ?>
-  <td <?php if($aff['etat_reception']=='non'){  ?> style="color: red;" <?php } ?> <?php if($aff['etat_reception']=='oui'){  ?> style="color: green;" <?php } ?>  > <div style="" id='etat_recep'><?php if($aff['etat_reception']=='non'){ echo "NON RECEPTIONNE"; } if($aff['etat_reception']=='oui'){ echo "RECEPTIONNE";}  ?> <?php //echo $aff_tdeb['sum(manif.sac)']; ?> </div> </td>
+  <td class="cache_colonne" <?php if($aff['etat_reception']=='non'){  ?> style="color: red;" <?php } ?> <?php if($aff['etat_reception']=='oui'){  ?> style="color: green;" <?php } ?>  > <div style="" id='etat_recep'><?php if($aff['etat_reception']=='non'){ echo "NON RECEPTIONNE"; } if($aff['etat_reception']=='oui'){ echo "RECEPTIONNE";}  ?> <?php //echo $aff_tdeb['sum(manif.sac)']; ?> </div> </td>
 
 
 
 <form>  
- <td id="cacher_cellule" style="vertical-align: middle; text-align: center; " >
+ <td  id="cacher_cellule" style="vertical-align: middle; text-align: center; " >
   
    <div id="div_action<?php echo $aff['id_register_manif'] ?>" style="display: flex; justify-content: center;">
 
@@ -861,9 +895,22 @@ $rotation=$bdd->prepare("SELECT count(bl) from transfert_debarquement where id_p
   <?php } ?>
 
   <?php  if(empty($aff['id_register_manif']) and empty($aff['dates'])) { 
-   
+   $affiche_som=afficher_total_deb_vrac($bdd,$produit,$poids_sac,$navire,$destination,$statut,$client);
+   $aff_som=$affiche_som->fetch(); ?>
 
-    } } ?>
+   <tr style="background-color:  black; color:white !important; text-align: center; vertical-align: middle;">
+     <td colspan="6" style="color: white;">TOTAL DEBARQUER</td>
+     <td colspan="3" style="color: white;" class="cache_colonne"></td>
+     <?php if ($aff['poids_sac']!=0) { ?>
+      <td style="color: white;"><?php echo number_format($aff_som['sum(manif.sac)'], 3,',',' '); ?></td>
+    <?php } ?>
+    <td style="color: white;"><?php echo number_format($aff_som['sum(pb.poids_net)'], 3,',',' '); ?></td>
+    <td colspan="2"></td>
+    <td class="cache_colonne"></td>
+   </tr>
+
+
+   <?php  } } ?>
 
 
  <?php  } // FERMETURE FUNCTION ?>

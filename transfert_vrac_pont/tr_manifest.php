@@ -472,9 +472,9 @@ $navire_initiale=$nav_ex[0];
       
     </div>
 
-<div class="modal fade" id="form_poids_pont" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" >
-    <div class="modal-content">
+<div class="modal fade" id="form_poids_pont" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+  <div class="modal-dialog" style="max-width: 800px;">
+    <div class="modal-content" >
       <div class="modal-header bg-primary">
         <center>
         <h2 class="modal-title fs-5 text-white text-center" id="exampleModalLabel " style="text-align:center; ">Pont Bascule</h2></center>
@@ -488,7 +488,7 @@ $navire_initiale=$nav_ex[0];
         <form method="POST">
          
 
-<div id='element_pont'>
+<div id='element_pont' class="row">
    <div class="mb-3">
            <label>BL</label>
         <input type="number" class="form-control"   name="sacm"  id="bl_pont"  value="0" 
@@ -756,28 +756,28 @@ $navire_initiale=$nav_ex[0];
 
  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script src="js/afficher_tableau_bl.js"></script>
-<script src="js/afficher_formulaire_bl.js"></script>
-<script src="js/afficher_liste_camion.js"></script>
-<script src="js/afficher_form_pont.js"></script>
-<script src="js/afficher_form_pont.js"></script>
-<script src="js/afficher_tableau_bl_pont.js"></script>
-<script src="js/choix_navire_pont.js"></script>
+<script src="js/afficher_tableau_bl.js?=<?php echo time(); ?>"></script>
+<script src="js/afficher_formulaire_bl.js?=<?php echo time(); ?>"></script>
+<script src="js/afficher_liste_camion.js?=<?php echo time(); ?>"></script>
+<script src="js/afficher_form_pont.js?=<?php echo time(); ?>"></script>
+<script src="js/afficher_form_pont.js?=<?php echo time(); ?>"></script>
+<script src="js/afficher_tableau_bl_pont.js?=<?php echo time(); ?>"></script>
+<script src="js/choix_navire_pont.js?=<?php echo time(); ?>"></script>
 
-<script src="js/transport/recherche_camion.js"></script>
-<script src="js/transport/recherche_remorque.js"></script>
-<script src="js/transport/recherche_chauffeur.js"></script>
+<script src="js/transport/recherche_camion.js?=<?php echo time(); ?>"></script>
+<script src="js/transport/recherche_remorque.js?=<?php echo time(); ?>"></script>
+<script src="js/transport/recherche_chauffeur.js?=<?php echo time(); ?>"></script>
 
-<script src="js/crud/ajouter_bl.js"></script>
-<script src="js/crud/delete_bl.js"></script>
-<script src="js/crud/modifier_bl.js"></script>
-<script src="js/crud/afficher_situation.js"></script>
-<script src="js/crud/ajout_poids_pont.js"></script>
-<script src="js/crud/update_bl_pont.js"></script>
-<script src="js/crud/update_pont.js"></script>
-<script src="js/crud/delete_bl_pont.js"></script>
+<script src="js/crud/ajouter_bl.js?=<?php echo time(); ?>"></script>
+<script src="js/crud/delete_bl.js?=<?php echo time(); ?>"></script>
+<script src="js/crud/modifier_bl.js?=<?php echo time(); ?>"></script>
+<script src="js/crud/afficher_situation.js?=<?php echo time(); ?>"></script>
+<script src="js/crud/ajout_poids_pont.js?=<?php echo time(); ?>"></script>
+<script src="js/crud/update_bl_pont.js?=<?php echo time(); ?>"></script>
+<script src="js/crud/update_pont.js?=<?php echo time(); ?>"></script>
+<script src="js/crud/delete_bl_pont.js?=<?php echo time(); ?>"></script>
 
-<script src="js/choix_navire_situation.js"></script>
+<script src="js/choix_navire_situation.js?=<?php echo time(); ?>"></script>
 
   <script type="text/javascript">
       function descendre_dernier_enregistrement(){

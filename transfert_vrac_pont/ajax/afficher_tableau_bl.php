@@ -534,7 +534,7 @@ while($rown=$element_forms->fetch()){
         
 
          <center>
-        <a  class="btn btn-primary" style="text-align: center;" name="register" id="register" data-role="btn_register" >enregistrer</a></center>
+        <a  class="btn btn-primary" style="text-align: center;" name="register" id="register" data-role="btn_register" >enregistrer</a> <a  class="btn btn-primary" style="text-align: center;" name="register" id="register" data-role="btn_update" >update</a> </center>
 </form> 
       </div>   
       <div class="modal-footer">

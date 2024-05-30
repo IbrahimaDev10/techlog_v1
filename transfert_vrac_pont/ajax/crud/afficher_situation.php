@@ -198,7 +198,8 @@
      $net_marchand_ROB=$manif['sum(poids)']-$deb_ROB['sum(pb.poids_net)'];
 
           ?>
-          <?php if(!empty($row['cales']) and !empty($row['produit']) and !empty($row['poids_sac']) ){ 
+          <?php //if(!empty($row['cales']) and !empty($row['produit']) and !empty($row['poids_sac']) or $row['poids_sac']!='NULL')
+          if(!empty($row['cales']) AND !empty($row['produit']) and $row['poids_sac']!=''){ 
                   
                  
                    $somme_net_marchand_TOT = 0;
@@ -208,6 +209,7 @@
 
             ?>
          <tr class="cellule">
+
           <?php if($nom_cale!=$row['cales']){
                     $row_cale=0;
                     $nom_cale=$row['cales'];
@@ -218,7 +220,7 @@
                       # code...
                     }
                   } ?>
-          <td rowspan="<?php echo /*$row_cale-$soustraction;*/$rows_deb['nombre_de_lignes']; ?>"><?php echo $row['cales']; ?>  </td>
+          <td rowspan="<?php echo $rows_deb['nombre_de_lignes']; ?>"><?php echo $row['cales']; ?>  </td>
          <?php } ?>
 
          <td ><?php echo $row['produit']; ?>  </td>
@@ -233,7 +235,7 @@
                       # code...
                     }
                   } ?>
-          <td  rowspan="<?php echo /*$row_manifest-$soustraction+1;*/ $rows_deb['nombre_de_lignes']+1; ?>" <?php echo filtrage_rob($proprietaire); ?>><?php echo number_format($manif['sum(poids)'], 3,',',' '); ?><?php echo /*$row_manifest-$soustraction+1;*/ $rows_deb['nombre_de_lignes']+1; ?> </td>
+          <td  rowspan="<?php echo /*$row_manifest-$soustraction+1;*/ $rows_deb['nombre_de_lignes']+1; ?>" <?php echo filtrage_rob($proprietaire); ?> ><?php echo number_format($manif['sum(poids)'], 3,',',' '); ?><?php echo /*$row_manifest-$soustraction+1;*/ $rows_deb['nombre_de_lignes']+1; ?> </td>
          <?php } ?>
          
          <?php
@@ -332,7 +334,7 @@
 
  ?>
 
- <?php if(!empty($row['cales']) and empty($row['produit']) and empty($row['poids_sac']) ){ ?>
+ <?php  if(!empty($row['cales']) AND empty($row['produit']) and $row['poids_sac']==''){  ?>
          <tr class="cellule_st">
           <td colspan="2"> TOTAL <?php echo $row['cales']; ?>  </td>
           <td ><?php echo $sac_ST24h; ?></td>
@@ -342,7 +344,7 @@
           </tr> 
  <?php } ?>
 
- <?php if(empty($row['cales']) and empty($row['produit']) and empty($row['poids_sac']) ){ 
+ <?php  if(empty($row['cales']) AND empty($row['produit']) and $row['poids_sac']==''){ 
      $manifeste_TOTAL=manifeste_TOTAL($bdd,$navire);
      $manif_T=$manifeste_TOTAL->fetch();  ?>
   <tr style="background: black; color: white; text-align: center;">  
@@ -366,9 +368,9 @@
       </div>    
 <br><br>
 
-<div class="table-responsive" style="background: white;" >
-  <h6>NAVIRE <?php echo $navire ?> <?php echo $soustraction; ?></h6>
- <h6>SITUATION DU DEBARQUEMENT PAR PRODUIT DU <?php echo $_POST['idDate']; ?> </h6>        
+<div class="table-responsive" style="background: white; border-radius: 15px;" >
+  <h6>NAVIRE <?php echo $navire ?> </h6>
+ <h6>SITUATION DU DEBARQUEMENT PAR PRODUIT DU <?php echo $date_deb; ?> </h6>        
 
  <table class='table table-hover table-bordered ' id='table' >";
     
@@ -380,8 +382,9 @@
       
 
       <td id="colLibeles" scope="col"  rowspan="2"  >PRODUIT</td>
+      <td id="colManifeste"  >MANIFESTE</td>
       <td id="colLibeles" scope="col"  rowspan="2"  >CALES</td>
-      <td id="colManifeste"  >MANIFESTE</td> 
+       
       <td scope="col"  id="colDeb24H" colspan="2" >DEB 24H</td>
       <td scope="col"  id="colDebTOTAL"  colspan="2"> TOTAL DEB</td>
       <td scope="col"  id="colDebTOTAL"  > ROB</td>
@@ -407,3 +410,177 @@
          </tr>
          </thead> 
          <tbody>
+
+    <?php    
+           $nom_produit='NULL';
+           $val_poids_sac='NULL';
+           $rowp=0;
+
+           $rob_produit='NULL';
+           $val_poids_sac_rob='NULL';
+           $rowrob=0;
+
+       $produit=produit($bdd,$navire); 
+        
+         $produits=$produit->fetchAll(PDO::FETCH_ASSOC);
+         foreach($produits as $row){
+          $id_produit=$row['id_produit'];
+          $poids_sac=$row['poids_sac'];
+          $cale_deb=$row['id_dec'];
+
+              $rowspan_deb_produit=rowspan_deb_produit($bdd,$navire,$id_produit,$poids_sac);
+              $rows_deb_prod=$rowspan_deb_produit->fetch();
+
+             $manifeste_produit= manifeste_produit($bdd,$navire,$id_produit,$poids_sac);
+             $manif_prod=$manifeste_produit->fetch();
+
+
+
+
+               if(!empty($row['produit']) and  $row['poids_sac']!='' and !empty($row['cales']) and !empty($row['id_dec'])){
+
+                ?>
+                <tr style="text-align: center; vertical-align: middle;">
+                  <?php if($nom_produit!=$row['produit'] or $val_poids_sac!=$row['poids_sac']){
+                    $nom_produit=$row['produit'];
+                    $val_poids_sac=$row['poids_sac'];
+                   
+                    foreach ($produits as $r ) {
+                      if($r['produit']===$nom_produit and !empty($r['produit']) and $r['poids_sac']===$val_poids_sac){
+                        $rowp++;
+                      # code...
+                    }
+                  } ?>
+          <td rowspan="<?php echo $rows_deb_prod['nombre_de_lignes']; ?>"><?php echo $row['produit']; ?> <?php if($row['poids_sac']!=0){ echo $row['poids_sac'].' KG';} ?> </td>
+          <td rowspan="<?php echo $rows_deb_prod['nombre_de_lignes']+1; ?>"><?php echo number_format($manif_prod['sum(dis.quantite_poids)'],3,',',' ')  ?>  </td>
+         <?php } ?>
+         <td><?php echo $row['cales'] ?></td>
+
+         <?php $deb_produit_24H=deb_produit_24H($bdd,$navire,$id_produit,$poids_sac,$date_deb,$cale_deb);
+               $deb_produit_TOT=deb_produit_TOT($bdd,$navire,$id_produit,$poids_sac,$date_deb,$cale_deb);
+               while($deb_prod_24h=$deb_produit_24H->fetch()){ 
+                     $deb_prod_TOT=$deb_produit_TOT->fetch();
+
+                     $net_marchand=  $deb_prod_24h['sum(pb.poids_net)'];
+                     $sac_24h=  $deb_prod_24h['sum(td.sac)'];
+
+                     $net_marchand_TOT=  $deb_prod_TOT['sum(pb.poids_net)'];
+                     $sac_24h_TOT=  $deb_prod_TOT['sum(td.sac)'];
+
+                 //ICI ON UTILISE LA REQUETE SOUS TOTALE DU POIDS POUR LE SOUSTRAIRE AU POIDS NET TOTALE AFIN D'avoir le rob
+                     $deb_produit_ST_TOT=deb_produit_ST_TOT($bdd,$navire,$id_produit,$poids_sac,$date_deb);
+                     $deb_prod_ST_TOT_ROB=$deb_produit_ST_TOT->fetch();
+
+                     $net_marchand_TOT=  $deb_prod_ST_TOT_ROB['sum(pb.poids_net)'];
+
+                     //rob
+                     $rob_net=$manif_prod['sum(dis.quantite_poids)']-$net_marchand_TOT;
+
+
+                ?>
+                <td><?php echo number_format($sac_24h,0,',',' ') ?></td>
+                <td><?php echo number_format($net_marchand,3,',',' ') ?></td>
+                <td><?php echo number_format($sac_24h_TOT,0,',',' ') ?></td>
+                <td><?php echo number_format($net_marchand_TOT,3,',',' ') ?></td>
+              
+               
+              
+             
+
+             <?php // colonne rob 
+             if($rob_produit!=$row['produit'] or $val_poids_sac_rob!=$row['poids_sac']){
+                    $rob_produit=$row['produit'];
+                    $val_poids_sac_rob=$row['poids_sac'];
+                   
+                    foreach ($produits as $r ) {
+                      if($r['produit']===$rob_produit and !empty($r['produit']) and $r['poids_sac']===$val_poids_sac_rob){
+                        $rowrob++;
+                      # code...
+                    }
+                  } ?>
+          <td rowspan="<?php echo $rows_deb_prod['nombre_de_lignes']+1; ?>"> <?php echo number_format($rob_net,3,',',' '); ?> </td>
+        
+         <?php } ?>
+       </tr>
+       <?php } ?>
+
+       <?php } ?>
+        <?php  if(!empty($row['produit'])  and $row['poids_sac']!='' AND empty($row['cales']) AND empty($row['id_dec'])){  ?>
+         <tr class="cellule_st">
+          <td > TOTAL <?php echo $row['produit']; ?> <?php if($row['poids_sac']!=0){ echo $row['poids_sac'].' KG';} ?> </td>
+           <td >  </td>
+
+           <?php  
+           $deb_produit_ST_24H=deb_produit_ST_24H($bdd,$navire,$id_produit,$poids_sac,$date_deb);
+               $deb_produit_ST_TOT=deb_produit_ST_TOT($bdd,$navire,$id_produit,$poids_sac,$date_deb);
+               while($deb_prod_ST_24h=$deb_produit_ST_24H->fetch()){ 
+                     $deb_prod_ST_TOT=$deb_produit_ST_TOT->fetch();
+
+                     $net_marchand=  $deb_prod_ST_24h['sum(pb.poids_net)'];
+                     $sac_24h=  $deb_prod_ST_24h['sum(td.sac)'];
+
+                     $net_marchand_TOT=  $deb_prod_ST_TOT['sum(pb.poids_net)'];
+                     $sac_24h_TOT=  $deb_prod_ST_TOT['sum(td.sac)'];
+
+                     //rob
+                     
+
+
+                ?>
+                <td><?php echo number_format($sac_24h,0,',',' ') ?></td>
+                <td><?php echo number_format($net_marchand,3,',',' ') ?></td>
+                <td><?php echo number_format($sac_24h_TOT,0,',',' ') ?></td>
+                <td><?php echo number_format($net_marchand_TOT,3,',',' ') ?></td>
+              <?php } ?>
+          
+
+        <?php } ?>
+
+
+                <?php  if(empty($row['produit'])  and $row['poids_sac']=='' AND empty($row['cales']) AND empty($row['id_dec'])){  ?>
+         <tr style="background: black; color: white; text-align: center;">
+          <td > TOTAL   </td>
+          
+
+           <?php  
+           $deb_produit_GEN_24H=deb_produit_GEN_24H($bdd,$navire,$date_deb);
+               $deb_produit_GEN_TOT=deb_produit_GEN_TOT($bdd,$navire,$date_deb);
+               while($deb_prod_GEN_24H=$deb_produit_GEN_24H->fetch()){ 
+                     $deb_prod_GEN_TOT=$deb_produit_GEN_TOT->fetch();
+
+                   $manifeste_produit_TOT=  manifeste_produit_TOT($bdd,$navire);
+
+                   $manifeste_TOT=$manifeste_produit_TOT->fetch();
+
+                     $net_marchand=  $deb_prod_GEN_24H['sum(pb.poids_net)'];
+                     $sac_24h=  $deb_prod_GEN_24H['sum(td.sac)'];
+
+                     $net_marchand_TOT=  $deb_prod_GEN_TOT['sum(pb.poids_net)'];
+                     $sac_24h_TOT=  $deb_prod_GEN_TOT['sum(td.sac)'];
+
+                     $rob_net=$manifeste_TOT['sum(dis.quantite_poids)']-$net_marchand_TOT;
+
+                     //rob
+                     
+
+
+                ?>
+                <td> <?php echo number_format($manifeste_TOT['sum(dis.quantite_poids)'],3,',',' '); ?></td>
+                <td> </td>
+                <td><?php echo number_format($sac_24h,0,',',' ') ?></td>
+                <td><?php echo number_format($net_marchand,3,',',' ') ?></td>
+                <td><?php echo number_format($sac_24h_TOT,0,',',' ') ?></td>
+                <td><?php echo number_format($net_marchand_TOT,3,',',' ') ?></td>
+                 <td > <?php echo number_format($rob_net,3,',',' '); ?> </td>
+              <?php } ?>
+          
+
+        <?php } ?>
+
+       <?php  
+              } //fermeture foreach debut   ?> 
+
+
+         </tbody>
+        </table>
+       </div>  

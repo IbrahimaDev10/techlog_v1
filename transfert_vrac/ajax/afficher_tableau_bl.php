@@ -237,7 +237,7 @@ while($rown=$element_forms->fetch()){
         
 
 <div class="modal fade" id="enregistrement" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-  <div class="modal-dialog modal-fullscreen" style="z-index: 1;">
+  <div class="modal-dialog modal-register" style="z-index: 1;">
     <div class="modal-content" style=" border: solid; border-color:rgb(0,141,202); " >
       <div class="modal-header bg-primary">
          <center>
@@ -251,76 +251,68 @@ while($rown=$element_forms->fetch()){
         
       
       <div class="modal-body"  >
-              
+            
         <form method="POST" >
-
-   <div class="mb-3">
-     <div id="info_bl">
+          <div class="mb-3">
+<div class="row">  
+   
+     <div id="info_bl" >
       <span id='num_du_bl'></span>
      </div>
-     <label>BL</label>
-      <input class="inputform" type="text"  style=" margin-bottom: 20px; margin-top: 5px;" name="numero_bl"  id="blsain" placeholder="numero bl" >
-
+     <div id="info_bl" class="col-lg-2">
+     <label>BL</label> <br> 
+      <input class="" type="text"   name="numero_bl"  id="blsain" placeholder=" bl" style="width: 60px;" >
+</div>
 
       
-  <input type="text" class="form-control"  placeholder="navire"  name="navire"  id="naviresain" hidden="true" value=<?php  
+  
+
+   
+    <div  class="col-lg-2">
+      <label   >date</label> <br>
+     
+      
+  <input type="date"     name="date" id="datesain">
+</div>
+<div  class="col-lg-2">
+   <label  >heure</label><br> 
+   <input type="time"    name="heure" id="heuresain" >
+</div>
+
+
+
+  
+ <input type="text" class="form-control"  placeholder="navire"  name="navire"  id="naviresain" hidden="true" value=<?php  
         echo $rown['id_navire'];
     ?> > 
     <input type="text" class="form-control"  placeholder="type"  name="type" hidden="true"  id="typesain"  value=<?php  
         echo $rown['type'];
     ?> > 
 
-</div>
 
-   <div class="mb-3">
+
+ 
      
   <input type="text" class="form-control"  placeholder="produit" name="produit"  id="produitsain" hidden="true"    value=<?php echo $rown['id_produits'];  ?> >
-</div>
 
-   <div class="mb-3">
      
   <input type="text" class="form-control"  placeholder="id_dis" name="id_di"  id="id_dissain" hidden="true" value=<?php  
         echo $rown['id_dis'];
     ?> >
-</div>
 
 
-   <div class="mb-3">
+
+  
       
   <input type="text" class="form-control"  placeholder="produit" name="poids"  id="poids_sacssain" hidden="true" 
          value=<?php 
         echo $rown['poids_kgs'];  ?> 
      >
-</div>
-
-   <div class="mb-3">
-    
-      <label  for="exampleFormControlInput1" class="form-label">date</label>
-      <label style="float: right;" for="exampleFormControlInput1" class="form-label">heure</label>
-      <br>
-  <input type="date" class="inputselect"    name="date" id="datesain">
-
+     
   
-      
-  <input type="time" class="inputselect"   name="heure" id="heuresain" style="float: right;">
-</div>
-
-   <div class="mb-3">
-    <select class="inputselect" name="declaration"  style="height: 30px;" id="declarationsain">
-    <option value="" > choisir une declaration <?php  echo $poids_sac; ?></option>
-    <?php
-         $resdes=declaration_vrac($bdd,$produit,$poids_sac,$navire,$destination,$client);
-              
-     while($dec=$resdes->fetch()){ 
-    /* $id_declaration=$dec['id_declaration'];
-     $suivi_dec_select=suivi_declaration_select($bdd,$produit,$poids_sac,$navire,$destination,$id_declaration);
-     $suivi=$suivi_dec_select->fetch();
-     $restant=$suivi['poids']-$suivi['sum(td.poids)'];  */     ?> 
-    <option value=<?php  echo $dec['id_declaration']; ?> ><?php  echo $dec['num_declaration']; ?> (restant=<span class="restant"><?php //echo $restant; ?></span>) </option>  
-   <?php } ?>
-    </select>
-
-  <select class="inputselect"  name="cale" id="calesain" style="float: right;" required>
+<div class="col-lg-2"> 
+   <label>Cale </label><br>  
+  <select class="inputform"  name="cale" id="calesain" style="height: 30px;" >
     <option value="">Cale</option>
 
     <?php
@@ -340,6 +332,27 @@ while($rown=$element_forms->fetch()){
 
 </div>
 
+   <div class="col-lg-4">
+    <label>Declaration </label><br>  
+    <select  name="declaration"  style="height: 30px; " id="declarationsain">
+    <option value="" > choisir une declaration <?php  echo $poids_sac; ?></option>
+    <?php
+         $resdes=declaration_vrac($bdd,$produit,$poids_sac,$navire,$destination,$client);
+              
+     while($dec=$resdes->fetch()){ 
+    /* $id_declaration=$dec['id_declaration'];
+     $suivi_dec_select=suivi_declaration_select($bdd,$produit,$poids_sac,$navire,$destination,$id_declaration);
+     $suivi=$suivi_dec_select->fetch();
+     $restant=$suivi['poids']-$suivi['sum(td.poids)'];  */     ?> 
+    <option value=<?php  echo $dec['id_declaration']; ?> ><?php  echo $dec['num_declaration']; ?> (restant=<span class="restant"><?php //echo $restant; ?></span>) </option>  
+   <?php } ?>
+    </select> 
+  </div>
+
+
+
+
+
 <div class="mb-3">
  
   <select class="inputselect" id='bon'  style="display:none;" >
@@ -352,22 +365,40 @@ while($rown=$element_forms->fetch()){
     
   </select>
 </div>
+</div>
+</div>
+
 
 <div style="background: rgb(248,248,248);">
-   <div class="mb-3">
+   
       <center>  
     <h6 style="background: white; color: blue;">TRANSPORT</h6>
    
  
   </center> 
- 
-  <input style=""  class="inputtransporteurs1" type="text" id="myInput"  placeholder="SAISIR LE N° DU TRACTEUR"  onkeyup="filtreca();" autocomplete="off"> <a style="height: 10px; font-size:10px; border: none; text-align: center !important; width:10px;"  data-role='nouveau_camion' ><span style="justify-content:center; margin-left:1px; font-weight: bold; font-size:10px; text-align: center !important; border-radius: 50%; " class="btn btn-danger text-white  "> + </span></a>
+  <div class="mb-3">
+    <div class="row"> 
+ <div class="col-lg-3">  
+  <input style="max-width: 100px;"   type="text" id="myInput"  placeholder=" TRACTEUR"  onkeyup="filtreca();" autocomplete="off"> <a style="height: 10px; font-size:5px; border: none; text-align: center !important; "  data-role='nouveau_camion' ><span style="justify-content:center; margin-left:1px; font-weight: bold; font-size:10px; text-align: center !important; border-radius: 50%; " class="btn btn-danger text-white  "> + </span></a>
+</div>
 
-  <input style=""  class="inputtransporteurs2" type="text" id="InputRemorque"  placeholder="SAISIR LE N° DE REMORQUE"  onkeyup="filtreRemorque();" autocomplete="off"> <a style="height: 10px; font-size:10px; border: none; text-align: center !important;"   data-role='nouveau_remorque' ><span  style="justify-content:center; font-weight: bold; font-size:10px; text-align: center !important; border-radius: 50%;  margin-left: 2px; " class="btn btn-danger text-white  "> + </span></a><br>
-  <div  id="camionList" style="background: white; display: none; " >
+
+
+ <div class="col-lg-3"> 
+  <input    type="text" id="InputRemorque"  placeholder=" REMORQUE"  onkeyup="filtreRemorque();" autocomplete="off" style="max-width: 100px;"> <a style="height: 10px; font-size:5px; border: none; text-align: center !important;"   data-role='nouveau_remorque' ><span  style="justify-content:center; font-weight: bold; font-size:10px; text-align: center !important; border-radius: 50%;   " class="btn btn-danger text-white  "> + </span></a>
+</div>
+
+  <div class="col-lg-6">
+<input style="width: 300px;" class="" type="text" id="myInputc"  placeholder="chauffeur"  onkeyup="filtreChau();" autocomplete="off"> <a style="height: 10px; font-size:10px; border: none; text-align: center !important;" data-role='nouveau_chauffeur'   ><span style="justify-content:center; font-weight: bold; font-size:10px; text-align: center !important; border-radius: 50%;" class=" btn btn-danger text-white bg-danger"> + </span></a>
+</div> 
+</div>
+  <div class="col-lg-12"  id="camionList" style="background: white; display: none; " >
   </div>
-  <div   id="camionListRemorque" style="background: white; display: none; text-align: center;" >
+  <div class="col-lg-12"  id="camionListRemorque" style="background: white; display: none; text-align: center; float: right;" >
   </div>
+</div>
+
+
 
   
 
@@ -389,11 +420,8 @@ while($rown=$element_forms->fetch()){
 
 <input type="" name="input2" id="val_input2" hidden='true'  >
 <input type="" name="input2" id="val_input_remorque" hidden="true"  >
- <center> <br>  
-  
-<h6 style="color: blue;">CHAUFFEUR  </h6> 
-</center> 
-<input class="inputtransportform" type="text" id="myInputc"  placeholder="chauffeur" style="width: 80%;" onkeyup="filtreChau();" autocomplete="off"> <a data-role='nouveau_chauffeur' class="btn btn-danger"  ><span class="text-white bg-danger"> + </span></a>
+ 
+
 
 <div id="camionListc" style="background: white; display: none;" >
   
@@ -406,20 +434,13 @@ while($rown=$element_forms->fetch()){
 
   
 </div>
- </div>
 
 
 
 
 
-<div class="mb-3">
-    
-   
 
 
-
-</div>
-   <div class="mb-3">
   <input type="text" class="form-control"  placeholder="" name="client"  id="clientsain" hidden="true"  value=<?php  
         echo $rown['id_client'];
     ?> >
@@ -427,22 +448,22 @@ while($rown=$element_forms->fetch()){
         echo $rown['id_mangasin'];
     ?> >
 
-</div>
+
 
 <?php if($rown['des_douane']=="LIVRAISON"){ ?>
 
 
- <div class="mb-3">
+ 
  
   <input class="inputform" type="text"  id="destinatairesain" placeholder="destinataire" name="destinataire"  >
-</div>
+
 <?php 
 }
  if($rown['des_douane']=="TRANSFERT"){  ?>
-  <div class="mb-3">
+  
  
   <input type="text" class="form-control" id="destinatairesain" placeholder="destinataire" name="destinataire" value="AUCUN" hidden="true" >
-</div>
+
 
 
 <?php  
@@ -451,12 +472,20 @@ while($rown=$element_forms->fetch()){
 
   
 <?php //if($rown['type']=="SACHERIE" and $rown['poids_kg']!=0){ ?>
-  <div class="mb-3" id='sac_cacher' <?php  if($rown['poids_kgs']==0 ){echo "style='display:none;'";} ?>>
-      <label for="exampleFormControlInput1" class="form-label">nombre sac</label>
+  <div class="mb-3" id='sac_cacher' <?php  if($rown['poids_kgs']==0 ){echo "style='display:none;'";} ?>> </div>
+  <div class="mb-3"> 
+    <div class="row">
+      <div class="col-lg-6" <?php  if($rown['poids_kgs']==0 ){echo "style='display:none;'";} ?>>
+      <label for="exampleFormControlInput1" class="form-label">nombre sac</label><br> 
   <input style="width:50%;" class="inputform" type="number"   placeholder="0" name="sac" id="sacsain" required>
+</div>
+</div>
+</div>
+
  
-  
+   
    <center>
+    
    <a  data-role='detail_chargement' style="background:blue; color:white; display: block; width: 50%;  "  >detail du chargement </a>
  </center>
   </div>
@@ -473,10 +502,11 @@ while($rown=$element_forms->fetch()){
             <?php //$rescale=cale($bdd,$produit,$poids_sac,$navire,$destination);
     // while($res=$rescale->fetch()){ ?> 
      <label><?php //echo $res['cales']; ?></label>
-     <input type="" name=""><br><br>
+     <input type="" name=""><br>
    <?php //} ?>
          
         </div>
+
 
         
         
@@ -496,51 +526,17 @@ while($rown=$element_forms->fetch()){
 
 <input type="texte" id='input_des_douane' value="<?php echo $rown['des_douane'] ?>" style='display:none ;' >
 
-
-<?php  //if($rown['type']=="VRAQUIER" and $rown['poids_kg']==0){ ?>
-<!-- <div class="mb-3"  >
-      <label for="exampleFormControlInput1" class="form-label">nombre_sac</label>
-  <input class="inputform" type="text"  placeholder="0" value="0" name="sac" id="sacsain" >
-</div>
-<div class="mb-3" id='poids_cacher'>
-      <label for="exampleFormControlInput1" class="form-label">poids</label>
-  <input class="inputform" type="text" class="form-control" id="poidssain" placeholder="poids" name="poids_s" >
-
-</div> !-->
-
-<?php //} ?>
-<?php  //if($rown['type']=="VRAQUIER" and $rown['poids_kg']!=0){ ?>
-
-<!-- <div class="mb-3" >
-      <label for="exampleFormControlInput1" class="form-label">nombre_sac</label>
-  <input class="inputform" type="text"  id="sacsain" placeholder="0"  name="sac"  >
-</div>
-<div class="mb-3" id='poids_cacher'>
-      <label for="exampleFormControlInput1" class="form-label">poids</label>
-  <input class="inputform" type="text"  id="poidssain" placeholder="poids" name="poids_s" >
-
-</div> !-->
-
-<?php //} ?>
-
-
-
-
-
-
    <div class="mb-3">
 
 
         
 
          <center>
-        <a  class="btn btn-primary" style="text-align: center;" name="register" id="register" data-role="btn_register" >enregistrer</a></center>
+        <a  class="btn btn-primary" style="text-align: center;" name="register" id="register" data-role="btn_register" >enregistrer</a> </center>
 </form> 
+</div>
       </div>   
-      <div class="modal-footer">
  
-        
-      </div>
     </div>
   </div>
 </div>

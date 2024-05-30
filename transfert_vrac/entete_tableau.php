@@ -50,16 +50,16 @@
     <tr class="headers" id="entete_table_sain" style="vertical-align: middle; "   >
       <td  scope="col" style="width: 1%;"  >ROTA <br> TION</td>
       <td  scope="col"   >DATES </td>
-      <td  scope="col"   >HEURE</td>
+      <td class="cache_colonne"  scope="col"   >HEURE</td>
       <td  scope="col"  >CALE  </td>
       <td  scope="col"  > N° BL </td>
        <?php if($resfil['des_douane']=='LIVRAISON'){ ?>
        <td  scope="col"  >BON FOURNISSEUR</td>
      <?php } ?>
       <td  scope="col"  >CAMIONS</td>
-      <td  scope="col"  >CHAUFFEUR</td>
+      <td class="cache_colonne"  scope="col"  >CHAUFFEUR</td>
       
-          <td  scope="col"  >TELEPHONE</td>
+          <td class="cache_colonne" scope="col"  >TELEPHONE</td>
       <td  scope="col"  >N°DEC / TRANSFERT </td>
       <?php 
         if(($resfil['poids_kgs']!=0 and !empty($resfil['poids_kgs']))   ){
@@ -86,7 +86,7 @@
 
       } ?>
      
-     <td  >OBSERVATION</td>
+     <td class="cache_colonne" >OBSERVATION</td>
      <td  id="cacher_cellule" >ACTION</td>
 
 

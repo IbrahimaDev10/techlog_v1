@@ -41,7 +41,7 @@
                return $rowspan;
           }
 
-                         function rowspan_deb($bdd,$navire,$cale_deb){
+      function rowspan_deb($bdd,$navire,$cale_deb){
                $rowspan_deb=$bdd->prepare(" SELECT COUNT(*) AS nombre_de_lignes
              FROM (
     SELECT count(id_produit) AS count_id_produit
@@ -149,16 +149,148 @@ function manifeste_TOTAL($bdd,$navire){
 
  $produit=$bdd->prepare("SELECT dc.id_dec, dc.cales,sum(td.poids),sum(dc.poids), td.cale, td.poids_sac,td.id_produit, p.id,p.produit,p.qualite FROM declaration_chargement as dc 
   
-  left join transfert_debarquement as td on td.cale=dc.id_dec and td.id_navire=dc.id_navire
-  left join produit_deb as p on p.id=td.id_produit
+  inner join transfert_debarquement as td on td.cale=dc.id_dec and td.id_navire=dc.id_navire
+  inner join produit_deb as p on p.id=td.id_produit
 
-         where dc.id_navire=? /*and td.dates=? */  group by dc.cales,p.produit,td.poids_sac with rollup ");
+         where dc.id_navire=? /*and td.dates=? */  group by p.produit,td.poids_sac,dc.cales,dc.id_dec with rollup ");
           $produit->bindParam(1,$navire);  
          // $cale->bindParam(2,$date_deb); 
           
           $produit->execute();
           return $produit;
           } 
+
+//cette fonction rowspan_deb_produit parcours la table transfert_debarquement et compte les nombres de lignes qui existe en regroupant produit poids_sac cale pour le rowspan du produit
+             function rowspan_deb_produit($bdd,$navire,$id_produit,$poids_sac){
+               $rowspan_deb_produit=$bdd->prepare(" SELECT COUNT(*) AS nombre_de_lignes
+             FROM (
+    SELECT count(cale) AS count_cale
+    FROM transfert_debarquement
+    WHERE id_navire = ? and id_produit=? and poids_sac=?
+    GROUP BY id_produit, poids_sac,cale
+) AS subquery  ");
+               $rowspan_deb_produit->bindParam(1,$navire);
+               $rowspan_deb_produit->bindParam(2,$id_produit);
+                $rowspan_deb_produit->bindParam(3,$poids_sac);
+
+               $rowspan_deb_produit->execute();
+               return $rowspan_deb_produit;
+          }
+
+          function manifeste_produit($bdd,$navire,$id_produit,$poids_sac){
+
+            $manifeste_produit=$bdd->prepare("SELECT sum(dis.quantite_poids),nc.num_connaissement from dispats as dis 
+              inner join numero_connaissements as nc on nc.id_connaissement=dis.id_con_dis
+           
+              WHERE nc.id_navire=? and dis.id_produits=? and dis.poids_kgs=?
+              group by dis.id_produits, dis.poids_kgs  ");
+               $manifeste_produit->bindParam(1,$navire);
+               $manifeste_produit->bindParam(2,$id_produit);
+                $manifeste_produit->bindParam(3,$poids_sac);
+
+               $manifeste_produit->execute();
+               return $manifeste_produit;
+             }
+
+
+              function manifeste_produit_TOT($bdd,$navire){
+
+            $manifeste_produit_TOT=$bdd->prepare("SELECT sum(dis.quantite_poids),nc.num_connaissement from dispats as dis 
+              inner join numero_connaissements as nc on nc.id_connaissement=dis.id_con_dis
+           
+              WHERE nc.id_navire=? 
+                ");
+               $manifeste_produit_TOT->bindParam(1,$navire);
+
+          
+
+               $manifeste_produit_TOT->execute();
+               return $manifeste_produit_TOT;
+             }
+
+
+                    function deb_produit_24H($bdd,$navire,$id_produit,$poids_sac,$date_deb,$cale_deb){
+               $deb_produit_24H=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=? and td.id_produit=? AND td.poids_sac=? and pb.date_pont=? and td.cale=? ");
+               $deb_produit_24H->bindParam(1,$navire);
+               $deb_produit_24H->bindParam(2,$id_produit);
+               $deb_produit_24H->bindParam(3,$poids_sac);
+               $deb_produit_24H->bindParam(4,$date_deb);
+                $deb_produit_24H->bindParam(5,$cale_deb);
+              
+               $deb_produit_24H->execute();
+               return $deb_produit_24H;
+          }
+
+               function deb_produit_TOT($bdd,$navire,$id_produit,$poids_sac,$date_deb,$cale_deb){
+               $deb_produit_TOT=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               left join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=? and td.id_produit=? AND td.poids_sac=? and pb.date_pont<=? and td.cale=? ");
+               $deb_produit_TOT->bindParam(1,$navire);
+               $deb_produit_TOT->bindParam(2,$id_produit);
+               $deb_produit_TOT->bindParam(3,$poids_sac);
+               $deb_produit_TOT->bindParam(4,$date_deb);
+               $deb_produit_TOT->bindParam(5,$cale_deb);
+              
+               $deb_produit_TOT->execute();
+               return $deb_produit_TOT;
+          }
+
+
+               function deb_produit_ST_24H($bdd,$navire,$id_produit,$poids_sac,$date_deb){
+               $deb_produit_ST_24H=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=? and td.id_produit=? AND td.poids_sac=? and pb.date_pont=? ");
+               $deb_produit_ST_24H->bindParam(1,$navire);
+               $deb_produit_ST_24H->bindParam(2,$id_produit);
+               $deb_produit_ST_24H->bindParam(3,$poids_sac);
+               $deb_produit_ST_24H->bindParam(4,$date_deb);
+              
+               $deb_produit_ST_24H->execute();
+               return $deb_produit_ST_24H;
+          }
+
+               function deb_produit_ST_TOT($bdd,$navire,$id_produit,$poids_sac,$date_deb){
+               $deb_produit_ST_TOT=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=? and td.id_produit=? AND td.poids_sac=? and pb.date_pont<=? ");
+               $deb_produit_ST_TOT->bindParam(1,$navire);
+               $deb_produit_ST_TOT->bindParam(2,$id_produit);
+               $deb_produit_ST_TOT->bindParam(3,$poids_sac);
+               $deb_produit_ST_TOT->bindParam(4,$date_deb);
+              
+               $deb_produit_ST_TOT->execute();
+               return $deb_produit_ST_TOT;
+          }
+
+
+
+                         function deb_produit_GEN_24H($bdd,$navire,$date_deb){
+               $deb_produit_GEN_24H=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=?   and pb.date_pont=? ");
+               $deb_produit_GEN_24H->bindParam(1,$navire);
+              
+             
+               $deb_produit_GEN_24H->bindParam(2,$date_deb);
+              
+               $deb_produit_GEN_24H->execute();
+               return $deb_produit_GEN_24H;
+          }
+
+               function deb_produit_GEN_TOT($bdd,$navire,$date_deb){
+               $deb_produit_GEN_TOT=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=?   and pb.date_pont<=? ");
+               $deb_produit_GEN_TOT->bindParam(1,$navire);
+             
+      
+               $deb_produit_GEN_TOT->bindParam(2,$date_deb);
+              
+               $deb_produit_GEN_TOT->execute();
+               return $deb_produit_GEN_TOT;
+          }
 
 
           ?>

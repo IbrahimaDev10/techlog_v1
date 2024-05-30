@@ -23,8 +23,12 @@ $statut='sain';
 $net_pont=$poids_brut-$tare_vehicule;
 
         
-    
+    if(!empty($tare_sac)){
     $net_marchand=$net_pont/1000-$sac*$tare_sac/1000;
+  }
+      if(empty($tare_sac)){
+    $net_marchand=$net_pont/1000;
+  }
 
     $net_marchands=str_replace(',', '.', $net_marchand);
 
