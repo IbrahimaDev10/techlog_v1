@@ -776,16 +776,9 @@ color:white; font-size: 20px; border: solid; background-color: black; margin-bot
 		}
 	});
     }
-    else{
-   Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Veuillez remplir tous les champs obligatoires.',
-        confirmButtonText: 'OK'
-    });
-    }
 
-    if(num_connaissement!='' && poids!='' && produit!='' && client!=''  && id_navire!=''  && type==='VRAQUIER'){ 
+
+    if(num_connaissement!='' && poids!='' && produit!='' && client!='' && id_navire!='' && type==='VRAQUIER'){ 
 
         
         $.ajax({

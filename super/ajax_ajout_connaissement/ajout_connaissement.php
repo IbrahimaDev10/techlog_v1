@@ -1,4 +1,10 @@
-<?php require('../../database.php'); 
+<?php require('../../database.php');
+
+//require('../../ibra_framework/my_crud.php');
+
+require '../../vendor/autoload.php';
+use Pro\TechlogNewVersion\Crud;
+
     $idm=$_POST['id_navire'];
 
 $type=$_POST['type'];
@@ -58,7 +64,7 @@ $mes_connaissement->execute();
            $client=$_POST['client'];
 
      
-    
+   /* 
              $insertDispat= $bdd->prepare("INSERT INTO numero_connaissements(num_connaissement,id_navire,id_banque,id_fournisseur,poids_connaissement,id_client,categories_id_vrac) VALUES(?,?,?,?,?,?,?)");
              
 
@@ -73,7 +79,15 @@ $mes_connaissement->execute();
                $insertDispat->bindParam(7,$id_produit);
 
 
-         $insertDispat->execute();
+         $insertDispat->execute(); */
+
+     $table='numero_connaissements';
+$colonnes=['num_connaissement', 'id_navire', 'id_banque', 'id_fournisseur', 'poids_connaissement', 'id_client', 'categories_id_vrac'];
+$valeurs=[$num_connaissement, $idm, $banques, $fournisseur, $poids, $client, $id_produit];
+
+//$crud= new Crud;
+
+     Crud::insertion($bdd, $table, $colonnes, $valeurs);
 
     
     $mes_connaissement=$bdd->prepare("SELECT nc.*,b.*,af.*,c.* FROM numero_connaissements as nc LEFT join banque as b on b.id=nc.id_banque
@@ -125,16 +139,9 @@ $mes_connaissement->execute();
     </tr>
 </table>
 </div>
-<?php if($insertDispat){ ?>
+<?php //if($insert){ ?>
 
-    <script type="text/javascript">
-              Swal.fire({
-        icon: 'success',
-        title: 'Reussi',
-        text: 'Donnees enregistrees avec succes.',
-        confirmButtonText: 'OK'
-    });
-    </script>
+   
 
-<?php } ?>
+<?php //} ?>
        

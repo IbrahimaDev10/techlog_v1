@@ -453,7 +453,7 @@ $navi=$bdd->query("select * from navire_deb");
 			<!-- Logo -->
 			<div class="logo">
 				<br>	
-					<h2 class="mb-4"><img style="width: 150px; height: 100px;  border-radius: 50%; color: white;" src="../images/mylogo4.png"> </h2>
+					<h2 class="mb-4"><img style="width: 150px; height: 100px;  border-radius: 50%; color: white; background: white;" src="../img/Capt.png"> </h2>
 			</div>
 
             <ul class="side-menu">

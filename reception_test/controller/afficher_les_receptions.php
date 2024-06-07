@@ -142,8 +142,10 @@ function afficher_reception($bdd,$produit,$poids_sac,$navire,$destination){
             inner join numero_connaissements as nc on nc.id_connaissement=dis.id_con_dis
            inner join produit_deb as p on p.id=rts.id_produit
            inner join mangasin as mang on mang.id=rts.id_destination
+
            
            inner join navire_deb as nav on nav.id=rts.id_navire
+
               
 
                     WHERE nc.id_produit=? and nc.poids_kg=? and nc.id_navire=? and rts.id_destination=?   group by rts.dates, id_unique with rollup ');
@@ -160,7 +162,7 @@ function afficher_reception($bdd,$produit,$poids_sac,$navire,$destination){
 
 
     function afficher_reception_vrac($bdd,$produit,$poids_sac,$navire,$destination){
-     $afficheAvaries_ra = $bdd->prepare(' SELECT dis.*,p.produit,p.qualite, nav.navire, mang.id_mangasinier, rts.*, rts.id_destination as destination_recept, sum(rts.sac),sum(rts.poids), rts.id as id_unique,nc.id_navire,nc.poids_kg,d.num_declaration from reception_navire as rts  
+     $afficheAvaries_ra = $bdd->prepare(' SELECT dis.*,p.produit,p.qualite, nav.navire, mang.id_mangasinier, rts.*, rts.id_destination as destination_recept, sum(rts.sac),sum(rts.poids), rts.id as id_unique,nc.id_navire,nc.poids_kg,d.num_declaration, td.id_register_manif, pb.*, sum(pb.poids_net), sum(pb.poids_bruts), sum(pb.tare_vehicules) from reception_navire as rts  
             inner join declaration as d on d.id_declaration=rts.id_declaration
               
             inner join dispats as dis on dis.id_dis=d.id_bl
@@ -169,6 +171,9 @@ function afficher_reception($bdd,$produit,$poids_sac,$navire,$destination){
            inner join mangasin as mang on mang.id=rts.id_destination
            
            inner join navire_deb as nav on nav.id=rts.id_navire
+                      left join transfert_debarquement as td on td.bl=rts.bl and td.id_navire=rts.id_navire
+           left join pont_bascule as pb on pb.id_transfert=td.id_register_manif
+        /*   left join tare_sac as ts on ts.id_produit_tare=rts.id_produit */
               
 
                     WHERE dis.id_produits=? and dis.poids_kgs=? and nc.id_navire=? and rts.id_destination=?   group by rts.dates, id_unique with rollup ');
@@ -500,6 +505,15 @@ function affichage_reception($bdd,$produit,$poids_sac,$navire,$destination){
 
     <td class="colaffnull" style="background:rgb(82,82,226); color: white;"><?php echo number_format($a['sum(rts.sac)'], 0,',',' ') ?></td>
     <td class="colaffnull" style="background:rgb(82,82,226); color: white;"><?php echo number_format($a['sum(rts.poids)'], 3,',',' '); ?></td>
+
+        <?php if($type_nav['type']=='VRAQUIER'){ 
+
+     $som_net_pont_bascule=$a['sum(pb.poids_bruts)']-$a['sum(pb.tare_vehicules)'];
+      ?>
+      <td class="colaffnull" style="background:rgb(82,82,226); color: white;"><?php echo number_format($som_net_pont_bascule,0,',',' '); ?></td>
+      <td class="colaffnull" style="background:rgb(82,82,226); color: white;"><?php echo number_format($a['sum(pb.poids_net)'],3,',',''); ?></td>
+
+    <?php } ?>
     
      <td  style="background:rgb(82,82,226); color: white;"></td>
     
@@ -540,6 +554,14 @@ function affichage_reception($bdd,$produit,$poids_sac,$navire,$destination){
         
      ?> style="color: red !important;" <?php } ?> ><?php echo number_format($a['sac'], 0,',',' '); ?></td>
     <td id="<?php echo $a['id_unique'].'poids_flasque_deb' ?>" ><?php echo $a['poids'] ?></td>
+    <?php if($type_nav['type']=='VRAQUIER'){ 
+
+     $net_pont_bascule=$a['poids_bruts']-$a['tare_vehicules'];
+      ?>
+      <td><?php echo number_format($net_pont_bascule,0,',',' '); ?></td>
+      <td><?php echo number_format($a['poids_net'],3,',',''); ?></td>
+
+    <?php } ?>
 
       <td  ><a style="color: #1B2B65;"  data-role="update_recep_deb" data-id="<?php echo $a['id_unique']; ?>" ><i class="fas fa-edit">  </i></a>
          <a style="color: #1B2B65;" target="blank" name="modify"  href="fichier_reception_avaries.php?id=<?php echo $a['id_unique']; ?>" > <i class="fa fa-folder "  ></i></a>
@@ -557,6 +579,14 @@ function affichage_reception($bdd,$produit,$poids_sac,$navire,$destination){
   <td colspan="9" class="" style="background: black; color: white; font-weight: bold; text-align: center;" > TOTAL </td>
   <td  class="" style="background: black; color: white; font-weight: bold; text-align: center;" > <?php echo number_format($a['sum(rts.sac)'], 0,',',' '); ?> </td>
   <td  class="" style="background: black; color: white; font-weight: bold; text-align: center;" > <?php echo number_format($a['sum(rts.poids)'], 3,',',' '); ?> </td>
+        <?php if($type_nav['type']=='VRAQUIER'){ 
+
+     $som_net_pont_bascule=$a['sum(pb.poids_bruts)']-$a['sum(pb.tare_vehicules)'];
+      ?>
+      <td class="colaffnull" style="background: black; color: white; font-weight: bold; text-align: center;" ><?php echo number_format($som_net_pont_bascule,0,',',' '); ?></td>
+      <td class="colaffnull" style="background: black; color: white; font-weight: bold; text-align: center;" ><?php echo number_format($a['sum(pb.poids_net)'],3,',',''); ?></td>
+
+    <?php } ?>
   <td  class="" style="background: black; color: white; font-weight: bold; text-align: center;" > <?php //echo number_format($a['sum(pre.sac_mouille_ra)'], 0,',',' '); ?> </td>
  
   </tr>

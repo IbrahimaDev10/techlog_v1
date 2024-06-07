@@ -1,6 +1,7 @@
 <?php
 include('../database.php');
 
+
 header("Cache-Control: no-cache, must-revalidate");
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 	if(empty($_SESSION['profil'])){
@@ -352,7 +353,7 @@ onclick="visibleBtn()"  id="btn_pre_debarquement"
                      <div class="col col-md-6 col-lg-6">
                 <center>    
                   <!--  <a id="btn_debarquement" href="../transfert/tr_manifest" class="btn "  > <i class="fas fa-cog"> </i> !-->
-                    <a id="btn_debarquement" data-bs-target='#navire_debarquement' data-bs-toggle='modal' class="btn "  > <i class="fas fa-cog"> </i>
+                    <a <?php if($_SESSION['profil']=='pont'){ ?> href='../transfert_vrac_pont/tr_manifest' <?php } ?> id="btn_debarquement" <?php if($_SESSION['profil']=='superviseur'){ ?> data-bs-target='#navire_debarquement' data-bs-toggle='modal' <?php } ?> class="btn "  > <i class="fas fa-cog"> </i>
                         DEBARQUEMENT
                     </a>
                     
@@ -1410,6 +1411,8 @@ if(isset($_GET['z'])){
 	<script src="../assets/js/script.js"></script>
 	<script src="../assets/js/custom.js"></script>
 
+  <script src="../assets/js/ui-chartjs.js"></script>
+
 
 
   
@@ -1419,7 +1422,11 @@ if(isset($_GET['z'])){
     <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="../lib/isotope/isotope.pkgd.min.js"></script>
     <script src="../lib/lightbox/js/lightbox.min.js"></script>
-
+    <script src="js/connaissement/afficher.js?=<?php echo time(); ?>"></script>
+    <script src="js/par_receptionnaire/afficher.js?=<?php echo time(); ?>"></script>
+    <script src="js/par_destination/afficher.js?=<?php echo time(); ?>"></script>
+    <script src="js/cale/afficher.js?=<?php echo time(); ?>"></script>
+    <script src="js/declaration/afficher.js?=<?php echo time(); ?>"></script>
 
 
 
@@ -1522,7 +1529,7 @@ if(isset($_GET['z'])){
         }
 
         // Ici on va voir comment faire du post
-        xhr.open("POST", "selectDeclaration_chargement.php", true);
+        xhr.open("POST", "select_dc2.php", true);
         // Ne pas oublier ça pour le post
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         // Ne pas oublier de poster les arguments
@@ -1593,7 +1600,7 @@ if(isset($_GET['z'])){
                 }
  
                 // Ici on va voir comment faire du post
-                xhr.open("POST","selectDeclaration_chargement.php",true);
+                xhr.open("POST","select_dc2.php",true);
                 // ne pas oublier ça pour le post
                 xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
                 // ne pas oublier de poster les arguments
@@ -2311,11 +2318,11 @@ var poids_is_vrac = $('#'+id+'poids_is_vrac').text();
 
 	var cond=$('#conditionnement').val();
 	$.ajax({
-		url:'modifier_declaration2.php',
+		url:'tableau/cale/ajax/update.php',
 		method:'post',
 		data:{cale:cale,ch:ch,id:id,cond:cond,produitId:produitId,sac:sac,navire:navire,type:type,poids_is_vrac:poids_is_vrac},
 		success: function(response){
-			$('#parcale').html(response);
+			$('#body_cale').html(response);
 			/*$('#'+id).children('td[data-target=cales]').text(cale);
 		$('#'+id).children('td[data-target=nom_chargeur]').text(ch);
 		$('#'+id).children('td[data-target=conditionnement]').text(cond+' KGS');
@@ -2707,6 +2714,7 @@ if (existingOption.length > 0) {
         var decharge = $('#' + id+'type_decharge' ).text();
         var sac = $('#' + id+'sac_dis' ).text();
         var type_navire = $('#' + id+'type_navire' ).text();
+         var id_produit= $('#' + id+'id_produit_diss' ).text();
          var poids_sac = $('#' + id+'poids_sac_diss' ).text();
           var poids = $('#' + id+'poids_diss' ).text();
           var des_douane = $('#' + id+'des_douane_dis' ).text();
@@ -2733,6 +2741,7 @@ if (existingOption.length > 0) {
         $('#navire_dis').val(id_navire);
         $('#type_nav').val(type_navire);
         $('#poids_sac_dis').val(poids_sac);
+        $('#produit_dis').val(id_produit);
         $('#poids_dis').val(poids);
         $('#poids_dis').val(poids);
         $('#des_douane').val(des_douane);
@@ -2767,12 +2776,18 @@ if (existingOption.length > 0) {
         $('#dec_dis').prop('disabled','true');
         $('#id_con_dis').prop('disabled','true');
         $('#des_douane').prop('disabled','true');
+        $('#produit_dis').prop('disabled','true');
+        $('#poids_sac_dis').prop('disabled','true');
+        $('#type_decharge_dis').prop('disabled','true');
        }
         if(pol_modif==0){
         $('#info_politique_modif').css('display','none');
         $('#dec_dis').prop('disabled',false);
         $('#id_con_dis').prop('disabled',false);
         $('#des_douane').prop('disabled',false);
+        $('#produit_dis').prop('disabled',false);
+        $('#poids_sac_dis').prop('disabled',false);
+        $('#type_decharge_dis').prop('disabled',false);
        }
        
              //  $('#id_dis').val(id);
@@ -2806,13 +2821,15 @@ if (existingOption.length > 0) {
       var type_decharge=$('#type_decharge_dis').val()
     var des_douane=$('#des_douane').val();
 
+     var produit = $('#produit_dis').val();
+
         
         $.ajax({
-		url:'modifier_bl.php',
+		url:'tableau/connaissement/ajax/update.php',
 		method:'post',
-		data:{id:id,id_navire:id_navire,type_navire:type_navire,num_dec:num_dec,poids_sac:poids_sac,poids:poids,type_decharge:type_decharge,des_douane:des_douane,sac:sac,id_con_dis:id_con_dis},
+		data:{id:id,id_navire:id_navire,type_navire:type_navire,num_dec:num_dec,poids_sac:poids_sac,poids:poids,type_decharge:type_decharge,des_douane:des_douane,sac:sac,id_con_dis:id_con_dis,produit:produit},
 		success: function(response){
-			$('#parconnaissement').html(response);
+			$('#body_connaissement').html(response);
 			
 		$('#modif_dis').modal('toggle');
 		}

@@ -343,6 +343,28 @@ function entete_des_tableaux($bdd,$produit,$poids_sac,$navire,$destination){
         $element_entete->execute();
         return $element_entete;
 } */
+
+function entete_des_tableaux_vrac($bdd,$produit,$poids_sac,$navire,$destination,$client){
+   $element_entete= $bdd->prepare("SELECT  p.produit,p.qualite,nav.navire,cli.client,mang.mangasin, nav.id, nav.type, dis.des_douane,sum(dis.quantite_sac),sum(dis.quantite_poids), nc.num_connaissement,nc.poids_kg   FROM dispats as dis 
+                 left join declaration as d on d.id_declaration=dis.id_dis
+                inner join numero_connaissements as nc on nc.id_connaissement=dis.id_con_dis
+                inner join  produit_deb as p on dis.id_produits=p.id 
+
+                inner join navire_deb as nav on nc.id_navire=nav.id 
+                
+                inner join client as cli on nc.id_client=cli.id
+                inner join mangasin as mang on dis.id_mangasin=mang.id
+                 
+
+                   WHERE dis.id_produits=? and  dis.poids_kgs=? and nc.id_navire=? and dis.id_mangasin=? and nc.id_client=? group by nc.id_produit,nc.poids_kg,dis.id_mangasin  ");
+        $element_entete->bindParam(1,$produit);
+        $element_entete->bindParam(2,$poids_sac);
+        $element_entete->bindParam(3,$navire);
+        $element_entete->bindParam(4,$destination);
+        $element_entete->bindParam(5,$client);
+        $element_entete->execute();
+        return $element_entete;
+}
    
 
 
@@ -902,7 +924,7 @@ $rotation=$bdd->prepare("SELECT count(bl) from transfert_debarquement where id_p
      <td colspan="6" style="color: white;">TOTAL DEBARQUER</td>
      <td colspan="3" style="color: white;" class="cache_colonne"></td>
      <?php if ($aff['poids_sac']!=0) { ?>
-      <td style="color: white;"><?php echo number_format($aff_som['sum(manif.sac)'], 3,',',' '); ?></td>
+      <td style="color: white;"><?php echo number_format($aff_som['sum(manif.sac)'], 0,',',' '); ?></td>
     <?php } ?>
     <td style="color: white;"><?php echo number_format($aff_som['sum(pb.poids_net)'], 3,',',' '); ?></td>
     <td colspan="2"></td>

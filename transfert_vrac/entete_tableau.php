@@ -1,11 +1,14 @@
-
-<?php $resfil=$resfiltre->fetch(); ?>
+<?php
+ /*   require '../../vendor/autoload.php';
+    use Pro\TechlogNewVersion\Entete_tableaux_vrac; */
+    use Pro\TechlogNewVersion\Entete_tableaux_vrac;
+ $resfil=$resfiltre->fetch(); ?>
   <div class=" col col-md-6 col-lg-6">      
 <button id="insertion_sain" type="submit" class="btn1" onclick="heure_automatique()"  >Insertion </button>
 
-    <span  class="btn" style="color: white; background: blue;" id="scrollDownBtn" onclick="scrollDown()" title="Défiler vers le bas"> Cliquer ici pour défiler vers le bas
-   <i class="fa-solid fa-arrow-down"></i><!-- Utilisez la classe de votre icône -->
-</span>
+  <!--  <span  class="btn" style="color: white; background: blue;" id="scrollDownBtn" onclick="scrollDown()" title="Défiler vers le bas"> Cliquer ici pour défiler vers le bas
+   <i class="fa-solid fa-arrow-down"></i>
+</span> !-->
 
 
 
@@ -30,12 +33,26 @@
 <table  class='table table-hover table-bordered table-striped table-responsive'  border='1'   >
     
  <!--<div class="table-headers"> !-->
- <thead  style="background: linear-gradient(-45deg, #004362, #0183d0) !important; ">
-  <td  colspan="14" class="titreSAIN"  >RECAPITULATI DES BONS DE TRANSFERT <?php //$element_entete=entete_des_tableaux($bdd,$produit,$poids_sac,$navire,$destination);
-//       echo $rown['des_douane'].' ';
-      
-       // if($transfert_sain==1){ echo strtoupper($statut); }
-       //echo strtoupper($statut); ?></td>
+ <thead  style="background: linear-gradient(left;-45deg, #004362, #0183d0) !important; ">
+  <td  colspan="14" class="titreSAIN"  > <span style="float: left;"> RECAPITULATIF DES BONS DE TRANSFERT </span> <?php $element_entete=Entete_tableaux_vrac::entete_des_tableaux_vrac($bdd,$produit,$poids_sac,$navire,$destination,$client);
+  $entete=$element_entete->fetch();
+     
+   ?>  
+   <br>
+   <div class="row">
+
+    <div class="col-lg-4">
+   <span>NAVIRE: <span style="color: yellow"> <?php echo $entete['navire']; ?></span></span> </div>  
+   <div class="col-lg-4">
+   <span>PRODUIT: <span style="color: yellow"><?php echo $entete['produit']; ?> <?php echo $entete['poids_kgs'].' KG' ?></span></span></div>
+   <div class="col-lg-4">
+   <span>DESTINATION: <span style="color: yellow"><?php echo $entete['mangasin']; ?> </span></span></div>
+
+   <div class="col-lg-4">
+   <span>POIDS MANIFEST: <span style="color: yellow"><?php echo number_format($entete['sum(dis.quantite_poids)'],'3',',','').' T'; ?> </span></span></div>
+
+   </div>
+ </td>
   <?php   
            ?>
             <tr >  
@@ -50,7 +67,7 @@
     <tr class="headers" id="entete_table_sain" style="vertical-align: middle; "   >
       <td  scope="col" style="width: 1%;"  >ROTA <br> TION</td>
       <td  scope="col"   >DATES </td>
-      <td class="cache_colonne"  scope="col"   >HEURE</td>
+      <td class="cache_colonne"  scope="col"  >HEURE</td>
       <td  scope="col"  >CALE  </td>
       <td  scope="col"  > N° BL </td>
        <?php if($resfil['des_douane']=='LIVRAISON'){ ?>

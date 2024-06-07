@@ -160,8 +160,10 @@ function manifeste_TOTAL($bdd,$navire){
           return $produit;
           } 
 
+
+
 //cette fonction rowspan_deb_produit parcours la table transfert_debarquement et compte les nombres de lignes qui existe en regroupant produit poids_sac cale pour le rowspan du produit
-             function rowspan_deb_produit($bdd,$navire,$id_produit,$poids_sac){
+           function rowspan_deb_produit($bdd,$navire,$id_produit,$poids_sac){
                $rowspan_deb_produit=$bdd->prepare(" SELECT COUNT(*) AS nombre_de_lignes
              FROM (
     SELECT count(cale) AS count_cale
@@ -176,6 +178,7 @@ function manifeste_TOTAL($bdd,$navire){
                $rowspan_deb_produit->execute();
                return $rowspan_deb_produit;
           }
+            
 
           function manifeste_produit($bdd,$navire,$id_produit,$poids_sac){
 
@@ -225,7 +228,7 @@ function manifeste_TOTAL($bdd,$navire){
 
                function deb_produit_TOT($bdd,$navire,$id_produit,$poids_sac,$date_deb,$cale_deb){
                $deb_produit_TOT=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
-               left join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
                 WHERE td.id_navire=? and td.id_produit=? AND td.poids_sac=? and pb.date_pont<=? and td.cale=? ");
                $deb_produit_TOT->bindParam(1,$navire);
                $deb_produit_TOT->bindParam(2,$id_produit);
@@ -266,7 +269,7 @@ function manifeste_TOTAL($bdd,$navire){
 
 
 
-                         function deb_produit_GEN_24H($bdd,$navire,$date_deb){
+               function deb_produit_GEN_24H($bdd,$navire,$date_deb){
                $deb_produit_GEN_24H=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
                inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
                 WHERE td.id_navire=?   and pb.date_pont=? ");
@@ -291,6 +294,126 @@ function manifeste_TOTAL($bdd,$navire){
                $deb_produit_GEN_TOT->execute();
                return $deb_produit_GEN_TOT;
           }
+
+               function destination($bdd,$navire){
+
+ $destination=$bdd->prepare("SELECT mg.mangasin,dis.id_mangasin, sum(dis.quantite_poids), td.cale, td.poids_sac,td.id_produit,td.id_destination, p.id,p.produit,p.qualite FROM dispats as dis 
+  
+  inner join transfert_debarquement as td on td.id_destination=dis.id_mangasin
+  inner join mangasin as mg on mg.id=dis.id_mangasin 
+  inner join produit_deb as p on p.id=td.id_produit
+
+         where td.id_navire=? /*and td.dates=? */  group by dis.id_mangasin, p.produit,td.poids_sac with rollup ");
+          $destination->bindParam(1,$navire);  
+         // $cale->bindParam(2,$date_deb); 
+          
+          $destination->execute();
+          return $destination;
+          } 
+
+                function deb_destination_24H($bdd,$navire,$id_produit,$poids_sac,$date_deb,$destination_deb){
+               $deb_destination_24H=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=? and td.id_produit=? AND td.poids_sac=? and pb.date_pont=? and td.id_destination=? ");
+               $deb_destination_24H->bindParam(1,$navire);
+               $deb_destination_24H->bindParam(2,$id_produit);
+               $deb_destination_24H->bindParam(3,$poids_sac);
+               $deb_destination_24H->bindParam(4,$date_deb);
+                $deb_destination_24H->bindParam(5,$destination_deb);
+              
+               $deb_destination_24H->execute();
+               return $deb_destination_24H;
+          }
+
+               function deb_destination_TOT($bdd,$navire,$id_produit,$poids_sac,$date_deb,$destination_deb){
+               $deb_destination_TOT=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=? and td.id_produit=? AND td.poids_sac=? and pb.date_pont<=? and td.id_destination=? ");
+               $deb_destination_TOT->bindParam(1,$navire);
+               $deb_destination_TOT->bindParam(2,$id_produit);
+               $deb_destination_TOT->bindParam(3,$poids_sac);
+               $deb_destination_TOT->bindParam(4,$date_deb);
+                $deb_destination_TOT->bindParam(5,$destination_deb);
+              
+               $deb_destination_TOT->execute();
+               return $deb_destination_TOT;
+          }
+
+                function deb_destination_ST_24H($bdd,$navire,$date_deb,$destination_deb){
+               $deb_destination_ST_24H=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=?  and pb.date_pont=? and td.id_destination=? ");
+               $deb_destination_ST_24H->bindParam(1,$navire);
+
+               $deb_destination_ST_24H->bindParam(2,$date_deb);
+                $deb_destination_ST_24H->bindParam(3,$destination_deb);
+              
+               $deb_destination_ST_24H->execute();
+               return $deb_destination_ST_24H;
+          }
+
+               function deb_destination_ST_TOT($bdd,$navire,$date_deb,$destination_deb){
+               $deb_destination_ST_TOT=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=?  and pb.date_pont<=? and td.id_destination=?  ");
+               $deb_destination_ST_TOT->bindParam(1,$navire);
+               $deb_destination_ST_TOT->bindParam(2,$date_deb);
+               $deb_destination_ST_TOT->bindParam(3,$destination_deb);
+              
+               $deb_destination_ST_TOT->execute();
+               return $deb_destination_ST_TOT;
+          }
+
+
+               function deb_destination_GEN_24H($bdd,$navire,$date_deb){
+               $deb_destination_GEN_24H=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=?   and pb.date_pont=? ");
+               $deb_destination_GEN_24H->bindParam(1,$navire);
+              
+             
+               $deb_destination_GEN_24H->bindParam(2,$date_deb);
+              
+               $deb_destination_GEN_24H->execute();
+               return $deb_destination_GEN_24H;
+          }
+
+               function deb_destination_GEN_TOT($bdd,$navire,$date_deb){
+               $deb_destination_GEN_TOT=$bdd->prepare(" SELECT sum(pb.poids_net),sum(td.sac) from pont_bascule as pb
+               inner join  transfert_debarquement as td on td.id_register_manif=pb.id_transfert
+                WHERE td.id_navire=?   and pb.date_pont<=? ");
+               $deb_destination_GEN_TOT->bindParam(1,$navire);
+             
+      
+               $deb_destination_GEN_TOT->bindParam(2,$date_deb);
+              
+               $deb_destination_GEN_TOT->execute();
+               return $deb_destination_GEN_TOT;
+          }
+
+          function manifeste_destination($bdd,$navire,$destination_deb){
+
+            $manifeste_destination=$bdd->prepare("SELECT sum(dis.quantite_poids),nc.num_connaissement from dispats as dis 
+              inner join numero_connaissements as nc on nc.id_connaissement=dis.id_con_dis
+           
+              WHERE nc.id_navire=? and dis.id_mangasin=? 
+              group by dis.id_mangasin  ");
+               $manifeste_destination->bindParam(1,$navire);
+               $manifeste_destination->bindParam(2,$destination_deb);
+                
+
+               $manifeste_destination->execute();
+               return $manifeste_destination;
+             }
+
+
+             function navire($bdd,$navire){
+              $my_navire=$bdd->prepare("SELECT navire from navire_deb where id=?");
+              $my_navire->bindParam(1,$navire);
+              $my_navire->execute();
+              return $my_navire;
+             }
+
 
 
           ?>

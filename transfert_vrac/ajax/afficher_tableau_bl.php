@@ -1,5 +1,9 @@
 <?php require('../../database.php');
+    require '../../vendor/autoload.php';
+    use Pro\TechlogNewVersion\Entete_tableaux_vrac;
     require('../controller/afficher_les_debarquements.php');
+
+
 $navire= $_POST['navire'];
 $produit= $_POST['produit'];
 $destination= $_POST['destination'];
@@ -609,11 +613,11 @@ while($rown=$element_forms->fetch()){
 
 
 <div class="modal fade" id="modif_register" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog ">
+  <div class="modal-dialog modal-register ">
     <div class="modal-content" style=" border: solid; border-color:rgb(0,141,202); ">
             <div class="modal-header" style="">
               <center>
-                <h3 class="modal-title fs-10 text-white text-center" id="exampleModalLabel " style="text-align:center;   ">MODIFICATION SAIN</h3></center>
+                <h6 class="modal-title fs-10 text-white text-center" id="exampleModalLabel " style="text-align:center;   ">MODIFICATION </h6></center>
                 <center>
               <img class="logoo" src="../images/mylogo.ico" >
        </center>
@@ -627,22 +631,42 @@ while($rown=$element_forms->fetch()){
 
 
    <div class="mb-3">
-    
-   <label>DATE</label>  
-  <input type="text" class="form-control"  id="date_m_rm"  name="conditionnement"  > <br>
-  <label>HEURE</label>  
-  <input type="time" class="form-control"  id="heure_m_rm"  name="conditionnement"  > <br>
-    <label>BL</label>  
-  <input type="text" class="form-control"  id="bl_m_rm"  name="conditionnement"  > <br>
-  
-      </center>
 
-  <label id='poids_title'>POIDS</label> 
-  <input type="text" class="form-control"  id="poids_m_rm"  name="conditionnement"  > <br>
-  <input type="text" class="form-control"  id="id_m_rm" hidden="true"  name="conditionnement"  >
-   <input type="text" class="form-control"  id="type_m_rm" hidden="true"  name="conditionnement" value="<?php echo $rown['type']; ?>"  >
-   <input type="text"  id="statut_m_rm"  hidden="true">
-<label>DECLARATION</label>
+    <div class="row"> 
+    <div class="col-lg-2 mr-2"> 
+   <label>DATE</label> <br>  
+  <input style="width: 80px;" type="text"   id="date_m_rm"  name="conditionnement"  > 
+</div> 
+<div class="col-lg-2 " > 
+  <label>HEURE</label><br>    
+  <input type="time"   id="heure_m_rm"  name="conditionnement"  > 
+</div>
+<div class="col-lg-2 ml-2" > 
+    <label>BL</label> <br>   
+  <input style="width: 80px;" type="text"   id="bl_m_rm"  name="conditionnement"  > 
+</div>
+<div class="col-lg-2"> 
+  <label>CALE</label><br> 
+   <select id="cale_m_rm">
+    <?php
+   
+
+      
+    
+           $rescale=cale_vrac($bdd,$produit,$poids_sac,$navire,$destination,$client);
+         
+     while($res=$rescale->fetch()){ ?>
+           
+      <option value=<?php echo $res['id_dec']; ?>><?php echo $res['cales']; ?></option>
+    <?php  } ?>
+     
+   
+  </select>
+
+  </div>
+
+  <div class="col-lg-4">
+    <label>DECLARATION</label><br>
 
 <?php
        
@@ -658,25 +682,31 @@ while($rown=$element_forms->fetch()){
      $suivi=$suivi_dec_select->fetch();
      $restant=$suivi['poids']-$suivi['sum(td.poids)'];  */     ?> 
     <option value=<?php  echo $dec['id_declaration']; ?> ><?php  echo $dec['num_declaration']; ?> (restant=<span class="restant"><?php //echo $restant; ?></span>) </option>  
-   <?php } ?>
+   <?php } ?> 
   
-  </select><br> <br>
-  <label>CALE</label>
-   <select id="cale_m_rm">
-    <?php
-   
+  </select><br> <br> 
 
-      
-    
-           $rescale=cale_vrac($bdd,$produit,$poids_sac,$navire,$destination,$client);
-         
-     while($res=$rescale->fetch()){ ?>
-           
-      <option value=<?php echo $res['id_dec']; ?>><?php echo $res['cales']; ?></option>
-    <?php  } ?>
-     
-   
-  </select> <br><br>
+  </div>
+</div>
+</div>
+
+
+<div style="display: none;"> 
+  <label id='poids_title'>POIDS</label> 
+  <input type="text" class="form-control"  id="poids_m_rm"  name="conditionnement"  > <br>
+  <input type="text" class="form-control"  id="id_m_rm" hidden="true"  name="conditionnement"  >
+   <input type="text" class="form-control"  id="type_m_rm" hidden="true"  name="conditionnement" value="<?php echo $rown['type']; ?>"  >
+   <input type="text"  id="statut_m_rm"  hidden="true">
+   </div>
+
+
+
+
+
+
+  
+      </center>
+
 
 
   <div class="mb-3" id="div_destinataire" style="display: none;">
@@ -684,40 +714,48 @@ while($rown=$element_forms->fetch()){
 <input type="text"  id="destinataire_m_rm"  ><br>
 </div>
 
-<div style="background: blue">
+<div style="background: rgb(248,248,248);">
    <div class="mb-3">
       <center>  
     <h3 style="background: white; color: blue;">TRANSPORT</h3>
-   
+   </center> 
+   <div class="row">  
+
+  <div class="col-lg-4">  
  <label style="color: white;">CAMIONS  </label><br> 
-  </center> 
-  
+ <input type="text" id="myInput_m_rm"  placeholder="SAISIR LE N° DE CAMION" style="width: 50%; " onkeyup="filtreca_m_rm();" >
+ </div>
 
-   
-<input type="text" id="myInput_m_rm"  placeholder="SAISIR LE N° DE CAMION" style="width: 50%; " onkeyup="filtreca_m_rm();" ><br><br>
+  <div class="col-lg-8">  
 
-<label style="color: white;">TRANSPORTEUR  </label><br> 
-<input type="text" id="myInputTransp_m_rm" placeholder="transporteur" style="width: 50%; " disabled="true" >
-
-
-<div id="camionList_m_rm" style="background: white; display: none; " >
+<label style="color: white;">CHAUFFEUR  </label> 
+<input type="text" id="myInputc_m_rm"  placeholder="chauffeur" style="width: 100%;" onkeyup="filtreChau_m_rm();"  >
   </div>
+
+
+<div class="col-lg-12" id="camionList_m_rm" style="background: white; display: none; " >
+  </div>
+  <div class="col-lg-8" id="camionListc_m_rm" style="background: white; display: none;" >
+  </div>
+
+
+
+<div class="col-lg-12"> 
+<label style="color: white; width: 30%;">TRANSPORTEUR  </label><br> 
+<input type="text" id="myInputTransp_m_rm" placeholder="transporteur" style="width: 30%; " disabled="true" >
+
+
+
  
 
 
 
 <input type="" name="input2" id="val_input2_m_rm"   hidden="true"  >
 
- <center> <br>  
-<label style="color: white;">CHAUFFEUR  </label> 
-</center> 
- 
-<input type="text" id="myInputc_m_rm"  placeholder="chauffeur" style="width: 100%;" onkeyup="filtreChau_m_rm();"  >
+   
 
-<div id="camionListc_m_rm" style="background: white; display: none;" >
-  
 
-</div>
+
 <input type="" name="input2c" id="val_input2c_m_rm" hidden="true">
 <input type=""  id="dis_bl_m_rm" hidden="true" >
 <input type=""  id="poids_sac_m_rm" hidden="true" >
@@ -725,18 +763,25 @@ while($rown=$element_forms->fetch()){
 <input type="" name="input2c" id="id_produit_m_rm" hidden="true">
 <input type=""  id="id_destination_m_rm" hidden="true" >
 <input type=""  id="id_client_m_rm" hidden="true" >
-<input type=""  id="id_navire_m_rm" hidden="true" ><br>
+<input type=""  id="id_navire_m_rm" hidden="true" ><br><br> 
 
+</div>
 
-  
   </div>
 
+
+</div>
   
 </div>
+
+<div class="mb-3">
+
 <input type="number" name="" id='id_detail_m_rm' style="display:none;" > 
 
-<label id='sac_title'>SAC</label>  
-  <input type="text" class="form-control"  id="sac_m_rm"  name="conditionnement"  > <br>  
+<div id='sac_modif_visible'> 
+<label id='sac_title'>SAC</label> <br>   
+  <input type="text"   id="sac_m_rm"  name="conditionnement"  > <br> 
+  </div> 
 
 
   
@@ -772,10 +817,14 @@ while($rown=$element_forms->fetch()){
         
         
  
-       
+        <center>
       <div class="modal-footer">
-    <a data-role="mod" id='btn_modif_register'  class="btn btn-primary btn-block btn-lg shadow-lg mt-5" name="modifier_les_register">valider</a>
+         <center> 
+    <a data-role="mod" id='btn_modif_register'  class="btn btn-primary  " name="modifier_les_register" >valider</a>
+    </center>
         </div>
+        </center>
+   </div>     
       </div>
       </form>
        </div> 

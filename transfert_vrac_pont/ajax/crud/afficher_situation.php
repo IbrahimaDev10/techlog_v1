@@ -38,8 +38,16 @@
         }
       }
 
+      $my_navire=navire($bdd,$navire);
+
+      $my_nav=$my_navire->fetch();
+
+       $dateObj = date_create_from_format('Y-m-d', $date_deb);
+                $date_converti = $dateObj->format('d-m-Y');
+
        ?>
        <style type="text/css">
+
         .cellule{
           text-align: center;
           vertical-align: middle;
@@ -50,11 +58,18 @@
           background: blue;
           color: white;
         }
-       </style>
+        .titre{
+          color:red;
+          font-weight: bold;
+        }
 
+       </style>
+<br>
 <div class="table-responsive" style="background: white;" >
-  <h6>NAVIRE <?php echo $navire; ?> <?php echo $soustraction; ?></h6>
- <h6>SITUATION DU DEBARQUEMENT PAR CALE DU <?php echo $date_deb; ?> </h6>        
+  <center>
+  <h6>SITUATION DU DEBARQUEMENT PAR CALE DU <span class="titre"><?php echo $date_converti; ?></span>  </h6>    
+  <h6>NAVIRE: <span class="titre"><?php echo $my_nav['navire']; ?></span>  </h6>
+    </center> 
 
  <table class='table table-hover table-bordered ' id='table' >";
     
@@ -337,10 +352,10 @@
  <?php  if(!empty($row['cales']) AND empty($row['produit']) and $row['poids_sac']==''){  ?>
          <tr class="cellule_st">
           <td colspan="2"> TOTAL <?php echo $row['cales']; ?>  </td>
-          <td ><?php echo $sac_ST24h; ?></td>
-          <td ><?php echo $net_marchand_ST24h; ?></td>
-          <td ><?php echo $sac_STT; ?></td>
-          <td ><?php echo $net_marchand_STT; ?></td>
+          <td ><?php echo number_format($sac_ST24h, 0,',',' '); ?></td>
+          <td ><?php echo number_format($net_marchand_ST24h, 3,',',' ');; ?></td>
+          <td ><?php echo number_format($sac_STT, 0,',',' ');; ?></td>
+          <td ><?php echo number_format($net_marchand_STT, 3,',',' ');; ?></td>
           </tr> 
  <?php } ?>
 
@@ -369,8 +384,10 @@
 <br><br>
 
 <div class="table-responsive" style="background: white; border-radius: 15px;" >
-  <h6>NAVIRE <?php echo $navire ?> </h6>
- <h6>SITUATION DU DEBARQUEMENT PAR PRODUIT DU <?php echo $date_deb; ?> </h6>        
+   <center>
+  <h6>SITUATION DU DEBARQUEMENT PAR PRODUIT DU <span class="titre"><?php echo $date_converti; ?></span>  </h6>    
+  <h6>NAVIRE: <span class="titre"><?php echo $my_nav['navire']; ?></span>  </h6>
+    </center>       
 
  <table class='table table-hover table-bordered ' id='table' >";
     
@@ -452,7 +469,7 @@
                     }
                   } ?>
           <td rowspan="<?php echo $rows_deb_prod['nombre_de_lignes']; ?>"><?php echo $row['produit']; ?> <?php if($row['poids_sac']!=0){ echo $row['poids_sac'].' KG';} ?> </td>
-          <td rowspan="<?php echo $rows_deb_prod['nombre_de_lignes']+1; ?>"><?php echo number_format($manif_prod['sum(dis.quantite_poids)'],3,',',' ')  ?>  </td>
+          <td rowspan="<?php echo $rows_deb_prod['nombre_de_lignes']; ?>"><?php echo number_format($manif_prod['sum(dis.quantite_poids)'],3,',',' ')  ?>  </td>
          <?php } ?>
          <td><?php echo $row['cales'] ?></td>
 
@@ -471,10 +488,10 @@
                      $deb_produit_ST_TOT=deb_produit_ST_TOT($bdd,$navire,$id_produit,$poids_sac,$date_deb);
                      $deb_prod_ST_TOT_ROB=$deb_produit_ST_TOT->fetch();
 
-                     $net_marchand_TOT=  $deb_prod_ST_TOT_ROB['sum(pb.poids_net)'];
+                    $net_marchand_TOTS=  $deb_prod_ST_TOT_ROB['sum(pb.poids_net)'];
 
                      //rob
-                     $rob_net=$manif_prod['sum(dis.quantite_poids)']-$net_marchand_TOT;
+                     $rob_net=$manif_prod['sum(dis.quantite_poids)']-$net_marchand_TOTS;
 
 
                 ?>
@@ -498,7 +515,7 @@
                       # code...
                     }
                   } ?>
-          <td rowspan="<?php echo $rows_deb_prod['nombre_de_lignes']+1; ?>"> <?php echo number_format($rob_net,3,',',' '); ?> </td>
+          <td rowspan="<?php echo $rows_deb_prod['nombre_de_lignes']; ?>"> <?php echo number_format($rob_net,3,',',' '); ?> </td>
         
          <?php } ?>
        </tr>
@@ -507,8 +524,8 @@
        <?php } ?>
         <?php  if(!empty($row['produit'])  and $row['poids_sac']!='' AND empty($row['cales']) AND empty($row['id_dec'])){  ?>
          <tr class="cellule_st">
-          <td > TOTAL <?php echo $row['produit']; ?> <?php if($row['poids_sac']!=0){ echo $row['poids_sac'].' KG';} ?> </td>
-           <td >  </td>
+          <td colspan="3"> TOTAL <?php echo $row['produit']; ?> <?php if($row['poids_sac']!=0){ echo $row['poids_sac'].' KG';} ?> </td>
+           
 
            <?php  
            $deb_produit_ST_24H=deb_produit_ST_24H($bdd,$navire,$id_produit,$poids_sac,$date_deb);
@@ -531,6 +548,7 @@
                 <td><?php echo number_format($net_marchand,3,',',' ') ?></td>
                 <td><?php echo number_format($sac_24h_TOT,0,',',' ') ?></td>
                 <td><?php echo number_format($net_marchand_TOT,3,',',' ') ?></td>
+                <td></td>
               <?php } ?>
           
 
@@ -584,3 +602,227 @@
          </tbody>
         </table>
        </div>  
+
+<br><br>
+<div class="table-responsive" style="background: white; border-radius: 15px;" >
+   <center>
+  <h6>SITUATION DU DEBARQUEMENT PAR DESTINATION DU <span class="titre"><?php echo $date_converti; ?></span>  </h6>    
+  <h6>NAVIRE: <span class="titre"><?php echo $my_nav['navire']; ?></span>  </h6>
+    </center>        
+
+ <table class='table table-hover table-bordered ' id='table' >";
+    
+
+<thead>
+          
+  
+ <tr class="EnteteTableSituation" style="font-size: 12px;" >
+      
+
+      <td id="colLibeles" scope="col"  rowspan="2"  >DESTINATION</td>
+      <td id="colManifeste"  >MANIFESTE</td>
+       <td id="colLibeles" scope="col"  rowspan="2"  >PRODUIT</td>
+      
+       
+      <td scope="col"  id="colDeb24H" colspan="2" >DEB 24H</td>
+      <td scope="col"  id="colDebTOTAL"  colspan="2"> TOTAL DEB</td>
+      <td scope="col"  id="colDebTOTAL"  > ROB</td>
+   <!--   <td scope="col"  id="colROB">ROB</td> !-->
+  </tr>
+    <tr class="EnteteTableSituation"  >
+      
+     
+      <td id="colManifeste">POIDS</td> 
+        <td scope="col" id="colDeb24H" >SACS</td>
+      <td scope="col" id="colDeb24H" >POIDS</td>
+              <td scope="col" id="colDeb24H" >SACS</td>
+      <td scope="col" id="colDeb24H" >POIDS</td>
+              
+      <td scope="col" id="colDeb24H" >POIDS</td>
+        
+     
+    <!--  <td scope="col" id="colROB" >POIDS</td> !-->
+        
+     
+     
+ 
+         </tr>
+         </thead> 
+         <tbody>
+
+            <?php    
+           $nom_destination='NULL';
+          // $val_poids_sac='NULL';
+           $row_destination=0;
+
+           $nom_destination_rob='NULL';
+          // $val_poids_sac='NULL';
+           $row_destination_rob=0;
+
+         /*  $rob_produit='NULL';
+           $val_poids_sac_rob='NULL';
+           $rowrob=0; */
+
+       $destination=destination($bdd,$navire); 
+        
+         $destinations=$destination->fetchAll(PDO::FETCH_ASSOC);
+         foreach($destinations as $row){
+          $id_produit=$row['id_produit'];
+          $poids_sac=$row['poids_sac'];
+          $destination_deb=$row['id_mangasin'];
+
+             if(!empty($row['id_mangasin']) AND !empty($row['produit']) and $row['poids_sac']!=''){ 
+                  
+             $manifeste_destination=manifeste_destination($bdd,$navire,$destination_deb);
+             $manif_des=$manifeste_destination->fetch();    
+                
+
+                  $deb_destination_ST_TOT=deb_destination_ST_TOT($bdd,$navire,$date_deb,$destination_deb);
+                     $deb_des_ST_TOT_ROB=$deb_destination_ST_TOT->fetch();
+
+                     $net_marchand_TOT=  $deb_des_ST_TOT_ROB['sum(pb.poids_net)'];
+
+                     //rob
+                     $rob_net=$manif_des['sum(dis.quantite_poids)']-$net_marchand_TOT;     
+
+
+
+
+            ?>
+         <tr class="cellule">
+
+          <?php if($nom_destination!=$row['mangasin']){
+                    $row_destination=0;
+                    $nom_destination=$row['mangasin'];
+                   
+                    foreach ($destinations as $r ) {
+                      if($r['mangasin']===$nom_destination and !empty($r['produit']) and $r['poids_sac']!='' ){
+                        $row_destination++;
+                      # code...
+                    }
+                  } ?>
+          <td rowspan="<?php echo $row_destination; ?>"><?php echo $row['mangasin']; ?>  </td>
+          <td rowspan="<?php echo $row_destination; ?>"><?php echo number_format($manif_des['sum(dis.quantite_poids)'],3,',',' ') ?>  </td>
+         <?php } ?>
+         
+         <td><?php echo $row['produit']; ?></td>
+         <?php 
+         $deb_destination_24H=deb_destination_24H($bdd,$navire,$id_produit,$poids_sac,$date_deb,$destination_deb);
+               $deb_destination_TOT=deb_destination_TOT($bdd,$navire,$id_produit,$poids_sac,$date_deb,$destination_deb);
+
+               $deb_destination_ST_TOT=deb_destination_ST_TOT($bdd,$navire,$date_deb,$destination_deb);
+
+               while($deb_des_24h=$deb_destination_24H->fetch()){ 
+                    $deb_des_TOT=$deb_destination_TOT->fetch();
+
+
+
+                     $net_marchand=  $deb_des_24h['sum(pb.poids_net)'];
+                     $sac_24h=  $deb_des_24h['sum(td.sac)'];
+
+                     $net_marchand_TOT=  $deb_des_TOT['sum(pb.poids_net)'];
+                     $sac_24h_TOT=  $deb_des_TOT['sum(td.sac)']; ?>
+
+                <td><?php echo number_format($sac_24h,0,',',' ') ?></td>
+                <td><?php echo number_format($net_marchand,3,',',' ') ?></td>
+                <td><?php echo number_format($sac_24h_TOT,0,',',' ') ?></td>
+                <td><?php echo number_format($net_marchand_TOT,3,',',' ') ?></td>
+                
+                <?php if($nom_destination_rob!=$row['mangasin']){
+                    $row_destination_rob=0;
+                    $nom_destination_rob=$row['mangasin'];
+                   
+                    foreach ($destinations as $r ) {
+                      if($r['mangasin']===$nom_destination_rob and !empty($r['produit']) and $r['poids_sac']!='' ){
+                        $row_destination_rob++;
+                      # code...
+                    }
+                  } ?>
+          
+          <td rowspan="<?php echo $row_destination_rob; ?>"><?php echo number_format($rob_net,3,',',' ') ?>  </td>
+         <?php } ?>
+
+              <?php } ?>
+             
+</tr>
+       <?php } //endif empty?> 
+
+       <?php  if(!empty($row['id_mangasin'])  and $row['poids_sac']=='' AND empty($row['produit']) ){  ?>
+         <tr class="cellule_st">
+          <td > TOTAL <?php echo $row['mangasin']; ?>  </td>
+          <td></td>
+          <td></td>
+
+         <?php  
+           $deb_destination_ST_24H=deb_destination_ST_24H($bdd,$navire,$date_deb,$destination_deb);
+               $deb_destination_ST_TOT=deb_destination_ST_TOT($bdd,$navire,$date_deb,$destination_deb);
+               while($deb_des_ST_24h=$deb_destination_ST_24H->fetch()){ 
+                     $deb_des_ST_TOT=$deb_destination_ST_TOT->fetch();
+
+                     $net_marchand=  $deb_des_ST_24h['sum(pb.poids_net)'];
+                     $sac_24h=  $deb_des_ST_24h['sum(td.sac)'];
+
+                     $net_marchand_TOT=  $deb_des_ST_TOT['sum(pb.poids_net)'];
+                     $sac_24h_TOT=  $deb_des_ST_TOT['sum(td.sac)'];
+
+                     //rob
+                     
+
+
+                ?>
+                <td><?php echo number_format($sac_24h,0,',',' ') ?></td>
+                <td><?php echo number_format($net_marchand,3,',',' ') ?></td>
+                <td><?php echo number_format($sac_24h_TOT,0,',',' ') ?></td>
+                <td><?php echo number_format($net_marchand_TOT,3,',',' ') ?></td>
+                <td></td>
+              <?php } ?>  
+
+        <?php } //endif ?>
+         <?php  if(empty($row['id_mangasin'])  and $row['poids_sac']=='' AND empty($row['produit']) ){  ?>
+         <tr style="background: black; color: white; text-align: center;">
+          <td > TOTAL   </td>
+          <td></td>
+          <td></td>
+     <?php  
+           $deb_destination_GEN_24H=deb_produit_GEN_24H($bdd,$navire,$date_deb);
+               $deb_destination_GEN_TOT=deb_produit_GEN_TOT($bdd,$navire,$date_deb);
+               while($deb_des_GEN_24H=$deb_destination_GEN_24H->fetch()){ 
+                     $deb_des_GEN_TOT=$deb_destination_GEN_TOT->fetch();
+
+                  // $manifeste_produit_TOT=  manifeste_produit_TOT($bdd,$navire);
+
+                  // $manifeste_TOT=$manifeste_produit_TOT->fetch();
+
+                     $net_marchand=  $deb_des_GEN_24H['sum(pb.poids_net)'];
+                     $sac_24h=  $deb_des_GEN_24H['sum(td.sac)'];
+
+                     $net_marchand_TOT=  $deb_des_GEN_TOT['sum(pb.poids_net)'];
+                     $sac_24h_TOT=  $deb_des_GEN_TOT['sum(td.sac)'];
+
+                  //   $rob_net=$manifeste_TOT['sum(dis.quantite_poids)']-$net_marchand_TOT;
+
+                     //rob ?>
+                     
+
+
+                ?>
+
+                <td><?php echo number_format($sac_24h,0,',',' ') ?></td>
+                <td><?php echo number_format($net_marchand,3,',',' ') ?></td>
+                <td><?php echo number_format($sac_24h_TOT,0,',',' ') ?></td>
+                <td><?php echo number_format($net_marchand_TOT,3,',',' ') ?></td>
+                <td></td>
+                 
+              <?php } ?>
+
+        <?php } //endif ?>
+
+
+       
+     <?php } //endforeach ?>
+</tbody>
+</table>
+</div>
+
+
+        

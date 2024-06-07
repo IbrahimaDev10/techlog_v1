@@ -1,4 +1,11 @@
- <div class="row"> <?php //  row a thead?>
+ <div class="row"> <?php //  row a thead
+   $type_navire=$bdd->prepare('SELECT type from navire_deb where id=?');
+   $type_navire->bindParam(1,$navire);
+   $type_navire->execute();
+
+   $type_nav=$type_navire->fetch();
+
+ ?>
             
          <div class="col col-md-6 col-lg-6">
   <?php $titre_entrepot=$bdd->prepare('SELECT mangasin from mangasin where id=?');
@@ -55,6 +62,11 @@
            
       <td scope="col"   >SACS</td>
       <td scope="col"   >POIDS</td>
+      <?php if($type_nav['type']=='VRAQUIER'){ ?>
+      <td scope="col"   >POIDS PONT <br> BASCULE</td>
+      <td scope="col"   >POIDS NET <br> MARCHAND</td>
+    <?php } ?>
+
       <td scope="col"  rowspan="3" >ACTIONS</td>
       
   </tr>

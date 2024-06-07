@@ -97,6 +97,13 @@ if (existingOptioncale.length > 0) {
             $('#div_destinataire').css('display','none');
         }
 
+        if(poids_sac==0){
+            $('#sac_modif_visible').css('display','none');
+        }
+        else{
+           $('#sac_modif_visible').css('display','table');
+        }
+
 
 
 

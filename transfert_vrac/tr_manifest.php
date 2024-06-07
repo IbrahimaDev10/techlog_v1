@@ -138,7 +138,7 @@ $navire_initiale=$nav_ex[0];
                 <!--    <a style="font-size:14px !important;" id="btn_facturation" onclick="visible_facturations()" class="btn "   > <i class="fas fa-car"> </i>
                         TRANSPORT / FACTURATION
                     </a> !-->
-                    <a style="font-size:14px !important;" id="btn_facturation"  class="btn "   > <i class="fas fa-car"> </i>
+                    <a style="font-size:14px !important;" id="btn_facturation"  class="btn " onclick="visible_facturations()"  > <i class="fas fa-car"> </i>
                         TRANSPORT / FACTURATION
                     </a>
                     
@@ -3661,6 +3661,27 @@ cacher_input_poids();
     espace_av.style.display="none";
       recond.style.display="none";
     espace_recond.style.display="none"; 
+    
+        var navire = $('#input_navire_initiale').val();
+
+  
+
+
+
+        $.ajax({
+        url:'SelectTableFacturation.php',
+        method:'post',
+        data:{navire:navire},
+        success: function(response){
+            $('#fact').html(response);
+           
+     
+       
+        }
+    });
+
+
+
   }
 </script>
 

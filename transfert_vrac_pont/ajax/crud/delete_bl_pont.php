@@ -1,5 +1,6 @@
 <?php 
  require('../../../database.php');
+  require '../../../vendor/autoload.php';
  require('../../controller/afficher_pont_bascule.php');
 
 $navire=$_POST['navire'];

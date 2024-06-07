@@ -1,0 +1,17 @@
+{
+    "name": "pro/techlog_new_version",
+    "description": "'app techlog'",
+    "type": "project",
+    "license": "TC",
+    "autoload": {
+        "psr-4": {
+            "Pro\\TechlogNewVersion\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ibra gueye"
+        }
+    ],
+    "require": {}
+}

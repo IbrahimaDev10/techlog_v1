@@ -3,7 +3,7 @@
 
 
                        <li><a href="../star_superviseur.php" >ACCUEIL</a></li>
-						<li><a href="gestion_donnees.php" >GESTION DE DONNEES</a></li>
+						<li><a href="../gestion_de_donnees/index.php" >GESTION DE DONNEES</a></li>
 						<li><a href="debarquement.php" >DEBARQUEMENT</a></li>
 						
 						<li><a href="" >LIVRAISON</a></li>

@@ -1,6 +1,8 @@
 <?php 
  require('../../../database.php');
  require('../../controller/afficher_les_debarquements.php');
+     require '../../../vendor/autoload.php';
+    use Pro\TechlogNewVersion\Entete_tableaux_vrac;
  //require('controller/control_excedent_sur_declaration.php');
  //require('controller/afficher_les_filtres.php');
     // code...

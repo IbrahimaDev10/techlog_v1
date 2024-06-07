@@ -45,7 +45,7 @@ function navire_con($bdd,$b){
             <th style="border-color:white;" scope="col" >CONDITIONNEMENT</th>
                           
    
-           <th style="border-color:white;" scope="col" > QUANTITE  </th>
+           <th style="border-color:white;" scope="col" > QUANTITE </th>
          <?php } ?>
           <th style="border-color:white;" scope="col" >POIDS (T)</th>
           <th class="no-print" style="border-color:white;" scope="col" >ACTIONS</th>
@@ -322,6 +322,7 @@ function repetition_des_client_par_mangasin($bdd,$mg,$b,$nbre_client){
          return $somme_mg2;
 }
 
+
 function afficher_connaissement($bdd,$b){
   /*
     $connaissement=$bdd->prepare('SELECT nc.*,dis.*,p.*,cli.*,mg.*,b.banque,aff.affreteur,nav.navire,nav.type from dispats as dis
@@ -353,6 +354,11 @@ function afficher_connaissement($bdd,$b){
     $connaissement->execute();
     return $connaissement;
 }
+
+
+
+
+
 
 
 

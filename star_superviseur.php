@@ -304,7 +304,8 @@ include('navbar.php');
    
     <center>
       
-    <a href="super/gestion_donnees" class="bt" >
+  <!--  <a href="super/gestion_donnees" class="bt" > !-->
+    <a href="gestion_de_donnees/index" class="bt" >
       
       <img class="image" src="images/logogdonneesL1.png" >
 
